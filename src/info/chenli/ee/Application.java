@@ -104,6 +104,9 @@ public class Application {
     // put document text in CAS
     aCAS.setDocumentText(document);
 
+    // set the path of resource file
+    aCAS.createView("FileName").setSofaDataURI(aFile.getName(), "text");
+
     // process
     aAE.process(aCAS);
 

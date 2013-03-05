@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Mar 05 19:15:26 GMT+08:00 2013
+ * Updated by JCasGen Wed Mar 06 00:46:29 GMT+08:00 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Trigger extends Annotation {

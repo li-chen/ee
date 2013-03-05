@@ -25,5 +25,22 @@
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
+    <typeDescription>
+      <name>info.chenli.ee.Token</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>pos</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>lemma</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
   </types>
 </typeSystemDescription>

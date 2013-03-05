@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <primitive>false</primitive>
-  <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="GSAnnotator">
-      <import location="/Users/chenli/projects/bionlp2013/eventExtractor/desc/GSAnnotator.xml"/>
-    </delegateAnalysisEngine>
-  </delegateAnalysisEngineSpecifiers>
+  <primitive>true</primitive>
+  <annotatorImplementationName>info.chenli.ee.BioCAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Entity Annotator</name>
+    <name>BioCAnnotator</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters/>
     <configurationParameterSettings/>
-    <flowConstraints>
-      <fixedFlow>
-        <node>GSAnnotator</node>
-      </fixedFlow>
-    </flowConstraints>
+    <typeSystemDescription>
+      <imports>
+        <import location="/Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml"/>
+      </imports>
+    </typeSystemDescription>
+    <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
         <inputs/>
-        <outputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">info.chenli.ee.Token</type>
+        </outputs>
         <languagesSupported/>
       </capability>
     </capabilities>
