@@ -17,10 +17,10 @@ public class GsonFacade {
 	private GsonFacade() {
 	}
 
-	public Document getDocument(File f) {
+	public GsonDocument getDocument(File f) {
 		try {
 			return gson.fromJson(FileUtils.file2String(f),
-					Document.class);
+					GsonDocument.class);
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Wed Mar 06 00:55:15 GMT+08:00 2013
+ * Updated by JCasGen Thu Mar 14 08:11:00 GMT 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Token extends Annotation {
@@ -96,6 +96,96 @@ public class Token extends Annotation {
     if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_lemma == null)
       jcasType.jcas.throwFeatMissing("lemma", "info.chenli.ee.corpora.Token");
     jcasType.ll_cas.ll_setStringValue(addr, ((Token_Type)jcasType).casFeatCode_lemma, v);}    
-  }
+   
+    
+  //*--------------*
+  //* Feature: leftToken
+
+  /** getter for leftToken - gets 
+   * @generated */
+  public Token getLeftToken() {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_leftToken == null)
+      jcasType.jcas.throwFeatMissing("leftToken", "info.chenli.ee.corpora.Token");
+    return (Token)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_leftToken)));}
+    
+  /** setter for leftToken - sets  
+   * @generated */
+  public void setLeftToken(Token v) {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_leftToken == null)
+      jcasType.jcas.throwFeatMissing("leftToken", "info.chenli.ee.corpora.Token");
+    jcasType.ll_cas.ll_setRefValue(addr, ((Token_Type)jcasType).casFeatCode_leftToken, jcasType.ll_cas.ll_getFSRef(v));}    
+   
+    
+  //*--------------*
+  //* Feature: rightToken
+
+  /** getter for rightToken - gets 
+   * @generated */
+  public Token getRightToken() {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_rightToken == null)
+      jcasType.jcas.throwFeatMissing("rightToken", "info.chenli.ee.corpora.Token");
+    return (Token)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_rightToken)));}
+    
+  /** setter for rightToken - sets  
+   * @generated */
+  public void setRightToken(Token v) {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_rightToken == null)
+      jcasType.jcas.throwFeatMissing("rightToken", "info.chenli.ee.corpora.Token");
+    jcasType.ll_cas.ll_setRefValue(addr, ((Token_Type)jcasType).casFeatCode_rightToken, jcasType.ll_cas.ll_getFSRef(v));}    
+   
+    
+  //*--------------*
+  //* Feature: dependent
+
+  /** getter for dependent - gets 
+   * @generated */
+  public Token getDependent() {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_dependent == null)
+      jcasType.jcas.throwFeatMissing("dependent", "info.chenli.ee.corpora.Token");
+    return (Token)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_dependent)));}
+    
+  /** setter for dependent - sets  
+   * @generated */
+  public void setDependent(Token v) {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_dependent == null)
+      jcasType.jcas.throwFeatMissing("dependent", "info.chenli.ee.corpora.Token");
+    jcasType.ll_cas.ll_setRefValue(addr, ((Token_Type)jcasType).casFeatCode_dependent, jcasType.ll_cas.ll_getFSRef(v));}    
+   
+    
+  //*--------------*
+  //* Feature: relation
+
+  /** getter for relation - gets 
+   * @generated */
+  public String getRelation() {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_relation == null)
+      jcasType.jcas.throwFeatMissing("relation", "info.chenli.ee.corpora.Token");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Token_Type)jcasType).casFeatCode_relation);}
+    
+  /** setter for relation - sets  
+   * @generated */
+  public void setRelation(String v) {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_relation == null)
+      jcasType.jcas.throwFeatMissing("relation", "info.chenli.ee.corpora.Token");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Token_Type)jcasType).casFeatCode_relation, v);}    
+      //*--------------*
+  //* Feature: id
+
+  /** getter for id - gets 
+   * @generated */
+  public int getId() {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_id == null)
+      jcasType.jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Token");
+    return jcasType.ll_cas.ll_getIntValue(addr, ((Token_Type)jcasType).casFeatCode_id);}
+    
+  /** setter for id - sets  
+   * @generated */
+  public void setId(int v) {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_id == null)
+      jcasType.jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Token");
+    jcasType.ll_cas.ll_setIntValue(addr, ((Token_Type)jcasType).casFeatCode_id, v);}    
+   
+    
+}
 
     

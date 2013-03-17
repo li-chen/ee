@@ -12,7 +12,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Wed Mar 06 00:55:15 GMT+08:00 2013
+ * Updated by JCasGen Thu Mar 14 08:11:00 GMT 2013
  * @generated */
 public class Relation_Type extends Annotation_Type {
   /** @generated */

@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Wed Mar 06 00:55:15 GMT+08:00 2013
+ * Updated by JCasGen Thu Mar 14 08:11:00 GMT 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Relation extends Annotation {
