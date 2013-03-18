@@ -12,7 +12,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 /** 
  * Updated by JCasGen Thu Mar 14 08:11:00 GMT 2013
- * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
+ * XML source: ./desc/typeSystemDescriptor.xml
  * @generated */
 public class Token extends Annotation {
   /** @generated
