@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>info.chenli.ee.BioCAnnotator</annotatorImplementationName>
+  <annotatorImplementationName>info.chenli.ee.corpora.BioCAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>BioCAnnotator</name>
     <description/>
@@ -21,7 +21,7 @@
       <capability>
         <inputs/>
         <outputs>
-          <type allAnnotatorFeatures="true">info.chenli.ee.Token</type>
+          <type allAnnotatorFeatures="true">info.chenli.ee.corpora.Token</type>
         </outputs>
         <languagesSupported/>
       </capability>

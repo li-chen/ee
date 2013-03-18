@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import weka.classifiers.AbstractClassifier;
 import weka.core.Instances;
 
 public class Trainer {
@@ -113,5 +114,10 @@ public class Trainer {
 	private void predict(Instance node, Policy h) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public AbstractClassifier getModel() {
+		// TODO Auto-generated method stub
+		
 	}
 }

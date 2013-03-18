@@ -3,6 +3,9 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="BioNLPSyntacticAnnotator">
+      <import location="/Users/chenli/projects/bionlp2013/eventExtractor/desc/BioNLPSyntacticAnnotator.xml"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GSAnnotator">
       <import location="/Users/chenli/projects/bionlp2013/eventExtractor/desc/GSAnnotator.xml"/>
     </delegateAnalysisEngine>
@@ -17,8 +20,16 @@
     <flowConstraints>
       <fixedFlow>
         <node>GSAnnotator</node>
+        <node>BioNLPSyntacticAnnotator</node>
       </fixedFlow>
     </flowConstraints>
+    <typePriorities>
+      <priorityList>
+        <type>info.chenli.ee.corpora.Token</type>
+        <type>info.chenli.ee.corpora.Protein</type>
+        <type>info.chenli.ee.corpora.Trigger</type>
+      </priorityList>
+    </typePriorities>
     <fsIndexCollection/>
     <capabilities>
       <capability>

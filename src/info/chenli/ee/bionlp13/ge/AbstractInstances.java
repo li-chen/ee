@@ -70,14 +70,6 @@ public abstract class AbstractInstances {
 
 	public void fetchInstances(File dataDir) {
 
-		if (!dataDir.isDirectory()) {
-
-			logger.log(Level.SEVERE,
-					dataDir.getName().concat(" is not a directory."));
-			throw new RuntimeException(dataDir.getName().concat(
-					" is not a directory."));
-		}
-
 		if (null == attributes) {
 			init();
 		}
@@ -96,20 +88,25 @@ public abstract class AbstractInstances {
 			// create a CAS
 			CAS cas = ae.newCAS();
 
-			// get all files in the input directory
-			File[] files = dataDir.listFiles();
-			if (files == null) {
+			if (dataDir.isFile()) {
 
-				logger.log(Level.WARNING, "Empty directory.");
-
-				instances = null;
-
+				processSingleFile(dataDir, ae, cas, annotationType);
 			} else {
-				// process documents
-				for (int i = 0; i < files.length; i++) {
-					if (!files[i].isDirectory()) {
+				// get all files in the input directory
+				File[] files = dataDir.listFiles();
+				if (files == null) {
 
-						processSingleFile(files[i], ae, cas, annotationType);
+					logger.log(Level.WARNING, "Empty directory.");
+
+					instances = null;
+
+				} else {
+					// process documents
+					for (int i = 0; i < files.length; i++) {
+						if (!files[i].isDirectory()) {
+
+							processSingleFile(files[i], ae, cas, annotationType);
+						}
 					}
 				}
 			}

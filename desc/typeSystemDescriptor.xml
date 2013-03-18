@@ -6,30 +6,42 @@
   <vendor/>
   <types>
     <typeDescription>
-      <name>info.chenli.ee.Protein</name>
+      <name>info.chenli.ee.corpora.Protein</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>info.chenli.ee.Trigger</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>info.chenli.ee.Relation</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>info.chenli.ee.Event</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>info.chenli.ee.Token</name>
+      <name>info.chenli.ee.corpora.Trigger</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
+        <featureDescription>
+          <name>EventType</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>info.chenli.ee.corpora.Relation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>info.chenli.ee.corpora.Event</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>info.chenli.ee.corpora.Token</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>id</name>
+          <description/>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
+        </featureDescription>
         <featureDescription>
           <name>pos</name>
           <description/>
@@ -39,6 +51,38 @@
           <name>lemma</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>leftToken</name>
+          <description/>
+          <rangeTypeName>info.chenli.ee.corpora.Token</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>rightToken</name>
+          <description/>
+          <rangeTypeName>info.chenli.ee.corpora.Token</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>dependent</name>
+          <description/>
+          <rangeTypeName>info.chenli.ee.corpora.Token</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>relation</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>info.chenli.ee.corpora.Sentence</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>id</name>
+          <description/>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
