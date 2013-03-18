@@ -57,9 +57,10 @@ public class TriggerRecogniser extends TokenInstances {
 			classifier = new MultiClassClassifier();
 
 			try {
-			    StringToWordVector filter = new StringToWordVector();
-			    filter.setInputFormat(ti.getInstances());
-			    Instances dataFiltered = Filter.useFilter(ti.getInstances(), filter);
+				StringToWordVector filter = new StringToWordVector();
+				filter.setInputFormat(ti.getInstances());
+				Instances dataFiltered = Filter.useFilter(ti.getInstances(),
+						filter);
 				classifier.buildClassifier(dataFiltered);
 			} catch (Exception e) {
 
@@ -68,6 +69,16 @@ public class TriggerRecogniser extends TokenInstances {
 			}
 		}
 
+	}
+
+	void saveModel() {
+		try {
+			weka.core.SerializationHelper.write(
+					"./model/triggers.multiclassifier.model", classifier);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+			throw new RuntimeException(e);
+		}
 	}
 
 	Map<Integer, Trigger> getTriggers(File file) {
@@ -104,6 +115,7 @@ public class TriggerRecogniser extends TokenInstances {
 
 		TriggerRecogniser tr = new TriggerRecogniser();
 		tr.train(new File(args[0]), false);
+		tr.saveModel();
 		tr.getTriggers(new File(args[1]));
 
 	}
