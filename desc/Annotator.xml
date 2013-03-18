@@ -4,10 +4,10 @@
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
     <delegateAnalysisEngine key="BioNLPSyntacticAnnotator">
-      <import location="/Users/chenli/projects/bionlp2013/eventExtractor/desc/BioNLPSyntacticAnnotator.xml"/>
+      <import location="./BioNLPSyntacticAnnotator.xml"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GSAnnotator">
-      <import location="/Users/chenli/projects/bionlp2013/eventExtractor/desc/GSAnnotator.xml"/>
+      <import location="./GSAnnotator.xml"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
