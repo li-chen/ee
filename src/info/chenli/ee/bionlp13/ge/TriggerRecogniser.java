@@ -83,7 +83,6 @@ public class TriggerRecogniser extends TokenInstances {
 				System.out.println(null == classifier);
 				classifier.classifyInstance(instance);
 				instance.value(classes);
-
 			}
 
 		} catch (Exception e) {
