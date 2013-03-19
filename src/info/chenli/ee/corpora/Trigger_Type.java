@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Mar 14 08:11:00 GMT 2013
+ * Updated by JCasGen Tue Mar 19 18:58:22 GMT 2013
  * @generated */
 public class Trigger_Type extends Annotation_Type {
   /** @generated */
@@ -46,26 +46,62 @@ public class Trigger_Type extends Annotation_Type {
 
 
 
-  /** @generated */
-  final Feature casFeat_EventType;
-  /** @generated */
-  final int     casFeatCode_EventType;
   /** @generated */ 
   public String getEventType(int addr) {
-        if (featOkTst && casFeat_EventType == null)
-      jcas.throwFeatMissing("EventType", "info.chenli.ee.corpora.Trigger");
-    return ll_cas.ll_getStringValue(addr, casFeatCode_EventType);
+        if (featOkTst && casFeat_eventType == null)
+      jcas.throwFeatMissing("eventType", "info.chenli.ee.corpora.Trigger");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_eventType);
   }
   /** @generated */    
   public void setEventType(int addr, String v) {
-        if (featOkTst && casFeat_EventType == null)
-      jcas.throwFeatMissing("EventType", "info.chenli.ee.corpora.Trigger");
-    ll_cas.ll_setStringValue(addr, casFeatCode_EventType, v);}
+        if (featOkTst && casFeat_eventType == null)
+      jcas.throwFeatMissing("eventType", "info.chenli.ee.corpora.Trigger");
+    ll_cas.ll_setStringValue(addr, casFeatCode_eventType, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_eventType2;
+  /** @generated */
+  final int     casFeatCode_eventType2;
+  /** @generated */ 
+  public String getEventType2(int addr) {
+        if (featOkTst && casFeat_eventType2 == null)
+      jcas.throwFeatMissing("eventType2", "info.chenli.ee.corpora.Trigger");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_eventType2);
+  }
+  /** @generated */    
+  public void setEventType2(int addr, String v) {
+        if (featOkTst && casFeat_eventType2 == null)
+      jcas.throwFeatMissing("eventType2", "info.chenli.ee.corpora.Trigger");
+    ll_cas.ll_setStringValue(addr, casFeatCode_eventType2, v);}
     
   
 
 
 
+  /** @generated */
+  final Feature casFeat_id;
+  /** @generated */
+  final int     casFeatCode_id;
+  /** @generated */ 
+  public String getId(int addr) {
+        if (featOkTst && casFeat_id == null)
+      jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Trigger");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_id);
+  }
+  /** @generated */    
+  public void setId(int addr, String v) {
+        if (featOkTst && casFeat_id == null)
+      jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Trigger");
+    ll_cas.ll_setStringValue(addr, casFeatCode_id, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_eventType;
+  /** @generated */
+  final int     casFeatCode_eventType;
   /** initialize variables to correspond with Cas Type and Features
 	* @generated */
   public Trigger_Type(JCas jcas, Type casType) {
@@ -73,8 +109,16 @@ public class Trigger_Type extends Annotation_Type {
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
  
-    casFeat_EventType = jcas.getRequiredFeatureDE(casType, "EventType", "uima.cas.String", featOkTst);
-    casFeatCode_EventType  = (null == casFeat_EventType) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_EventType).getCode();
+    casFeat_id = jcas.getRequiredFeatureDE(casType, "id", "uima.cas.String", featOkTst);
+    casFeatCode_id  = (null == casFeat_id) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_id).getCode();
+
+ 
+    casFeat_eventType = jcas.getRequiredFeatureDE(casType, "eventType", "uima.cas.String", featOkTst);
+    casFeatCode_eventType  = (null == casFeat_eventType) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_eventType).getCode();
+
+ 
+    casFeat_eventType2 = jcas.getRequiredFeatureDE(casType, "eventType2", "uima.cas.String", featOkTst);
+    casFeatCode_eventType2  = (null == casFeat_eventType2) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_eventType2).getCode();
 
   }
 }

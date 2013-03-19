@@ -22,6 +22,7 @@
         <inputs/>
         <outputs>
           <type allAnnotatorFeatures="true">info.chenli.ee.corpora.Token</type>
+          <type allAnnotatorFeatures="true">info.chenli.ee.corpora.Protein</type>
         </outputs>
         <languagesSupported/>
       </capability>

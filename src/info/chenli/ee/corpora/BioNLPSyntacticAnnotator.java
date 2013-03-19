@@ -1,5 +1,8 @@
 package info.chenli.ee.corpora;
 
+import info.chenli.ee.gson.EntityAnnotation;
+import info.chenli.ee.gson.GsonDocument;
+import info.chenli.ee.gson.GsonFacade;
 import info.chenli.ee.util.BioLemmatizerUtil;
 import info.chenli.ee.util.ConnlxReader;
 import info.chenli.ee.util.FileUtil;
@@ -17,9 +20,7 @@ import java.util.logging.Logger;
 
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 
 public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 

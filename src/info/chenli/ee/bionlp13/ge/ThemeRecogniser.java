@@ -17,7 +17,7 @@ import weka.filters.unsupervised.attribute.StringToWordVector;
  * @author Chen Li
  * 
  */
-public class TriggerRecogniser extends Classifier {
+public class ThemeRecogniser extends Classifier {
 
 	private final static Logger logger = Logger
 			.getLogger(TriggerRecogniser.class.getName());
@@ -31,7 +31,7 @@ public class TriggerRecogniser extends Classifier {
 
 	public void train(File trainingDir, boolean useSearn) {
 
-		TokenInstances ti = new TokenInstances();
+		ThemeInstances ti = new ThemeInstances();
 		ti.setTaeDescriptor(new File("./desc/BioNLPSyntacticAnnotator.xml"));
 
 		// prepare instances
@@ -51,11 +51,7 @@ public class TriggerRecogniser extends Classifier {
 			this.setClassifier(new MultiClassClassifier());
 
 			try {
-				StringToWordVector filter = new StringToWordVector();
-				filter.setInputFormat(ti.getInstances());
-				Instances dataFiltered = Filter.useFilter(ti.getInstances(),
-						filter);
-				getClassifier().buildClassifier(dataFiltered);
+				getClassifier().buildClassifier(ti.getInstances());
 			} catch (Exception e) {
 
 				logger.log(Level.SEVERE, e.getMessage(), e);

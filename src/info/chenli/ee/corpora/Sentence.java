@@ -12,8 +12,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Mar 14 08:11:00 GMT 2013
- * XML source: ./desc/typeSystemDescriptor.xml
+ * Updated by JCasGen Tue Mar 19 18:58:21 GMT 2013
+ * XML source: /automount/isilon4_ifs-research/textmining/chenli/projects/bionlp/2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Sentence extends Annotation {
   /** @generated

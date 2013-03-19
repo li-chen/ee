@@ -2,17 +2,17 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>info.chenli.ee.corpora.GSAnnotator</annotatorImplementationName>
+  <annotatorImplementationName>info.chenli.ee.corpora.EntityAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Gold Standard Annotator</name>
-    <description>Merge the gold standard annotations from training/test data.</description>
+    <name>EntityAnnotator</name>
+    <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters/>
     <configurationParameterSettings/>
     <typeSystemDescription>
       <imports>
-        <import location="./typeSystemDescriptor.xml"/>
+        <import location="/automount/isilon4_ifs-research/textmining/chenli/projects/bionlp/2013/eventExtractor/desc/typeSystemDescriptor.xml"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
@@ -20,11 +20,7 @@
     <capabilities>
       <capability>
         <inputs/>
-        <outputs>
-          <type allAnnotatorFeatures="true">info.chenli.ee.corpora.Trigger</type>
-          <type allAnnotatorFeatures="true">info.chenli.ee.corpora.Relation</type>
-          <type allAnnotatorFeatures="true">info.chenli.ee.corpora.Event</type>
-        </outputs>
+        <outputs/>
         <languagesSupported/>
       </capability>
     </capabilities>

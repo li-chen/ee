@@ -22,6 +22,7 @@ import org.apache.uima.cas.CASRuntimeException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
@@ -36,12 +37,23 @@ public abstract class AbstractInstances {
 
 	private String instancesName;
 	private int annotationType;
+	private File taeDescriptor;
 	protected List<StructuredInstance> structuredInstances = new LinkedList<StructuredInstance>();
 	protected Instances instances;
 	protected ArrayList<Attribute> attributes;
 	protected Attribute classes;
 
-	public abstract File getTaeDescriptor();
+	protected void setTaeDescriptor(File taeDescriptor) {
+
+		this.taeDescriptor = taeDescriptor;
+
+	}
+
+	protected File getTaeDescriptor() {
+		return taeDescriptor;
+	};
+
+	private AnalysisEngine ae = null;
 
 	public AbstractInstances(String instancesName, int annotationType) {
 
@@ -62,6 +74,22 @@ public abstract class AbstractInstances {
 
 		instances.setClass(classes);
 
+		try {
+			XMLInputSource in = new XMLInputSource(getTaeDescriptor());
+			ResourceSpecifier specifier = UIMAFramework.getXMLParser()
+					.parseResourceSpecifier(in);
+
+			logger.info(specifier.getSourceUrlString());
+
+			// create Analysis Engine
+			ae = UIMAFramework.produceAnalysisEngine(specifier);
+
+		} catch (Exception e) {
+
+			logger.log(Level.SEVERE, e.getMessage());
+			throw new RuntimeException(e);
+
+		}
 	}
 
 	protected abstract void initAttributes();
@@ -70,81 +98,85 @@ public abstract class AbstractInstances {
 
 	public void fetchInstances(File dataDir) {
 
-		if (null == attributes) {
+		if (null == attributes || null == ae) {
 			init();
 		}
 
-		try {
+		if (dataDir.isFile()) {
 
-			XMLInputSource in = new XMLInputSource(getTaeDescriptor());
-			ResourceSpecifier specifier = UIMAFramework.getXMLParser()
-					.parseResourceSpecifier(in);
+			processSingleFile(dataDir, annotationType);
 
-			logger.info(specifier.getSourceUrlString());
+		} else {
+			// get all files in the input directory
+			File[] files = dataDir.listFiles();
+			if (files == null) {
 
-			// create Analysis Engine
-			AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
+				logger.log(Level.WARNING, "Empty directory.");
 
-			// create a CAS
-			CAS cas = ae.newCAS();
+				instances = null;
 
-			if (dataDir.isFile()) {
-
-				processSingleFile(dataDir, ae, cas, annotationType);
 			} else {
-				// get all files in the input directory
-				File[] files = dataDir.listFiles();
-				if (files == null) {
+				// process documents
+				for (int i = 0; i < files.length; i++) {
+					if (!files[i].isDirectory()) {
 
-					logger.log(Level.WARNING, "Empty directory.");
-
-					instances = null;
-
-				} else {
-					// process documents
-					for (int i = 0; i < files.length; i++) {
-						if (!files[i].isDirectory()) {
-
-							processSingleFile(files[i], ae, cas, annotationType);
-						}
+						processSingleFile(files[i], annotationType);
 					}
 				}
 			}
-			ae.destroy();
-
-		} catch (Exception e) {
-
-			logger.log(Level.SEVERE, e.getMessage());
-			throw new RuntimeException(e);
-
 		}
+		ae.destroy();
 
 	}
 
-	private void processSingleFile(File aFile, AnalysisEngine aAE, CAS aCAS,
-			int annotationType) throws IOException,
-			AnalysisEngineProcessException {
+	protected JCas processSingleFile(File aFile, int annotationType) {
 
 		logger.log(Level.INFO, "Processing file " + aFile.getName());
 
-		String document = FileUtils.file2String(aFile);
+		if (null == attributes || null == ae) {
+			init();
+		}
+
+		String document = null;
+
+		try {
+
+			document = FileUtils.file2String(aFile);
+
+		} catch (IOException e) {
+
+			logger.log(Level.SEVERE, e.getMessage());
+			throw new RuntimeException(e);
+		}
 
 		document = document.trim();
 
-		// put document text in CAS
-		aCAS.setDocumentText(document);
-
-		// set the path of resource file
-		aCAS.createView("FileName").setSofaDataURI(aFile.getName(), "text");
-
-		// process
-		aAE.process(aCAS);
-
-		FSIterator<Annotation> annoIter = null;
-		JCas jcas = null;
 		try {
-			jcas = aCAS.getJCas();
+			// create a CAS
+			CAS cas = ae.newCAS();
+
+			// put document text in CAS
+			cas.setDocumentText(document);
+
+			// set the path of resource file
+			cas.createView("FileName").setSofaDataURI(aFile.getName(), "text");
+
+			// process
+			ae.process(cas);
+
+			FSIterator<Annotation> annoIter = null;
+			JCas jcas = null;
+			jcas = cas.getJCas();
 			annoIter = jcas.getAnnotationIndex(annotationType).iterator();
+			structuredInstances
+					.addAll(fetchStructuredInstances(jcas, annoIter));
+
+			return jcas;
+
+		} catch (AnalysisEngineProcessException e) {
+
+			logger.log(Level.SEVERE, e.getMessage());
+			throw new RuntimeException(e);
 		} catch (CASRuntimeException e) {
 
 			logger.log(Level.SEVERE, e.getMessage());
@@ -155,12 +187,10 @@ public abstract class AbstractInstances {
 			logger.log(Level.SEVERE, e.getMessage());
 			throw new RuntimeException(e);
 
+		} catch (ResourceInitializationException e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			throw new RuntimeException(e);
 		}
-
-		structuredInstances.addAll(fetchStructuredInstances(jcas, annoIter));
-
-		// reset the CAS to prepare it for processing the next document
-		aCAS.reset();
 
 	}
 

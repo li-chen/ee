@@ -1,50 +1,61 @@
 package info.chenli.classifier;
 
-import info.chenli.ee.searn.Policy;
-import info.chenli.ee.searn.State;
-import info.chenli.ee.searn.StructuredInstance;
-
-import java.util.Map;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import weka.classifiers.AbstractClassifier;
+import weka.classifiers.meta.MultiClassClassifier;
 import weka.core.Instance;
-import weka.core.Instances;
 
 public abstract class Classifier {
 
 	private final static Logger logger = Logger.getLogger(Classifier.class
 			.getName());
 
-	private AbstractClassifier classifier;
+	private AbstractClassifier classifier = null;
+	private String modelFileName = null;
 
-	public Classifier(AbstractClassifier classifier, Instances instances) {
+	public abstract void train(File trainingSet);
 
-		this.classifier = classifier;
-
-		try {
-			classifier.buildClassifier(instances);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, "");
-			throw new RuntimeException(e);
-		}
-
-	}
+	public abstract void classify(Instance instance);
 
 	public void setClassifier(AbstractClassifier classifier) {
 		this.classifier = classifier;
 	}
 
-	public double predict(Instance instance) {
+	public AbstractClassifier getClassifier() {
+		return this.classifier;
+	}
+
+	public void saveModel() {
 
 		try {
-			return classifier.classifyInstance(instance);
+			weka.core.SerializationHelper.write(this.getModelFileName(), classifier);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "");
+			logger.log(Level.SEVERE, e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
+	}
 
+	public void loadModel() {
+
+		try {
+			classifier = (MultiClassClassifier) weka.core.SerializationHelper
+					.read(this.getModelFileName());
+
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	public String getModelFileName() {
+		return modelFileName;
+	}
+
+	public void setModelFileName(String modelFileName) {
+		this.modelFileName = modelFileName;
 	}
 
 }

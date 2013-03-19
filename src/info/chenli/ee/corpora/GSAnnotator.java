@@ -1,18 +1,24 @@
 package info.chenli.ee.corpora;
 
-import java.io.File;
-
 import info.chenli.ee.bionlp13.ge.EventType;
-import info.chenli.ee.gson.GsonDocument;
 import info.chenli.ee.gson.EntityAnnotation;
+import info.chenli.ee.gson.GsonDocument;
 import info.chenli.ee.gson.GsonFacade;
+import info.chenli.ee.gson.InstanceOfAnnotation;
 import info.chenli.ee.gson.RelationAnnotation;
 import info.chenli.ee.util.FileUtil;
 import info.chenli.ee.util.UimaUtil;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.StringArray;
 
 public class GSAnnotator extends JCasAnnotator_ImplBase {
 
@@ -29,28 +35,118 @@ public class GSAnnotator extends JCasAnnotator_ImplBase {
 			return;
 		}
 
-		// assign catanns to protein and trigger
+		//
+		// mark gold standard triggers
+		//
+		Map<String, Trigger> triggerMap = new HashMap<String, Trigger>();
 		for (EntityAnnotation entity : entityAnnotations) {
-			if (entity.getCategory().equals("Protein")) {
-
-				new Protein(jCas, entity.getSpan().getBegin(), entity.getSpan()
-						.getEnd()).addToIndexes();
-
-			} else if (EventType.contains(entity.getCategory())) {
+			if (EventType.contains(entity.getCategory())) {
 
 				Trigger trigger = new Trigger(jCas,
 						entity.getSpan().getBegin(), entity.getSpan().getEnd());
+				trigger.setId(entity.getId());
 				trigger.setEventType(entity.getCategory());
 				trigger.addToIndexes();
+				triggerMap.put(trigger.getId(), trigger);
 
 			}
 		} // Anaphora is ignored at the moment
 
-		if (null == document.getRelanns() || document.getRelanns().length == 0) {
+		//
+		// extract gold standard events
+		//
+		RelationAnnotation[] relationAnnotations = document.getRelanns();
+		if (null == relationAnnotations || relationAnnotations.length == 0) {
 			return;
 		}
-		for (RelationAnnotation relation : document.getRelanns()) {
-			// TODO construct event annotation
+
+		// instanceOf, which carries trigger information
+		InstanceOfAnnotation[] instanceOfAnnotations = document.getInsanns();
+		if (null == instanceOfAnnotations || instanceOfAnnotations.length == 0) {
+			return;
+		}
+		// event id, trigger id
+		Map<String, String> eventTriggerMap = new HashMap<String, String>();
+		for (InstanceOfAnnotation instanceOf : instanceOfAnnotations) {
+
+			eventTriggerMap.put(instanceOf.getId(), instanceOf.getObject());
+		}
+
+		// event id, theme list
+		Map<String, List<String>> eventThemeMap = new HashMap<String, List<String>>();
+		// event id, cause list
+		Map<String, List<String>> eventCauseMap = new HashMap<String, List<String>>();
+
+		for (RelationAnnotation relation : relationAnnotations) {
+
+			if (relation.getType().equals("themeOf")) {
+
+				if (eventThemeMap.containsKey(relation.getObject())) {
+
+					eventThemeMap.get(relation.getObject()).add(
+							relation.getSubject());
+
+				} else {
+
+					List<String> themes = new ArrayList<String>();
+					themes.add(relation.getSubject());
+					eventThemeMap.put(relation.getObject(), themes);
+				}
+
+			} else if (relation.getType().equals("causeOf")) {
+
+				if (eventCauseMap.containsKey(relation.getObject())) {
+
+					eventCauseMap.get(relation.getObject()).add(
+							relation.getSubject());
+
+				} else {
+
+					List<String> causes = new ArrayList<String>();
+					causes.add(relation.getSubject());
+					eventCauseMap.put(relation.getObject(), causes);
+				}
+
+			}
+		}
+
+		// an event must have at least one theme, but may not have cause.
+		for (String eventId : eventThemeMap.keySet()) {
+
+			Event event = new Event(jCas);
+			event.setId(eventId);
+
+			// trigger
+			event.setTrigger(triggerMap.get(eventTriggerMap.get(eventId)));
+
+			// themes
+			StringArray themes = new StringArray(jCas, eventThemeMap.get(
+					eventId).size());
+
+			int i = 0;
+			for (String themeId : eventThemeMap.get(eventId)) {
+
+				themes.set(i++, themeId);
+
+			}
+			event.setThemes(themes);
+
+			// causes
+			if (null != eventCauseMap.get(eventId)
+					&& eventCauseMap.get(eventId).size() > 0) {
+				StringArray causes = new StringArray(jCas, eventCauseMap.get(
+						eventId).size());
+
+				i = 0;
+				for (String causeId : eventCauseMap.get(eventId)) {
+
+					causes.set(i++, causeId);
+
+				}
+				event.setCauses(causes);
+			}
+
+			event.addToIndexes();
 		}
 	}
 }

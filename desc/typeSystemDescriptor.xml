@@ -9,6 +9,13 @@
       <name>info.chenli.ee.corpora.Protein</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>id</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
     </typeDescription>
     <typeDescription>
       <name>info.chenli.ee.corpora.Trigger</name>
@@ -16,21 +23,50 @@
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
-          <name>EventType</name>
+          <name>id</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>eventType</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>eventType2</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>info.chenli.ee.corpora.Relation</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-    </typeDescription>
-    <typeDescription>
       <name>info.chenli.ee.corpora.Event</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>id</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>trigger</name>
+          <description/>
+          <rangeTypeName>info.chenli.ee.corpora.Trigger</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>themes</name>
+          <description/>
+          <rangeTypeName>uima.cas.StringArray</rangeTypeName>
+          <multipleReferencesAllowed>false</multipleReferencesAllowed>
+        </featureDescription>
+        <featureDescription>
+          <name>causes</name>
+          <description/>
+          <rangeTypeName>uima.cas.StringArray</rangeTypeName>
+          <multipleReferencesAllowed>false</multipleReferencesAllowed>
+        </featureDescription>
+      </features>
     </typeDescription>
     <typeDescription>
       <name>info.chenli.ee.corpora.Token</name>

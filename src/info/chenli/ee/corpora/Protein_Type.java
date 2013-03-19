@@ -9,10 +9,12 @@ import org.apache.uima.cas.impl.FSGenerator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.impl.FeatureImpl;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Mar 14 08:11:00 GMT 2013
+ * Updated by JCasGen Tue Mar 19 18:58:21 GMT 2013
  * @generated */
 public class Protein_Type extends Annotation_Type {
   /** @generated */
@@ -44,11 +46,35 @@ public class Protein_Type extends Annotation_Type {
 
 
 
+  /** @generated */
+  final Feature casFeat_id;
+  /** @generated */
+  final int     casFeatCode_id;
+  /** @generated */ 
+  public String getId(int addr) {
+        if (featOkTst && casFeat_id == null)
+      jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Protein");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_id);
+  }
+  /** @generated */    
+  public void setId(int addr, String v) {
+        if (featOkTst && casFeat_id == null)
+      jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Protein");
+    ll_cas.ll_setStringValue(addr, casFeatCode_id, v);}
+    
+  
+
+
+
   /** initialize variables to correspond with Cas Type and Features
 	* @generated */
   public Protein_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
+
+ 
+    casFeat_id = jcas.getRequiredFeatureDE(casType, "id", "uima.cas.String", featOkTst);
+    casFeatCode_id  = (null == casFeat_id) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_id).getCode();
 
   }
 }
