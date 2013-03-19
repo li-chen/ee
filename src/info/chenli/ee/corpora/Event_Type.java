@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue Mar 19 18:58:21 GMT 2013
+ * Updated by JCasGen Tue Mar 19 23:46:20 GMT 2013
  * @generated */
 public class Event_Type extends Annotation_Type {
   /** @generated */
@@ -84,41 +84,22 @@ public class Event_Type extends Annotation_Type {
  
  
   /** @generated */
-  final Feature casFeat_causes;
+  final Feature casFeat_cause;
   /** @generated */
-  final int     casFeatCode_causes;
+  final int     casFeatCode_cause;
   /** @generated */ 
-  public int getCauses(int addr) {
-        if (featOkTst && casFeat_causes == null)
-      jcas.throwFeatMissing("causes", "info.chenli.ee.corpora.Event");
-    return ll_cas.ll_getRefValue(addr, casFeatCode_causes);
+  public String getCause(int addr) {
+        if (featOkTst && casFeat_cause == null)
+      jcas.throwFeatMissing("cause", "info.chenli.ee.corpora.Event");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_cause);
   }
   /** @generated */    
-  public void setCauses(int addr, int v) {
-        if (featOkTst && casFeat_causes == null)
-      jcas.throwFeatMissing("causes", "info.chenli.ee.corpora.Event");
-    ll_cas.ll_setRefValue(addr, casFeatCode_causes, v);}
+  public void setCause(int addr, String v) {
+        if (featOkTst && casFeat_cause == null)
+      jcas.throwFeatMissing("cause", "info.chenli.ee.corpora.Event");
+    ll_cas.ll_setStringValue(addr, casFeatCode_cause, v);}
     
-   /** @generated */
-  public String getCauses(int addr, int i) {
-        if (featOkTst && casFeat_causes == null)
-      jcas.throwFeatMissing("causes", "info.chenli.ee.corpora.Event");
-    if (lowLevelTypeChecks)
-      return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_causes), i, true);
-    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_causes), i);
-  return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_causes), i);
-  }
-   
-  /** @generated */ 
-  public void setCauses(int addr, int i, String v) {
-        if (featOkTst && casFeat_causes == null)
-      jcas.throwFeatMissing("causes", "info.chenli.ee.corpora.Event");
-    if (lowLevelTypeChecks)
-      ll_cas.ll_setStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_causes), i, v, true);
-    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_causes), i);
-    ll_cas.ll_setStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_causes), i, v);
-  }
- 
+  
 
 
 
@@ -177,8 +158,8 @@ public class Event_Type extends Annotation_Type {
     casFeatCode_themes  = (null == casFeat_themes) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_themes).getCode();
 
  
-    casFeat_causes = jcas.getRequiredFeatureDE(casType, "causes", "uima.cas.StringArray", featOkTst);
-    casFeatCode_causes  = (null == casFeat_causes) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_causes).getCode();
+    casFeat_cause = jcas.getRequiredFeatureDE(casType, "cause", "uima.cas.String", featOkTst);
+    casFeatCode_cause  = (null == casFeat_cause) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_cause).getCode();
 
   }
 }

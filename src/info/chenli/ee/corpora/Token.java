@@ -11,8 +11,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Mar 19 18:58:21 GMT 2013
- * XML source: /automount/isilon4_ifs-research/textmining/chenli/projects/bionlp/2013/eventExtractor/desc/typeSystemDescriptor.xml
+ * Updated by JCasGen Tue Mar 19 23:46:20 GMT 2013
+ * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Token extends Annotation {
   /** @generated
@@ -168,7 +168,7 @@ public class Token extends Annotation {
     if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_relation == null)
       jcasType.jcas.throwFeatMissing("relation", "info.chenli.ee.corpora.Token");
     jcasType.ll_cas.ll_setStringValue(addr, ((Token_Type)jcasType).casFeatCode_relation, v);}    
-                            //*--------------*
+                              //*--------------*
   //* Feature: id
 
   /** getter for id - gets 

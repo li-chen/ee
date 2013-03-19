@@ -61,10 +61,9 @@
           <multipleReferencesAllowed>false</multipleReferencesAllowed>
         </featureDescription>
         <featureDescription>
-          <name>causes</name>
+          <name>cause</name>
           <description/>
-          <rangeTypeName>uima.cas.StringArray</rangeTypeName>
-          <multipleReferencesAllowed>false</multipleReferencesAllowed>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>

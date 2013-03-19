@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue Mar 19 18:58:22 GMT 2013
+ * Updated by JCasGen Tue Mar 19 23:46:20 GMT 2013
  * @generated */
 public class Trigger_Type extends Annotation_Type {
   /** @generated */

@@ -24,15 +24,15 @@ import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instance;
 
-public class ThemeInstances extends
+public class CauseInstances extends
 		info.chenli.ee.bionlp13.ge.AbstractInstances {
 
-	private final static Logger logger = Logger.getLogger(ThemeInstances.class
+	private final static Logger logger = Logger.getLogger(CauseInstances.class
 			.getName());
 
-	public ThemeInstances() {
+	public CauseInstances() {
 
-		super("themes", Protein.type);
+		super("causes", Protein.type);
 
 	}
 
@@ -56,6 +56,14 @@ public class ThemeInstances extends
 				(ArrayList<String>) null);
 		Attribute dependencyPathToTriggerAttr = new Attribute(
 				"dependencyPathToTrigger", (ArrayList<String>) null);
+		Attribute themeTextAttr = new Attribute("themeText",
+				(ArrayList<String>) null);
+		Attribute themeTokenTextAttr = new Attribute("themeTokenText",
+				(ArrayList<String>) null);
+		Attribute themeTokenLemmaAttr = new Attribute("themeTokenLemma",
+				(ArrayList<String>) null);
+		Attribute dependencyPathToThemeAttr = new Attribute(
+				"dependencyPathToTheme", (ArrayList<String>) null);
 
 		attributes = new ArrayList<Attribute>();
 		attributes.add(textAttr);
@@ -68,6 +76,10 @@ public class ThemeInstances extends
 		attributes.add(triggerTokenTextAttr);
 		attributes.add(triggerTokenLemmaAttr);
 		attributes.add(dependencyPathToTriggerAttr);
+		attributes.add(themeTextAttr);
+		attributes.add(themeTokenTextAttr);
+		attributes.add(themeTokenLemmaAttr);
+		attributes.add(dependencyPathToThemeAttr);
 
 	}
 
@@ -120,12 +132,12 @@ public class ThemeInstances extends
 					// check protein themes
 					for (Protein protein : proteins) {
 
-						themeCandidates.add(themeToInstance(jcas, protein, event.getTrigger(), themeId, dependencyExtractor));
+						themeCandidates.add(causeToInstance(jcas, protein, event, dependencyExtractor));
 					}
 
 					// check event themes
 					for (Event themeEvent: events) {
-						themeCandidates.add(themeToInstance(jcas, themeEvent.getTrigger(), event.getTrigger(), themeId, dependencyExtractor));
+						themeCandidates.add(causeToInstance(jcas, themeEvent.getTrigger(), event, dependencyExtractor));
 					}
 				}
 			}

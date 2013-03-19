@@ -8,16 +8,19 @@ import java.util.logging.Logger;
 
 import weka.classifiers.meta.MultiClassClassifier;
 import weka.core.Instance;
+import weka.core.Instances;
+import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.StringToWordVector;
 
 /**
  * 
  * @author Chen Li
  * 
  */
-public class ThemeRecogniser extends Classifier {
+public class CauseRecogniser extends Classifier {
 
 	private final static Logger logger = Logger
-			.getLogger(ThemeRecogniser.class.getName());
+			.getLogger(CauseRecogniser.class.getName());
 
 	@Override
 	public void train(File trainingSet) {
@@ -29,7 +32,7 @@ public class ThemeRecogniser extends Classifier {
 	public void train(File trainingDir, boolean useSearn) {
 
 		ThemeInstances ti = new ThemeInstances();
-		ti.setTaeDescriptor(new File("./desc/BioNLPSyntacticAnnotator.xml"));
+		ti.setTaeDescriptor(new File("./desc/TrainingSetAnnotator.xml"));
 
 		// prepare instances
 		ti.fetchInstances(trainingDir);

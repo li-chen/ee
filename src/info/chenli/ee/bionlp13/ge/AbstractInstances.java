@@ -1,8 +1,12 @@
 package info.chenli.ee.bionlp13.ge;
 
+import info.chenli.ee.corpora.Event;
 import info.chenli.ee.corpora.POS;
+import info.chenli.ee.corpora.Protein;
 import info.chenli.ee.corpora.Token;
+import info.chenli.ee.corpora.Trigger;
 import info.chenli.ee.searn.StructuredInstance;
+import info.chenli.ee.util.DependencyExtractor;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,8 +30,11 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
+import org.uimafit.util.JCasUtil;
 
 import weka.core.Attribute;
+import weka.core.DenseInstance;
+import weka.core.Instance;
 import weka.core.Instances;
 
 public abstract class AbstractInstances {
@@ -219,7 +226,7 @@ public abstract class AbstractInstances {
 	 * TODO the multi-token policy can be put in a configuration file.
 	 * Alternatively, it can be dynamically learned.
 	 */
-	protected static Token getTriggerToken(List<Token> tokens) {
+	protected Token getTriggerToken(List<Token> tokens) {
 
 		logger.info("Processing multi-token...");
 
@@ -241,5 +248,188 @@ public abstract class AbstractInstances {
 		}
 
 		return null;
+	}
+
+	protected Token getTriggerToken(JCas jcas, Trigger trigger) {
+		// get tokens
+		List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class, trigger);
+
+		if (tokens.size() == 0)
+		// if trigger is within a token, then take
+		// the nesting token. It
+		// happens, e.g. in PMC-2065877-01-Introduction.
+		{
+			FSIterator<Annotation> iter = jcas.getAnnotationIndex(Token.type)
+					.iterator();
+			while (iter.hasNext()) {
+				Token token = (Token) iter.next();
+				if (token.getBegin() <= trigger.getBegin()
+						&& token.getEnd() >= trigger.getEnd()) {
+					return token;
+				}
+			}
+
+		} else
+		// take one of the nested tokens.
+		{
+			return getTriggerToken(tokens);
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param jcas
+	 * @param anno
+	 * @param trigger
+	 * @param themeId
+	 * @param dependencyExtractor
+	 * @return
+	 */
+	protected Instance themeToInstance(JCas jcas, Annotation anno, Event event,
+			DependencyExtractor dependencyExtractor) {
+
+		List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class, anno);
+		String tokenLemma = "", tokenPos = "";
+		String leftToken = tokens.get(0).getCoveredText();
+		String rightToken = tokens.get(tokens.size() - 1).getCoveredText();
+
+		// Take the last non-digital token if protein is
+		// multi-token.
+		Token annoToken = null;
+		for (Token token : tokens) {
+
+			try {
+				Double.parseDouble(token.getLemma());
+			} catch (NumberFormatException e) {
+				annoToken = token;
+			}
+
+			tokenLemma = tokenLemma.concat(token.getLemma()).concat("_");
+
+			tokenPos = tokenPos.concat(token.getPos()).concat("_");
+		}
+
+		double[] values = new double[instances.numAttributes()];
+		values[0] = instances.attribute(0)
+				.addStringValue(anno.getCoveredText());
+		values[1] = instances.attribute(0).addStringValue(tokenLemma);
+		values[2] = instances.attribute(0).addStringValue(tokenPos);
+		values[3] = instances.attribute(0).addStringValue(leftToken);
+		values[4] = instances.attribute(0).addStringValue(rightToken);
+		values[5] = instances.attribute(0).addStringValue(
+				event.getTrigger().getEventType());
+		values[6] = instances.attribute(0).addStringValue(
+				event.getTrigger().getCoveredText());
+		Token triggerToken = getTriggerToken(jcas, event.getTrigger());
+		values[7] = instances.attribute(0).addStringValue(
+				triggerToken.getCoveredText());
+		values[8] = instances.attribute(0).addStringValue(
+				triggerToken.getLemma());
+		values[9] = instances.attribute(0).addStringValue(
+				dependencyExtractor.getDijkstraShortestPath(annoToken,
+						triggerToken));
+
+		// protein that is theme
+		Protein protein = null;
+		if (anno instanceof Protein) {
+			protein = (Protein) anno;
+		}
+		// TODO consider more themes. e.g. themes in binding.
+		if (null != event.getThemes()
+				&& event.getThemes().get(0).equals(protein.getId())) {
+
+			values[10] = classes.indexOfValue("Theme");
+
+		} else
+		// protein that is not theme
+		{
+			values[10] = classes.indexOfValue("Non_theme");
+		}
+
+		return new DenseInstance(1.0, values);
+	}
+
+	/**
+	 * 
+	 * @param jcas
+	 * @param anno
+	 * @param trigger
+	 * @param themeId
+	 * @param dependencyExtractor
+	 * @return
+	 */
+	protected Instance causeToInstance(JCas jcas, Annotation anno, Event event,
+			DependencyExtractor dependencyExtractor) {
+
+		List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class, anno);
+		String tokenLemma = "", tokenPos = "";
+		String leftToken = tokens.get(0).getCoveredText();
+		String rightToken = tokens.get(tokens.size() - 1).getCoveredText();
+
+		// Take the last non-digital token if protein is
+		// multi-token.
+		Token annoToken = null;
+		for (Token token : tokens) {
+
+			try {
+				Double.parseDouble(token.getLemma());
+			} catch (NumberFormatException e) {
+				annoToken = token;
+			}
+
+			tokenLemma = tokenLemma.concat(token.getLemma()).concat("_");
+
+			tokenPos = tokenPos.concat(token.getPos()).concat("_");
+		}
+
+		double[] values = new double[instances.numAttributes()];
+		values[0] = instances.attribute(0)
+				.addStringValue(anno.getCoveredText());
+		values[1] = instances.attribute(0).addStringValue(tokenLemma);
+		values[2] = instances.attribute(0).addStringValue(tokenPos);
+		values[3] = instances.attribute(0).addStringValue(leftToken);
+		values[4] = instances.attribute(0).addStringValue(rightToken);
+		values[5] = instances.attribute(0).addStringValue(
+				event.getTrigger().getEventType());
+		values[6] = instances.attribute(0).addStringValue(
+				event.getTrigger().getCoveredText());
+		Token triggerToken = getTriggerToken(jcas, event.getTrigger());
+		values[7] = instances.attribute(0).addStringValue(
+				triggerToken.getCoveredText());
+		values[8] = instances.attribute(0).addStringValue(
+				triggerToken.getLemma());
+		values[9] = instances.attribute(0).addStringValue(
+				dependencyExtractor.getDijkstraShortestPath(annoToken,
+						triggerToken));
+		// a regulatory event only has one theme
+		values[10] = instances.attribute(0).addStringValue(
+				event.getThemes().get(0));
+		values[11] = instances.attribute(0).addStringValue(
+				triggerToken.getCoveredText());
+		values[12] = instances.attribute(0).addStringValue(
+				triggerToken.getLemma());
+		values[13] = instances.attribute(0).addStringValue(
+				dependencyExtractor.getDijkstraShortestPath(annoToken,
+						triggerToken));
+
+		// protein that is theme
+		Protein protein = null;
+		if (anno instanceof Protein) {
+			protein = (Protein) anno;
+		}
+		// TODO consider more themes. e.g. themes in binding.
+		if (null != event.getThemes()
+				&& event.getThemes().get(0).equals(protein.getId())) {
+
+			values[10] = classes.indexOfValue("Theme");
+
+		} else
+		// protein that is not theme
+		{
+			values[10] = classes.indexOfValue("Non_theme");
+		}
+
+		return new DenseInstance(1.0, values);
 	}
 }

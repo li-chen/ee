@@ -14,8 +14,8 @@ import org.apache.uima.jcas.cas.StringArray;
 
 
 /** 
- * Updated by JCasGen Tue Mar 19 18:58:21 GMT 2013
- * XML source: /automount/isilon4_ifs-research/textmining/chenli/projects/bionlp/2013/eventExtractor/desc/typeSystemDescriptor.xml
+ * Updated by JCasGen Tue Mar 19 23:46:20 GMT 2013
+ * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Event extends Annotation {
   /** @generated
@@ -98,38 +98,22 @@ public class Event extends Annotation {
    
     
   //*--------------*
-  //* Feature: Causes
+  //* Feature: cause
 
-  /** getter for Causes - gets 
+  /** getter for cause - gets 
    * @generated */
-  public StringArray getCauses() {
-    if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_causes == null)
-      jcasType.jcas.throwFeatMissing("causes", "info.chenli.ee.corpora.Event");
-    return (StringArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Event_Type)jcasType).casFeatCode_causes)));}
+  public String getCause() {
+    if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_cause == null)
+      jcasType.jcas.throwFeatMissing("cause", "info.chenli.ee.corpora.Event");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_cause);}
     
-  /** setter for Causes - sets  
+  /** setter for cause - sets  
    * @generated */
-  public void setCauses(StringArray v) {
-    if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_causes == null)
-      jcasType.jcas.throwFeatMissing("causes", "info.chenli.ee.corpora.Event");
-    jcasType.ll_cas.ll_setRefValue(addr, ((Event_Type)jcasType).casFeatCode_causes, jcasType.ll_cas.ll_getFSRef(v));}    
-    
-  /** indexed getter for Causes - gets an indexed value - 
-   * @generated */
-  public String getCauses(int i) {
-    if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_causes == null)
-      jcasType.jcas.throwFeatMissing("causes", "info.chenli.ee.corpora.Event");
-    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Event_Type)jcasType).casFeatCode_causes), i);
-    return jcasType.ll_cas.ll_getStringArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Event_Type)jcasType).casFeatCode_causes), i);}
-
-  /** indexed setter for Causes - sets an indexed value - 
-   * @generated */
-  public void setCauses(int i, String v) { 
-    if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_causes == null)
-      jcasType.jcas.throwFeatMissing("causes", "info.chenli.ee.corpora.Event");
-    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Event_Type)jcasType).casFeatCode_causes), i);
-    jcasType.ll_cas.ll_setStringArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Event_Type)jcasType).casFeatCode_causes), i, v);}
-      //*--------------*
+  public void setCause(String v) {
+    if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_cause == null)
+      jcasType.jcas.throwFeatMissing("cause", "info.chenli.ee.corpora.Event");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_cause, v);}    
+        //*--------------*
   //* Feature: id
 
   /** getter for id - gets 
