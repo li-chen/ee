@@ -27,11 +27,16 @@ import weka.core.Instance;
 
 public class EventExtractor extends TokenInstances {
 
-	Map<Integer, Protein> proteins = null;
-	Map<Integer, Trigger> triggers = null;
-	Map<Integer, Event> events = null;
+	private Map<Integer, Protein> proteins = null;
+	private Map<Integer, Trigger> triggers = null;
+	private Map<Integer, Event> events = null;
 
-	void extract(File file) {
+	/**
+	 * Extract events from the given file.
+	 * 
+	 * @param file
+	 */
+	public void extract(File file) {
 
 		// Initialise the file
 		EventExtractor ee = new EventExtractor();
@@ -204,8 +209,25 @@ public class EventExtractor extends TokenInstances {
 				// protein
 				for (Protein protein : proteins) {
 					
+					Instance proteinInstance = proteinToInstance(jcas,
+							protein, trigger, null, dependencyExtractor);
+					themeRegconiser.classify(proteinInstance);
+
+					if (proteinInstance.classIndex() != classes
+							.indexOfValue(String.valueOf("Cause"))) {
+						event.setCause(protein.getId());
 				}
 				// event
+					for (Event causeEvent : events.values()) {
+						
+						Instance triggerInstance = triggerToInstance(jcas,
+								protein, event, null, dependencyExtractor);
+						themeRegconiser.classify(triggerInstance);
+
+						if (triggerInstance.classIndex() != classes
+								.indexOfValue(String.valueOf("Cause"))) {
+							event.setCause(causeEvent.getId());
+					}
 			}
 		}
 	}
