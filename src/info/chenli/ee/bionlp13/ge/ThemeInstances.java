@@ -1,5 +1,6 @@
 package info.chenli.ee.bionlp13.ge;
 
+import info.chenli.classifier.Instance;
 import info.chenli.ee.corpora.Event;
 import info.chenli.ee.corpora.Protein;
 import info.chenli.ee.corpora.Sentence;
@@ -20,12 +21,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.uimafit.util.JCasUtil;
 
-import weka.core.Attribute;
-import weka.core.DenseInstance;
-import weka.core.Instance;
-
-public class ThemeInstances extends
-		info.chenli.ee.bionlp13.ge.AbstractInstances {
+public class ThemeInstances extends AbstractInstances {
 
 	private final static Logger logger = Logger.getLogger(ThemeInstances.class
 			.getName());
@@ -37,54 +33,36 @@ public class ThemeInstances extends
 	}
 
 	@Override
-	protected void initAttributes() {
+	protected List<String> getFeaturesString() {
 
-		Attribute textAttr = new Attribute("text", (ArrayList<String>) null);
-		Attribute lemmaAttr = new Attribute("lemma", (ArrayList<String>) null);
-		Attribute posAttr = new Attribute("pos", (ArrayList<String>) null);
-		Attribute leftTokenAttr = new Attribute("leftToken",
-				(ArrayList<String>) null);
-		Attribute rightTokenAttr = new Attribute("rightToken",
-				(ArrayList<String>) null);
-		Attribute eventTypeAttr = new Attribute("eventType",
-				(ArrayList<String>) null);
-		Attribute triggerTextAttr = new Attribute("triggerText",
-				(ArrayList<String>) null);
-		Attribute triggerTokenTextAttr = new Attribute("triggerTokenText",
-				(ArrayList<String>) null);
-		Attribute triggerTokenLemmaAttr = new Attribute("triggerTokenLemma",
-				(ArrayList<String>) null);
-		Attribute dependencyPathToTriggerAttr = new Attribute(
-				"dependencyPathToTrigger", (ArrayList<String>) null);
+		featuresString.add("text");
+		featuresString.add("lemma");
+		featuresString.add("pos");
+		featuresString.add("leftToken");
+		featuresString.add("rightToken");
+		featuresString.add("eventType");
+		featuresString.add("triggerText");
+		featuresString.add("triggerTokenText");
+		featuresString.add("triggerTokenLemma");
+		featuresString.add("dependencyPathToTrigger");
 
-		attributes = new ArrayList<Attribute>();
-		attributes.add(textAttr);
-		attributes.add(lemmaAttr);
-		attributes.add(posAttr);
-		attributes.add(leftTokenAttr);
-		attributes.add(rightTokenAttr);
-		attributes.add(eventTypeAttr);
-		attributes.add(triggerTextAttr);
-		attributes.add(triggerTokenTextAttr);
-		attributes.add(triggerTokenLemmaAttr);
-		attributes.add(dependencyPathToTriggerAttr);
-
+		return featuresString;
 	}
 
 	@Override
-	protected Attribute getClasses() {
+	protected List<String> getLabelsString() {
 
 		ArrayList<String> themeTypes = new ArrayList<String>();
 
 		themeTypes.add("Theme");
 		themeTypes.add("Non_theme");
 
-		return new Attribute("class", themeTypes);
+		return themeTypes;
 
 	}
 
 	@Override
-	protected List<StructuredInstance> fetchStructuredInstances(JCas jcas,
+	protected List<StructuredInstance> getStructuredInstances(JCas jcas,
 			FSIterator<Annotation> tokenIter) {
 
 		List<StructuredInstance> results = new LinkedList<StructuredInstance>();
@@ -120,12 +98,16 @@ public class ThemeInstances extends
 					// check protein themes
 					for (Protein protein : proteins) {
 
-						themeCandidates.add(themeToInstance(jcas, protein, event.getTrigger(), themeId, dependencyExtractor));
+						themeCandidates.add(themeToInstance(jcas, protein,
+								event.getTrigger(), themeId,
+								dependencyExtractor));
 					}
 
 					// check event themes
-					for (Event themeEvent: events) {
-						themeCandidates.add(themeToInstance(jcas, themeEvent.getTrigger(), event.getTrigger(), themeId, dependencyExtractor));
+					for (Event themeEvent : events) {
+						themeCandidates.add(themeToInstance(jcas,
+								themeEvent.getTrigger(), event.getTrigger(),
+								themeId, dependencyExtractor));
 					}
 				}
 			}
@@ -134,6 +116,79 @@ public class ThemeInstances extends
 		}
 
 		return results;
+	}
+
+	/**
+	 * 
+	 * @param jcas
+	 * @param anno
+	 * @param trigger
+	 * @param themeId
+	 * @param dependencyExtractor
+	 * @return
+	 */
+	protected Instance themeToInstance(JCas jcas, Annotation anno, Event event,
+			DependencyExtractor dependencyExtractor) {
+
+		List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class, anno);
+		String tokenLemma = "", tokenPos = "";
+		String leftToken = tokens.get(0).getCoveredText();
+		String rightToken = tokens.get(tokens.size() - 1).getCoveredText();
+
+		// Take the last non-digital token if protein is
+		// multi-token.
+		Token annoToken = null;
+		for (Token token : tokens) {
+
+			try {
+				Double.parseDouble(token.getLemma());
+			} catch (NumberFormatException e) {
+				annoToken = token;
+			}
+
+			tokenLemma = tokenLemma.concat(token.getLemma()).concat("_");
+
+			tokenPos = tokenPos.concat(token.getPos()).concat("_");
+		}
+
+		Instance instance = new Instance();
+		List<String> featuresString = new ArrayList<String>();
+		featuresString.add(anno.getCoveredText());
+		values[1] = instances.attribute(0).addStringValue(tokenLemma);
+		values[2] = instances.attribute(0).addStringValue(tokenPos);
+		values[3] = instances.attribute(0).addStringValue(leftToken);
+		values[4] = instances.attribute(0).addStringValue(rightToken);
+		values[5] = instances.attribute(0).addStringValue(
+				event.getTrigger().getEventType());
+		values[6] = instances.attribute(0).addStringValue(
+				event.getTrigger().getCoveredText());
+		Token triggerToken = getTriggerToken(jcas, event.getTrigger());
+		values[7] = instances.attribute(0).addStringValue(
+				triggerToken.getCoveredText());
+		values[8] = instances.attribute(0).addStringValue(
+				triggerToken.getLemma());
+		values[9] = instances.attribute(0).addStringValue(
+				dependencyExtractor.getDijkstraShortestPath(annoToken,
+						triggerToken));
+
+		// protein that is theme
+		Protein protein = null;
+		if (anno instanceof Protein) {
+			protein = (Protein) anno;
+		}
+		// TODO consider more themes. e.g. themes in binding.
+		if (null != event.getThemes()
+				&& event.getThemes().get(0).equals(protein.getId())) {
+
+			values[10] = classes.indexOfValue("Theme");
+
+		} else
+		// protein that is not theme
+		{
+			values[10] = classes.indexOfValue("Non_theme");
+		}
+
+		return new DenseInstance(1.0, values);
 	}
 
 	@Override

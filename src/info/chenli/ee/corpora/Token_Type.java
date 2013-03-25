@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue Mar 19 23:46:20 GMT 2013
+ * Updated by JCasGen Sun Mar 24 21:35:19 GMT 2013
  * @generated */
 public class Token_Type extends Annotation_Type {
   /** @generated */
@@ -77,6 +77,24 @@ public class Token_Type extends Annotation_Type {
         if (featOkTst && casFeat_lemma == null)
       jcas.throwFeatMissing("lemma", "info.chenli.ee.corpora.Token");
     ll_cas.ll_setStringValue(addr, casFeatCode_lemma, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_stem;
+  /** @generated */
+  final int     casFeatCode_stem;
+  /** @generated */ 
+  public String getStem(int addr) {
+        if (featOkTst && casFeat_stem == null)
+      jcas.throwFeatMissing("stem", "info.chenli.ee.corpora.Token");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_stem);
+  }
+  /** @generated */    
+  public void setStem(int addr, String v) {
+        if (featOkTst && casFeat_stem == null)
+      jcas.throwFeatMissing("stem", "info.chenli.ee.corpora.Token");
+    ll_cas.ll_setStringValue(addr, casFeatCode_stem, v);}
     
   
  
@@ -189,6 +207,10 @@ public class Token_Type extends Annotation_Type {
  
     casFeat_lemma = jcas.getRequiredFeatureDE(casType, "lemma", "uima.cas.String", featOkTst);
     casFeatCode_lemma  = (null == casFeat_lemma) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_lemma).getCode();
+
+ 
+    casFeat_stem = jcas.getRequiredFeatureDE(casType, "stem", "uima.cas.String", featOkTst);
+    casFeatCode_stem  = (null == casFeat_stem) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_stem).getCode();
 
  
     casFeat_leftToken = jcas.getRequiredFeatureDE(casType, "leftToken", "info.chenli.ee.corpora.Token", featOkTst);

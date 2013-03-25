@@ -1,18 +1,18 @@
 package info.chenli.ee.bionlp13.ge;
 
-import info.chenli.ee.corpora.Event;
+import info.chenli.classifier.Instance;
 import info.chenli.ee.corpora.POS;
-import info.chenli.ee.corpora.Protein;
 import info.chenli.ee.corpora.Token;
 import info.chenli.ee.corpora.Trigger;
 import info.chenli.ee.searn.StructuredInstance;
-import info.chenli.ee.util.DependencyExtractor;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,11 +32,6 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.uimafit.util.JCasUtil;
 
-import weka.core.Attribute;
-import weka.core.DenseInstance;
-import weka.core.Instance;
-import weka.core.Instances;
-
 public abstract class AbstractInstances {
 
 	private final static Logger logger = Logger
@@ -46,9 +41,9 @@ public abstract class AbstractInstances {
 	private int annotationType;
 	private File taeDescriptor;
 	protected List<StructuredInstance> structuredInstances = new LinkedList<StructuredInstance>();
-	protected Instances instances;
-	protected ArrayList<Attribute> attributes;
-	protected Attribute classes;
+	protected List<Instance> instances;
+	protected List<String> featuresString;
+	protected List<String> labelsString;
 
 	protected void setTaeDescriptor(File taeDescriptor) {
 
@@ -71,15 +66,11 @@ public abstract class AbstractInstances {
 
 	private void init() {
 
-		initAttributes();
+		featuresString = getFeaturesString();
 
-		classes = getClasses();
+		labelsString = getLabelsString();
 
-		attributes.add(classes);
-
-		instances = new Instances(instancesName, attributes, 0);
-
-		instances.setClass(classes);
+		instances = new ArrayList<Instance>();
 
 		try {
 			XMLInputSource in = new XMLInputSource(getTaeDescriptor());
@@ -99,13 +90,13 @@ public abstract class AbstractInstances {
 		}
 	}
 
-	protected abstract void initAttributes();
+	protected abstract List<String> getLabelsString();
 
-	protected abstract Attribute getClasses();
+	protected abstract List<String> getFeaturesString();
 
-	public void fetchInstances(File dataDir) {
+	public List<Instance> getInstances(File dataDir) {
 
-		if (null == attributes || null == ae) {
+		if (null == featuresString || null == ae) {
 			init();
 		}
 
@@ -134,13 +125,14 @@ public abstract class AbstractInstances {
 		}
 		ae.destroy();
 
+		return getInstances();
 	}
 
 	protected JCas processSingleFile(File aFile, int annotationType) {
 
 		logger.log(Level.INFO, "Processing file " + aFile.getName());
 
-		if (null == attributes || null == ae) {
+		if (null == featuresString || null == ae) {
 			init();
 		}
 
@@ -175,8 +167,7 @@ public abstract class AbstractInstances {
 			JCas jcas = null;
 			jcas = cas.getJCas();
 			annoIter = jcas.getAnnotationIndex(annotationType).iterator();
-			structuredInstances
-					.addAll(fetchStructuredInstances(jcas, annoIter));
+			structuredInstances.addAll(getStructuredInstances(jcas, annoIter));
 
 			return jcas;
 
@@ -201,7 +192,7 @@ public abstract class AbstractInstances {
 
 	}
 
-	protected abstract List<StructuredInstance> fetchStructuredInstances(
+	protected abstract List<StructuredInstance> getStructuredInstances(
 			JCas jcas, FSIterator<Annotation> annoIter);
 
 	public List<StructuredInstance> getStructuredInstances() {
@@ -209,11 +200,13 @@ public abstract class AbstractInstances {
 		return structuredInstances;
 	}
 
-	public Instances getInstances() {
+	public List<Instance> getInstances() {
 
 		for (StructuredInstance si : structuredInstances) {
 			instances.addAll(si.getNodes());
 		}
+
+		instancesToNumerical();
 
 		return instances;
 	}
@@ -277,159 +270,44 @@ public abstract class AbstractInstances {
 		return null;
 	}
 
-	/**
-	 * 
-	 * @param jcas
-	 * @param anno
-	 * @param trigger
-	 * @param themeId
-	 * @param dependencyExtractor
-	 * @return
-	 */
-	protected Instance themeToInstance(JCas jcas, Annotation anno, Event event,
-			DependencyExtractor dependencyExtractor) {
+	private void instancesToNumerical() {
 
-		List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class, anno);
-		String tokenLemma = "", tokenPos = "";
-		String leftToken = tokens.get(0).getCoveredText();
-		String rightToken = tokens.get(tokens.size() - 1).getCoveredText();
+		List<List<String>> features = new ArrayList<List<String>>();
 
-		// Take the last non-digital token if protein is
-		// multi-token.
-		Token annoToken = null;
-		for (Token token : tokens) {
+		int featureNum = instances.get(0).getFeaturesString().size();
+		while (featureNum-- > 0) {
+			features.add(new ArrayList<String>());
+		}
 
-			try {
-				Double.parseDouble(token.getLemma());
-			} catch (NumberFormatException e) {
-				annoToken = token;
+		List<String> labels = new ArrayList<String>();
+		for (Instance instance : instances) {
+
+			if (!labels.contains(instance.getLabelString())) {
+				labels.add(instance.getLabelString());
 			}
 
-			tokenLemma = tokenLemma.concat(token.getLemma()).concat("_");
+			instance.setLabel(labels.indexOf(instance.getLabelString()));
 
-			tokenPos = tokenPos.concat(token.getPos()).concat("_");
-		}
+			Iterator<List<String>> featuresIter = features.iterator();
+			Iterator<String> featureStrIter = instance.getFeaturesString()
+					.iterator();
 
-		double[] values = new double[instances.numAttributes()];
-		values[0] = instances.attribute(0)
-				.addStringValue(anno.getCoveredText());
-		values[1] = instances.attribute(0).addStringValue(tokenLemma);
-		values[2] = instances.attribute(0).addStringValue(tokenPos);
-		values[3] = instances.attribute(0).addStringValue(leftToken);
-		values[4] = instances.attribute(0).addStringValue(rightToken);
-		values[5] = instances.attribute(0).addStringValue(
-				event.getTrigger().getEventType());
-		values[6] = instances.attribute(0).addStringValue(
-				event.getTrigger().getCoveredText());
-		Token triggerToken = getTriggerToken(jcas, event.getTrigger());
-		values[7] = instances.attribute(0).addStringValue(
-				triggerToken.getCoveredText());
-		values[8] = instances.attribute(0).addStringValue(
-				triggerToken.getLemma());
-		values[9] = instances.attribute(0).addStringValue(
-				dependencyExtractor.getDijkstraShortestPath(annoToken,
-						triggerToken));
+			List<Double> featuresNumeric = new ArrayList<Double>();
 
-		// protein that is theme
-		Protein protein = null;
-		if (anno instanceof Protein) {
-			protein = (Protein) anno;
-		}
-		// TODO consider more themes. e.g. themes in binding.
-		if (null != event.getThemes()
-				&& event.getThemes().get(0).equals(protein.getId())) {
+			while (featuresIter.hasNext()) {
 
-			values[10] = classes.indexOfValue("Theme");
+				List<String> feature = featuresIter.next();
+				String featureStr = featureStrIter.next();
 
-		} else
-		// protein that is not theme
-		{
-			values[10] = classes.indexOfValue("Non_theme");
-		}
+				if (!feature.contains(featureStr)) {
+					feature.add(featureStr);
+				}
 
-		return new DenseInstance(1.0, values);
-	}
-
-	/**
-	 * 
-	 * @param jcas
-	 * @param anno
-	 * @param trigger
-	 * @param themeId
-	 * @param dependencyExtractor
-	 * @return
-	 */
-	protected Instance causeToInstance(JCas jcas, Annotation anno, Event event,
-			DependencyExtractor dependencyExtractor) {
-
-		List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class, anno);
-		String tokenLemma = "", tokenPos = "";
-		String leftToken = tokens.get(0).getCoveredText();
-		String rightToken = tokens.get(tokens.size() - 1).getCoveredText();
-
-		// Take the last non-digital token if protein is
-		// multi-token.
-		Token annoToken = null;
-		for (Token token : tokens) {
-
-			try {
-				Double.parseDouble(token.getLemma());
-			} catch (NumberFormatException e) {
-				annoToken = token;
+				featuresNumeric.add((double) feature.indexOf(featureStr));
 			}
 
-			tokenLemma = tokenLemma.concat(token.getLemma()).concat("_");
+			instance.setFeatures(featuresNumeric);
 
-			tokenPos = tokenPos.concat(token.getPos()).concat("_");
 		}
-
-		double[] values = new double[instances.numAttributes()];
-		values[0] = instances.attribute(0)
-				.addStringValue(anno.getCoveredText());
-		values[1] = instances.attribute(0).addStringValue(tokenLemma);
-		values[2] = instances.attribute(0).addStringValue(tokenPos);
-		values[3] = instances.attribute(0).addStringValue(leftToken);
-		values[4] = instances.attribute(0).addStringValue(rightToken);
-		values[5] = instances.attribute(0).addStringValue(
-				event.getTrigger().getEventType());
-		values[6] = instances.attribute(0).addStringValue(
-				event.getTrigger().getCoveredText());
-		Token triggerToken = getTriggerToken(jcas, event.getTrigger());
-		values[7] = instances.attribute(0).addStringValue(
-				triggerToken.getCoveredText());
-		values[8] = instances.attribute(0).addStringValue(
-				triggerToken.getLemma());
-		values[9] = instances.attribute(0).addStringValue(
-				dependencyExtractor.getDijkstraShortestPath(annoToken,
-						triggerToken));
-		// a regulatory event only has one theme
-		values[10] = instances.attribute(0).addStringValue(
-				event.getThemes().get(0));
-		values[11] = instances.attribute(0).addStringValue(
-				triggerToken.getCoveredText());
-		values[12] = instances.attribute(0).addStringValue(
-				triggerToken.getLemma());
-		values[13] = instances.attribute(0).addStringValue(
-				dependencyExtractor.getDijkstraShortestPath(annoToken,
-						triggerToken));
-
-		// protein that is theme
-		Protein protein = null;
-		if (anno instanceof Protein) {
-			protein = (Protein) anno;
-		}
-		// TODO consider more themes. e.g. themes in binding.
-		if (null != event.getThemes()
-				&& event.getThemes().get(0).equals(protein.getId())) {
-
-			values[10] = classes.indexOfValue("Theme");
-
-		} else
-		// protein that is not theme
-		{
-			values[10] = classes.indexOfValue("Non_theme");
-		}
-
-		return new DenseInstance(1.0, values);
 	}
 }

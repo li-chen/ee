@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Mar 19 23:46:20 GMT 2013
+ * Updated by JCasGen Sun Mar 24 21:35:19 GMT 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Token extends Annotation {
@@ -99,6 +99,24 @@ public class Token extends Annotation {
    
     
   //*--------------*
+  //* Feature: stem
+
+  /** getter for stem - gets 
+   * @generated */
+  public String getStem() {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_stem == null)
+      jcasType.jcas.throwFeatMissing("stem", "info.chenli.ee.corpora.Token");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Token_Type)jcasType).casFeatCode_stem);}
+    
+  /** setter for stem - sets  
+   * @generated */
+  public void setStem(String v) {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_stem == null)
+      jcasType.jcas.throwFeatMissing("stem", "info.chenli.ee.corpora.Token");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Token_Type)jcasType).casFeatCode_stem, v);}    
+   
+    
+  //*--------------*
   //* Feature: leftToken
 
   /** getter for leftToken - gets 
@@ -168,7 +186,7 @@ public class Token extends Annotation {
     if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_relation == null)
       jcasType.jcas.throwFeatMissing("relation", "info.chenli.ee.corpora.Token");
     jcasType.ll_cas.ll_setStringValue(addr, ((Token_Type)jcasType).casFeatCode_relation, v);}    
-                              //*--------------*
+                                //*--------------*
   //* Feature: id
 
   /** getter for id - gets 

@@ -1,6 +1,6 @@
 package info.chenli.ee.bionlp13.ge;
 
-import info.chenli.classifier.Classifier;
+import info.chenli.classifier.AbstractClassifier;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -14,7 +14,7 @@ import weka.core.Instance;
  * @author Chen Li
  * 
  */
-public class ThemeRecogniser extends Classifier {
+public class ThemeRecogniser extends AbstractClassifier {
 
 	private final static Logger logger = Logger
 			.getLogger(ThemeRecogniser.class.getName());

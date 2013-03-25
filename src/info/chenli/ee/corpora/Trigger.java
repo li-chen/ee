@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Mar 19 23:46:20 GMT 2013
+ * Updated by JCasGen Sun Mar 24 21:35:19 GMT 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Trigger extends Annotation {
@@ -94,7 +94,7 @@ public class Trigger extends Annotation {
     if (Trigger_Type.featOkTst && ((Trigger_Type)jcasType).casFeat_eventType2 == null)
       jcasType.jcas.throwFeatMissing("eventType2", "info.chenli.ee.corpora.Trigger");
     jcasType.ll_cas.ll_setStringValue(addr, ((Trigger_Type)jcasType).casFeatCode_eventType2, v);}    
-        //*--------------*
+          //*--------------*
   //* Feature: id
 
   /** getter for id - gets 

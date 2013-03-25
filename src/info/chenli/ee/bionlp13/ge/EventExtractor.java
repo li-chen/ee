@@ -1,5 +1,6 @@
 package info.chenli.ee.bionlp13.ge;
 
+import info.chenli.classifier.Instance;
 import info.chenli.ee.corpora.Event;
 import info.chenli.ee.corpora.Protein;
 import info.chenli.ee.corpora.Sentence;
@@ -22,8 +23,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.uimafit.util.JCasUtil;
-
-import weka.core.Instance;
 
 public class EventExtractor extends TokenInstances {
 
@@ -95,7 +94,7 @@ public class EventExtractor extends TokenInstances {
 
 					for (Protein protein : proteins) {
 
-						Instance proteinInstance = proteinToInstance(jcas,
+						Instance proteinInstance = themeToInstance(jcas,
 								protein, trigger, null, dependencyExtractor);
 						themeRegconiser.classify(proteinInstance);
 

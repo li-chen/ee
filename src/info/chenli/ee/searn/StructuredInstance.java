@@ -1,8 +1,8 @@
 package info.chenli.ee.searn;
 
-import java.util.List;
+import info.chenli.classifier.Instance;
 
-import weka.core.Instance;
+import java.util.List;
 
 public class StructuredInstance {
 

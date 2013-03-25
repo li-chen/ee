@@ -1,6 +1,6 @@
 package info.chenli.ee.bionlp13.ge;
 
-import info.chenli.classifier.Classifier;
+import info.chenli.classifier.AbstractClassifier;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -17,7 +17,7 @@ import weka.filters.unsupervised.attribute.StringToWordVector;
  * @author Chen Li
  * 
  */
-public class CauseRecogniser extends Classifier {
+public class CauseRecogniser extends AbstractClassifier {
 
 	private final static Logger logger = Logger
 			.getLogger(CauseRecogniser.class.getName());

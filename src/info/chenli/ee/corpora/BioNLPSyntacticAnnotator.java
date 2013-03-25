@@ -1,11 +1,9 @@
 package info.chenli.ee.corpora;
 
-import info.chenli.ee.gson.EntityAnnotation;
-import info.chenli.ee.gson.GsonDocument;
-import info.chenli.ee.gson.GsonFacade;
 import info.chenli.ee.util.BioLemmatizerUtil;
 import info.chenli.ee.util.ConnlxReader;
 import info.chenli.ee.util.FileUtil;
+import info.chenli.ee.util.Stemmer;
 import info.chenli.ee.util.UimaUtil;
 
 import java.io.ByteArrayInputStream;
@@ -86,6 +84,11 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 						token.setPos(pos);
 						token.setLemma(BioLemmatizerUtil.lemmatizeWord(
 								token.getCoveredText(), pos));
+						Stemmer stemmer = new Stemmer();
+						stemmer.add(token.getCoveredText().toCharArray(), token
+								.getCoveredText().length());
+						stemmer.stem();
+						token.setStem(stemmer.toString());
 						token.setLeftToken(leftToken);
 						if (null != leftToken) {
 							leftToken.setRightToken(token);
