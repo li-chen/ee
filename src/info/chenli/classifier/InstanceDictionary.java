@@ -144,6 +144,7 @@ public class InstanceDictionary {
 	}
 
 	public Instance instanceToNumeric(Instance instance) {
+
 		instance.setLabel(labels.indexOf(instance.getLabelString()));
 
 		Iterator<List<String>> featuresIter = features.iterator();
@@ -166,7 +167,7 @@ public class InstanceDictionary {
 
 	public double getLabelNumeric(String labelString) {
 
-		return labelString.indexOf(labelString);
+		return labels.indexOf(labelString);
 
 	}
 

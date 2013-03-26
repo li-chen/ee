@@ -12,7 +12,9 @@ import info.chenli.ee.util.DependencyExtractor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.uima.cas.FSIterator;
@@ -23,9 +25,9 @@ import org.uimafit.util.JCasUtil;
 
 public class EventExtractor extends TokenInstances {
 
-	private List<Protein> proteins = new ArrayList<Protein>();
-	private List<Trigger> triggers = new ArrayList<Trigger>();
-	private List<Event> events = new ArrayList<Event>();
+	private Map<Integer, List<Protein>> proteins = new TreeMap<Integer, List<Protein>>();
+	private Map<Integer, List<Trigger>> triggers = new TreeMap<Integer, List<Trigger>>();
+	private Map<Integer, List<Event>> events = new TreeMap<Integer, List<Event>>();
 
 	/**
 	 * Extract events from the given file.
@@ -36,13 +38,6 @@ public class EventExtractor extends TokenInstances {
 
 		// Initialize the file
 		JCas jcas = this.processSingleFile(file, Token.type);
-		FSIterator<Annotation> proteinIter = jcas.getAnnotationIndex(
-				Protein.type).iterator();
-
-		while (proteinIter.hasNext()) {
-			Protein protein = (Protein) proteinIter.next();
-			proteins.add(protein);
-		}
 
 		//
 		// Initialize the classifiers
@@ -78,27 +73,49 @@ public class EventExtractor extends TokenInstances {
 
 		while (sentenceIter.hasNext()) {
 
+			Sentence sentence = (Sentence) sentenceIter.next();
+
+			// protein
+			List<Protein> sentenceProteins = JCasUtil.selectCovered(jcas,
+					Protein.class, sentence);
+
+			proteins.put(sentence.getId(), sentenceProteins);
 			//
 			// trigger detection
 			//
 			List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class,
-					sentenceIter.next());
+					sentence);
 			DependencyExtractor dependencyExtractor = new DependencyExtractor(
 					tokens);
+
+			if (null == triggers.get(sentence.getId())) {
+				triggers.put(sentence.getId(), new ArrayList<Trigger>());
+			}
 
 			for (Token token : tokens) {
 
 				Instance tokenInstance = tokenToInstance(token, null);
 				double prediction = triggerRecogniser.predict(triggerDict
 						.instanceToNumeric(tokenInstance));
-
+				// System.out.print(tokenInstance.getLabel());
+				// Iterator<Double> iter1 =
+				// tokenInstance.getFeatures().iterator();
+				// Iterator<String> iter2 = tokenInstance.getFeaturesString()
+				// .iterator();
+				// while (iter1.hasNext()) {
+				// System.out.print("\t" + iter1.next() + "\t" + iter2.next());
+				// }
+				// System.out.print("\t" + prediction);
+				// System.out.println("\t"
+				// + triggerDict.getLabelNumeric(String
+				// .valueOf(EventType.Non_trigger)));
 				if (prediction != triggerDict.getLabelNumeric(String
 						.valueOf(EventType.Non_trigger))) {
 
 					Trigger trigger = new Trigger(jcas, token.getBegin(),
 							token.getEnd());
 					trigger.setEventType(triggerDict.getLabelString(prediction));
-					triggers.add(trigger);
+					triggers.get(sentence.getId()).add(trigger);
 				}
 			}
 
@@ -108,10 +125,16 @@ public class EventExtractor extends TokenInstances {
 
 			// 1. iterate through all proteins
 			List<Protein> proteins = JCasUtil.selectCovered(jcas,
-					Protein.class, sentenceIter.next());
+					Protein.class, sentence);
 
-			for (Trigger trigger : triggers) {
+			if (null == events.get(sentence.getId())) {
+				events.put(sentence.getId(), new ArrayList<Event>());
+			}
 
+			for (Trigger trigger : triggers.get(sentence.getId())) {
+
+				System.out.println(trigger.getCoveredText().concat("\t")
+						.concat(trigger.getEventType()));
 				if (EventType.isSimpleEvent(trigger.getEventType())) {
 
 					for (Protein protein : proteins) {
@@ -129,7 +152,7 @@ public class EventExtractor extends TokenInstances {
 							StringArray themes = new StringArray(jcas, 1);
 							themes.set(0, protein.getId());
 							event.setThemes(themes);
-							events.add(event);
+							events.get(sentence.getId()).add(event);
 							newEvents.add(event);
 						}
 					}
@@ -165,13 +188,15 @@ public class EventExtractor extends TokenInstances {
 						// TODO
 					}
 
-					events.add(event);
+					events.get(sentence.getId()).add(event);
 					newEvents.add(event);
 
 				} else if (EventType.isRegulatoryEvent(trigger.getEventType())) {
 
 					for (Protein protein : proteins) {
 
+						System.out.println(sentence.getCoveredText());
+						System.out.println(protein.getCoveredText());
 						Instance proteinInstance = themeToInstance(jcas,
 								protein, trigger, dependencyExtractor, false);
 						double prediction = themeRecogniser
@@ -185,7 +210,7 @@ public class EventExtractor extends TokenInstances {
 							StringArray themes = new StringArray(jcas, 1);
 							themes.set(0, protein.getId());
 							event.setThemes(themes);
-							events.add(event);
+							events.get(sentence.getId()).add(event);
 							newEvents.add(event);
 						}
 					}
@@ -193,7 +218,7 @@ public class EventExtractor extends TokenInstances {
 			}
 
 			// 2. check all discovered events whether they can be themes
-			for (Trigger trigger : triggers) {
+			for (Trigger trigger : triggers.get(sentence.getId())) {
 
 				if (EventType.isRegulatoryEvent(trigger.getEventType())) {
 
@@ -213,7 +238,7 @@ public class EventExtractor extends TokenInstances {
 							StringArray themes = new StringArray(jcas, 1);
 							themes.set(0, "E".concat(themeEvent.getId()));
 							event.setThemes(themes);
-							events.add(event);
+							events.get(sentence.getId()).add(event);
 							newEvents.add(event);
 						}
 
@@ -224,7 +249,7 @@ public class EventExtractor extends TokenInstances {
 			//
 			// cause
 			//
-			for (Event event : events) {
+			for (Event event : events.get(sentence.getId())) {
 
 				// protein
 				for (Protein protein : proteins) {
@@ -240,7 +265,7 @@ public class EventExtractor extends TokenInstances {
 					}
 				}
 				// event
-				for (Event causeEvent : events) {
+				for (Event causeEvent : events.get(sentence.getId())) {
 
 					Instance triggerTokenInstance = tokenToInstance(
 							getTriggerToken(jcas, causeEvent.getTrigger()),
@@ -259,16 +284,19 @@ public class EventExtractor extends TokenInstances {
 	}
 
 	public static void main(String[] args) {
+
 		EventExtractor ee = new EventExtractor();
 		ee.setTaeDescriptor(new File("./desc/TestSetAnnotator.xml"));
 
 		ee.extract(new File(args[0]));
 
-		for (Event event : ee.events) {
+		for (List<Event> sentenceEvents : ee.events.values()) {
 
-			if (!event.getTrigger().getEventType().equals("Non_trigger")) {
-				System.out.println(event.getTrigger().getEventType()
-						.concat("\t").concat(event.getThemes(0)));
+			for (Event event : sentenceEvents) {
+				if (!event.getTrigger().getEventType().equals("Non_trigger")) {
+					System.out.println(event.getTrigger().getEventType()
+							.concat("\t").concat(event.getThemes(0)));
+				}
 			}
 		}
 	}

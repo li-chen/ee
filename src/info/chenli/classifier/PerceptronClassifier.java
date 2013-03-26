@@ -116,7 +116,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 		return prediction;
 	}
 
-	public double accuracy(List<Instance> instances) {
+	public Fscore accuracy(List<Instance> instances) {
 
 		int correct = 0;
 		int total = 0;
@@ -126,7 +126,8 @@ public class PerceptronClassifier extends AbstractClassifier {
 				correct++;
 			total++;
 		}
-		return (double) correct / total;
+
+		return new Fscore( correct, total);
 	}
 
 	@Override
