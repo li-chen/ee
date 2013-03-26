@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Sun Mar 24 21:35:19 GMT 2013
+ * Updated by JCasGen Tue Mar 26 13:33:27 GMT 2013
  * @generated */
 public class Token_Type extends Annotation_Type {
   /** @generated */
@@ -135,6 +135,24 @@ public class Token_Type extends Annotation_Type {
   
  
   /** @generated */
+  final Feature casFeat_dependentId;
+  /** @generated */
+  final int     casFeatCode_dependentId;
+  /** @generated */ 
+  public int getDependentId(int addr) {
+        if (featOkTst && casFeat_dependentId == null)
+      jcas.throwFeatMissing("dependentId", "info.chenli.ee.corpora.Token");
+    return ll_cas.ll_getIntValue(addr, casFeatCode_dependentId);
+  }
+  /** @generated */    
+  public void setDependentId(int addr, int v) {
+        if (featOkTst && casFeat_dependentId == null)
+      jcas.throwFeatMissing("dependentId", "info.chenli.ee.corpora.Token");
+    ll_cas.ll_setIntValue(addr, casFeatCode_dependentId, v);}
+    
+  
+ 
+  /** @generated */
   final Feature casFeat_dependent;
   /** @generated */
   final int     casFeatCode_dependent;
@@ -219,6 +237,10 @@ public class Token_Type extends Annotation_Type {
  
     casFeat_rightToken = jcas.getRequiredFeatureDE(casType, "rightToken", "info.chenli.ee.corpora.Token", featOkTst);
     casFeatCode_rightToken  = (null == casFeat_rightToken) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_rightToken).getCode();
+
+ 
+    casFeat_dependentId = jcas.getRequiredFeatureDE(casType, "dependentId", "uima.cas.Integer", featOkTst);
+    casFeatCode_dependentId  = (null == casFeat_dependentId) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_dependentId).getCode();
 
  
     casFeat_dependent = jcas.getRequiredFeatureDE(casType, "dependent", "info.chenli.ee.corpora.Token", featOkTst);

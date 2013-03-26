@@ -114,11 +114,12 @@ public class GSAnnotator extends JCasAnnotator_ImplBase {
 		// it has cause, it will only have one cause.
 		for (String eventId : eventThemeMap.keySet()) {
 
-			Event event = new Event(jCas);
+			Trigger trigger = triggerMap.get(eventTriggerMap.get(eventId));
+			Event event = new Event(jCas, trigger.getBegin(), trigger.getEnd());
 			event.setId(eventId);
 
 			// trigger
-			event.setTrigger(triggerMap.get(eventTriggerMap.get(eventId)));
+			event.setTrigger(trigger);
 
 			// themes
 			StringArray themes = new StringArray(jCas, eventThemeMap.get(

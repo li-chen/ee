@@ -18,8 +18,8 @@ public class ConnlxReader {
 	private static Pattern pattern = Pattern.compile("\\d");
 
 	public static final class Token {
-		private String text, pos, dependentId, relation;
-		private int id;
+		private String text, pos, relation;
+		private int id, dependentId;
 
 		public int getId() {
 			return id;
@@ -45,11 +45,11 @@ public class ConnlxReader {
 			this.pos = pos;
 		}
 
-		public String getDependentId() {
+		public int getDependentId() {
 			return dependentId;
 		}
 
-		public void setDependentId(String dependentId) {
+		public void setDependentId(int dependentId) {
 			this.dependentId = dependentId;
 		}
 
@@ -89,7 +89,7 @@ public class ConnlxReader {
 				token.setPos(st.nextToken());
 				st.nextToken();
 				st.nextToken();
-				token.setDependentId(st.nextToken());
+				token.setDependentId(Integer.parseInt(st.nextToken()));
 				token.setRelation(st.nextToken());
 
 				tokens.add(token);

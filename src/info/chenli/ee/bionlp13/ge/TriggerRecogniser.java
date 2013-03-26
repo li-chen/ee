@@ -1,8 +1,11 @@
 package info.chenli.ee.bionlp13.ge;
 
+import info.chenli.classifier.Instance;
+import info.chenli.classifier.InstanceDictionary;
 import info.chenli.classifier.PerceptronClassifier;
 
 import java.io.File;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -21,10 +24,23 @@ public class TriggerRecogniser extends PerceptronClassifier {
 
 		} else {
 
-			TokenInstances ti = new TokenInstances();
-			ti.setTaeDescriptor(new File("./desc/BioNLPSyntacticAnnotator.xml"));
+			TokenInstances trainingInstances = new TokenInstances();
+			trainingInstances.setTaeDescriptor(new File(
+					"./desc/TrainingSetAnnotator.xml"));
+			List<Instance> instances = trainingInstances
+					.getInstances(trainingSet);
 
-			train(ti.getInstances(trainingSet));
+			InstanceDictionary dict = new InstanceDictionary();
+			dict.creatDictionary(instances);
+			dict.saveDictionary(new File("./model/triggers.dict"));
+
+			train(dict.instancesToNumeric(instances));
+
+			TokenInstances testInstances = new TokenInstances();
+			testInstances.setTaeDescriptor(new File(
+					"./desc/TrainingSetAnnotator.xml"));
+			instances = testInstances.getInstances(new File("./data/test/"));
+			System.out.println(accuracy(dict.instancesToNumeric(instances)));
 		}
 
 	}

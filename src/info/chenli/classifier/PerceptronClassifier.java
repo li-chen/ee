@@ -2,11 +2,16 @@ package info.chenli.classifier;
 
 import info.chenli.ee.util.MathUtil;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +21,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 			.getLogger(PerceptronClassifier.class.getName());
 
 	private Map<Double, List<Double>> weights = null;
+	private InstanceDictionary dictionary = null;
 
 	private void initWeights(List<Instance> trainingInstances) {
 
@@ -110,13 +116,13 @@ public class PerceptronClassifier extends AbstractClassifier {
 		return prediction;
 	}
 
-	public double accuracy(Instance[] instances) {
+	public double accuracy(List<Instance> instances) {
 
 		int correct = 0;
 		int total = 0;
-		for (int i = 0; i < instances.length; i++) {
-			int predicted_label = (int) predict(instances[i]);
-			if (predicted_label == (int) instances[i].getLabel())
+		for (Instance instance : instances) {
+			double predicted_label = predict(instance);
+			if (predicted_label == (int) instance.getLabel())
 				correct++;
 			total++;
 		}
@@ -140,6 +146,36 @@ public class PerceptronClassifier extends AbstractClassifier {
 		}
 
 		return sb.toString();
+	}
+
+	@Override
+	public void loadModel(File modelFile) {
+
+		try {
+
+			BufferedReader br = new BufferedReader(new FileReader(modelFile));
+
+			String line;
+			this.weights = new TreeMap<Double, List<Double>>();
+
+			while ((line = br.readLine()) != null) {
+
+				StringTokenizer st = new StringTokenizer(line, "\t");
+				double label = Double.parseDouble(st.nextToken());
+
+				List<Double> weightVector = new ArrayList<Double>();
+				while (st.hasMoreTokens()) {
+					weightVector.add(Double.parseDouble(st.nextToken()));
+				}
+				weights.put(label, weightVector);
+			}
+
+			br.close();
+
+		} catch (Exception e) {
+			logger.severe(e.getMessage());
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static void main(String[] args) throws IOException {

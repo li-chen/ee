@@ -33,18 +33,14 @@ public abstract class AbstractClassifier {
 
 	public abstract String modelToString();
 
+	public abstract void loadModel(File modelFile);
+
 	public void saveModel(File modelFile) {
 
 		modelStr = modelToString();
 
 		logger.info("The model is saved to ".concat(modelFile.getName()));
 		FileUtil.saveFile(modelStr, modelFile);
-	}
-
-	public void loadModel(File modelFile) {
-
-		logger.info("The model is loaded from ".concat(modelFile.getName()));
-		modelStr = FileUtil.readFile(modelFile);
 	}
 
 }

@@ -1,18 +1,19 @@
 package info.chenli.ee.bionlp13.ge;
 
 import info.chenli.classifier.Instance;
+import info.chenli.ee.corpora.Event;
 import info.chenli.ee.corpora.POS;
 import info.chenli.ee.corpora.Token;
 import info.chenli.ee.corpora.Trigger;
 import info.chenli.ee.searn.StructuredInstance;
+import info.chenli.ee.util.DependencyExtractor;
+import info.chenli.ee.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -130,8 +131,6 @@ public abstract class AbstractInstances {
 
 	protected JCas processSingleFile(File aFile, int annotationType) {
 
-		logger.log(Level.INFO, "Processing file " + aFile.getName());
-
 		if (null == featuresString || null == ae) {
 			init();
 		}
@@ -206,8 +205,6 @@ public abstract class AbstractInstances {
 			instances.addAll(si.getNodes());
 		}
 
-		instancesToNumerical();
-
 		return instances;
 	}
 
@@ -220,8 +217,6 @@ public abstract class AbstractInstances {
 	 * Alternatively, it can be dynamically learned.
 	 */
 	protected Token getTriggerToken(List<Token> tokens) {
-
-		logger.info("Processing multi-token...");
 
 		if (tokens.size() > 1) {
 
@@ -270,44 +265,215 @@ public abstract class AbstractInstances {
 		return null;
 	}
 
-	private void instancesToNumerical() {
+	public void saveInstances(File file) {
 
-		List<List<String>> features = new ArrayList<List<String>>();
+		StringBuffer sb = new StringBuffer();
 
-		int featureNum = instances.get(0).getFeaturesString().size();
-		while (featureNum-- > 0) {
-			features.add(new ArrayList<String>());
-		}
-
-		List<String> labels = new ArrayList<String>();
 		for (Instance instance : instances) {
 
-			if (!labels.contains(instance.getLabelString())) {
-				labels.add(instance.getLabelString());
+			sb.append(instance.getLabelString());
+
+			for (String feature : instance.getFeaturesString()) {
+				sb.append("\t".concat(feature));
 			}
 
-			instance.setLabel(labels.indexOf(instance.getLabelString()));
+			sb.append("\n");
+		}
 
-			Iterator<List<String>> featuresIter = features.iterator();
-			Iterator<String> featureStrIter = instance.getFeaturesString()
+		String instancesStr = sb.toString();
+		FileUtil.saveFile(instancesStr, file);
+	}
+
+	public void saveNumericInstances(File file) {
+
+		StringBuffer sb = new StringBuffer();
+
+		for (Instance instance : instances) {
+
+			sb.append(String.valueOf(instance.getLabel()));
+
+			for (double feature : instance.getFeatures()) {
+				sb.append("\t".concat(String.valueOf(feature)));
+			}
+
+			sb.append("\n");
+		}
+
+		String instancesStr = sb.toString();
+		FileUtil.saveFile(instancesStr, file);
+	}
+
+	/**
+	 * Convert a protein or event into an theme instance ready for training or
+	 * predicting.
+	 * 
+	 * @param jcas
+	 * @param anno
+	 *            It could be a protein or an event trigger.
+	 * @param event
+	 * @param dependencyExtractor
+	 * @return
+	 */
+	protected Instance themeToInstance(JCas jcas, Annotation anno,
+			Trigger trigger, DependencyExtractor dependencyExtractor,
+			boolean isTheme) {
+
+		List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class, anno);
+
+		// if protein is within a token
+		if (tokens.size() == 0) {
+			FSIterator<Annotation> iter = jcas.getAnnotationIndex(Token.type)
 					.iterator();
-
-			List<Double> featuresNumeric = new ArrayList<Double>();
-
-			while (featuresIter.hasNext()) {
-
-				List<String> feature = featuresIter.next();
-				String featureStr = featureStrIter.next();
-
-				if (!feature.contains(featureStr)) {
-					feature.add(featureStr);
+			tokens = new ArrayList<Token>();
+			while (iter.hasNext()) {
+				Token token = (Token) iter.next();
+				if (token.getBegin() <= anno.getBegin()
+						&& token.getEnd() >= anno.getEnd()) {
+					tokens.add(token);
+					break;
 				}
-
-				featuresNumeric.add((double) feature.indexOf(featureStr));
 			}
+		}
 
-			instance.setFeatures(featuresNumeric);
+		String tokenLemma = "", tokenPos = "";
+		String leftToken = null == tokens.get(0).getLeftToken() ? "" : tokens
+				.get(0).getLeftToken().getCoveredText();
+		String rightToken = null == tokens.get(tokens.size() - 1)
+				.getRightToken() ? "" : tokens.get(tokens.size() - 1)
+				.getRightToken().getCoveredText();
+
+		// Take the last non-digital token if protein is
+		// multi-token.
+		Token annoToken = tokens.get(0);
+		for (Token token : tokens) {
+
+			try {
+				Double.parseDouble(token.getLemma());
+			} catch (NumberFormatException e) {
+				annoToken = token;
+			}
 
 		}
+
+		tokenLemma = annoToken.getLemma();
+
+		tokenPos = annoToken.getPos();
+
+		Instance instance = new Instance();
+		List<String> featuresString = new ArrayList<String>();
+		instance.setFeaturesString(featuresString);
+		featuresString.add(anno.getCoveredText());
+		featuresString.add(tokenLemma);
+		featuresString.add(tokenPos);
+		featuresString.add(leftToken);
+		featuresString.add(rightToken);
+		featuresString.add(trigger.getEventType());
+		featuresString.add(trigger.getCoveredText());
+		Token triggerToken = getTriggerToken(jcas, trigger);
+		featuresString.add(triggerToken.getCoveredText());
+		featuresString.add(triggerToken.getLemma());
+		featuresString.add(dependencyExtractor.getDijkstraShortestPath(
+				annoToken, triggerToken));
+
+		if (isTheme) {
+
+			instance.setLabelString("Theme");
+
+		} else {
+			instance.setLabelString("Non_theme");
+		}
+
+		return instance;
+	}
+
+	/**
+	 * 
+	 * @param jcas
+	 * @param anno
+	 * @param trigger
+	 * @param themeId
+	 * @param dependencyExtractor
+	 * @param isCause
+	 * @return
+	 */
+	protected Instance causeToInstance(JCas jcas, Annotation anno, Event event,
+			DependencyExtractor dependencyExtractor, boolean isCause) {
+
+		List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class, anno);
+
+		// if protein is within a token
+		if (tokens.size() == 0) {
+			FSIterator<Annotation> iter = jcas.getAnnotationIndex(Token.type)
+					.iterator();
+			tokens = new ArrayList<Token>();
+			while (iter.hasNext()) {
+				Token token = (Token) iter.next();
+				if (token.getBegin() <= anno.getBegin()
+						&& token.getEnd() >= anno.getEnd()) {
+					tokens.add(token);
+					break;
+				}
+			}
+		}
+
+		String tokenLemma = "", tokenPos = "";
+		String leftToken = null == tokens.get(0).getLeftToken() ? "" : tokens
+				.get(0).getLeftToken().getCoveredText();
+		String rightToken = null == tokens.get(tokens.size() - 1)
+				.getRightToken() ? "" : tokens.get(tokens.size() - 1)
+				.getRightToken().getCoveredText();
+
+		// Take the last non-digital token if protein is
+		// multi-token.
+		Token annoToken = tokens.get(0);
+		for (Token token : tokens) {
+
+			try {
+				Double.parseDouble(token.getLemma());
+			} catch (NumberFormatException e) {
+				annoToken = token;
+			}
+
+		}
+
+		tokenLemma = annoToken.getLemma();
+
+		tokenPos = annoToken.getPos();
+
+		Instance instance = new Instance();
+		List<String> featuresString = new ArrayList<String>();
+		instance.setFeaturesString(featuresString);
+
+		featuresString.add(anno.getCoveredText());
+		featuresString.add(tokenLemma);
+		featuresString.add(tokenPos);
+		featuresString.add(leftToken);
+		featuresString.add(rightToken);
+		featuresString.add(event.getTrigger().getEventType());
+		featuresString.add(event.getTrigger().getCoveredText());
+		Token triggerToken = getTriggerToken(jcas, event.getTrigger());
+		featuresString.add(triggerToken.getCoveredText());
+		featuresString.add(triggerToken.getLemma());
+		featuresString.add(dependencyExtractor.getDijkstraShortestPath(
+				annoToken, triggerToken));
+		// a regulatory event only has one theme
+		featuresString.add(event.getThemes().get(0));
+		featuresString.add(triggerToken.getCoveredText());
+		featuresString.add(triggerToken.getLemma());
+		featuresString.add(dependencyExtractor.getDijkstraShortestPath(
+				annoToken, triggerToken));
+
+		// TODO consider more themes. e.g. themes in binding.
+		if (isCause) {
+
+			instance.setLabelString("Cause");
+
+		} else
+		// protein that is not theme
+		{
+			instance.setLabelString("Non_cause");
+		}
+
+		return instance;
 	}
 }

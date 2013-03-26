@@ -1,22 +1,19 @@
 package info.chenli.ee.bionlp13.ge;
 
 import info.chenli.classifier.Instance;
+import info.chenli.classifier.InstanceDictionary;
 import info.chenli.ee.corpora.Event;
 import info.chenli.ee.corpora.Protein;
 import info.chenli.ee.corpora.Sentence;
 import info.chenli.ee.corpora.Token;
 import info.chenli.ee.corpora.Trigger;
-import info.chenli.ee.searn.StructuredInstance;
 import info.chenli.ee.util.DependencyExtractor;
 
 import java.io.File;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
-import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Level;
 
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
@@ -26,9 +23,9 @@ import org.uimafit.util.JCasUtil;
 
 public class EventExtractor extends TokenInstances {
 
-	private Map<Integer, Protein> proteins = null;
-	private Map<Integer, Trigger> triggers = null;
-	private Map<Integer, Event> events = null;
+	private List<Protein> proteins = new ArrayList<Protein>();
+	private List<Trigger> triggers = new ArrayList<Trigger>();
+	private List<Event> events = new ArrayList<Event>();
 
 	/**
 	 * Extract events from the given file.
@@ -37,19 +34,43 @@ public class EventExtractor extends TokenInstances {
 	 */
 	public void extract(File file) {
 
-		// Initialise the file
-		EventExtractor ee = new EventExtractor();
-		JCas jcas = ee.processSingleFile(file, Token.type);
+		// Initialize the file
+		JCas jcas = this.processSingleFile(file, Token.type);
+		FSIterator<Annotation> proteinIter = jcas.getAnnotationIndex(
+				Protein.type).iterator();
 
-		// Initialise the classifiers
+		while (proteinIter.hasNext()) {
+			Protein protein = (Protein) proteinIter.next();
+			proteins.add(protein);
+		}
+
+		//
+		// Initialize the classifiers
+		//
+
+		// trigger
 		TriggerRecogniser triggerRecogniser = new TriggerRecogniser();
-		ThemeRecogniser themeRegconiser = new ThemeRecogniser();
-		CauseRecogniser causeRegconiser = new CauseRecogniser();
+		triggerRecogniser.loadModel(new File(
+				"./model/triggers.perceptron.model"));
+		InstanceDictionary triggerDict = new InstanceDictionary();
+		triggerDict.loadDictionary(new File("./model/triggers.dict"));
 
+		// theme
+		ThemeRecogniser themeRecogniser = new ThemeRecogniser();
+		themeRecogniser.loadModel(new File("./model/themes.perceptron.model"));
+		InstanceDictionary themeDict = new InstanceDictionary();
+		themeDict.loadDictionary(new File("./model/themes.dict"));
+
+		// cause
+		CauseRecogniser causeRecogniser = new CauseRecogniser();
+		causeRecogniser.loadModel(new File("./model/causes.perceptron.model"));
+		InstanceDictionary causeDict = new InstanceDictionary();
+		causeDict.loadDictionary(new File("./model/causes.dict"));
+
+		// Initialize the iterator and counter
 		FSIterator<Annotation> sentenceIter = jcas.getAnnotationIndex(
 				Sentence.type).iterator();
 
-		int triggerIndex = proteins.size() + 1;
 		int eventIndex = 1;
 
 		// It has to be LinkedList to avoid sorting.
@@ -68,15 +89,16 @@ public class EventExtractor extends TokenInstances {
 			for (Token token : tokens) {
 
 				Instance tokenInstance = tokenToInstance(token, null);
-				triggerRecogniser.classify(tokenInstance);
+				double prediction = triggerRecogniser.predict(triggerDict
+						.instanceToNumeric(tokenInstance));
 
-				if (tokenInstance.classIndex() != classes.indexOfValue(String
+				if (prediction != triggerDict.getLabelNumeric(String
 						.valueOf(EventType.Non_trigger))) {
+
 					Trigger trigger = new Trigger(jcas, token.getBegin(),
 							token.getEnd());
-					trigger.setEventType(classes.value(tokenInstance
-							.classIndex()));
-					triggers.put(triggerIndex++, trigger);
+					trigger.setEventType(triggerDict.getLabelString(prediction));
+					triggers.add(trigger);
 				}
 			}
 
@@ -88,18 +110,18 @@ public class EventExtractor extends TokenInstances {
 			List<Protein> proteins = JCasUtil.selectCovered(jcas,
 					Protein.class, sentenceIter.next());
 
-			for (Trigger trigger : triggers.values()) {
+			for (Trigger trigger : triggers) {
 
 				if (EventType.isSimpleEvent(trigger.getEventType())) {
 
 					for (Protein protein : proteins) {
 
 						Instance proteinInstance = themeToInstance(jcas,
-								protein, trigger, null, dependencyExtractor);
-						themeRegconiser.classify(proteinInstance);
+								protein, trigger, dependencyExtractor, false);
+						double prediction = themeRecogniser
+								.predict(proteinInstance);
 
-						if (proteinInstance.classIndex() != classes
-								.indexOfValue(String.valueOf("Theme"))) {
+						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							// TODO can a protein be a theme of multi-event?
 							Event event = new Event(jcas);
 							event.setId(String.valueOf(eventIndex));
@@ -107,7 +129,7 @@ public class EventExtractor extends TokenInstances {
 							StringArray themes = new StringArray(jcas, 1);
 							themes.set(0, protein.getId());
 							event.setThemes(themes);
-							events.put(eventIndex++, event);
+							events.add(event);
 							newEvents.add(event);
 						}
 					}
@@ -121,12 +143,12 @@ public class EventExtractor extends TokenInstances {
 					Event event = new Event(jcas);
 					for (Protein protein : proteins) {
 
-						Instance proteinInstance = proteinToInstance(jcas,
-								protein, trigger, null, dependencyExtractor);
-						themeRegconiser.classify(proteinInstance);
+						Instance proteinInstance = themeToInstance(jcas,
+								protein, trigger, dependencyExtractor, false);
+						double prediction = themeRecogniser
+								.predict(proteinInstance);
 
-						if (proteinInstance.classIndex() != classes
-								.indexOfValue(String.valueOf("Theme"))) {
+						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							event.setId(String.valueOf(eventIndex));
 							event.setTrigger(trigger);
 							themes.set(themeIndex++, protein.getId());
@@ -143,19 +165,19 @@ public class EventExtractor extends TokenInstances {
 						// TODO
 					}
 
-					events.put(eventIndex++, event);
+					events.add(event);
 					newEvents.add(event);
 
 				} else if (EventType.isRegulatoryEvent(trigger.getEventType())) {
 
 					for (Protein protein : proteins) {
 
-						Instance proteinInstance = proteinToInstance(jcas,
-								protein, trigger, null, dependencyExtractor);
-						themeRegconiser.classify(proteinInstance);
+						Instance proteinInstance = themeToInstance(jcas,
+								protein, trigger, dependencyExtractor, false);
+						double prediction = themeRecogniser
+								.predict(proteinInstance);
 
-						if (proteinInstance.classIndex() != classes
-								.indexOfValue(String.valueOf("Theme"))) {
+						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							// TODO can a protein be a theme of multi-event?
 							Event event = new Event(jcas);
 							event.setId(String.valueOf(eventIndex));
@@ -163,7 +185,7 @@ public class EventExtractor extends TokenInstances {
 							StringArray themes = new StringArray(jcas, 1);
 							themes.set(0, protein.getId());
 							event.setThemes(themes);
-							events.put(eventIndex++, event);
+							events.add(event);
 							newEvents.add(event);
 						}
 					}
@@ -171,7 +193,7 @@ public class EventExtractor extends TokenInstances {
 			}
 
 			// 2. check all discovered events whether they can be themes
-			for (Trigger trigger : triggers.values()) {
+			for (Trigger trigger : triggers) {
 
 				if (EventType.isRegulatoryEvent(trigger.getEventType())) {
 
@@ -180,11 +202,10 @@ public class EventExtractor extends TokenInstances {
 						Instance triggerTokenInstance = tokenToInstance(
 								getTriggerToken(jcas, themeEvent.getTrigger()),
 								null);
-						themeRegconiser.classify(triggerTokenInstance);
+						double prediction = themeRecogniser
+								.predict(triggerTokenInstance);
 
-						if (triggerTokenInstance.classIndex() != classes
-								.indexOfValue(String
-										.valueOf(EventType.Non_trigger))) {
+						if (prediction == themeDict.getLabelNumeric("Theme")) {
 
 							Event event = new Event(jcas);
 							event.setId(String.valueOf(eventIndex));
@@ -192,7 +213,7 @@ public class EventExtractor extends TokenInstances {
 							StringArray themes = new StringArray(jcas, 1);
 							themes.set(0, "E".concat(themeEvent.getId()));
 							event.setThemes(themes);
-							events.put(eventIndex++, event);
+							events.add(event);
 							newEvents.add(event);
 						}
 
@@ -203,37 +224,52 @@ public class EventExtractor extends TokenInstances {
 			//
 			// cause
 			//
-			for (Event event : events.values()) {
+			for (Event event : events) {
 
 				// protein
 				for (Protein protein : proteins) {
-					
-					Instance proteinInstance = proteinToInstance(jcas,
-							protein, trigger, null, dependencyExtractor);
-					themeRegconiser.classify(proteinInstance);
 
-					if (proteinInstance.classIndex() != classes
-							.indexOfValue(String.valueOf("Cause"))) {
+					Instance proteinInstance = causeToInstance(jcas, protein,
+							event, dependencyExtractor, false);
+					double prediction = causeRecogniser
+							.predict(proteinInstance);
+
+					if (prediction == causeDict.getLabelNumeric(String
+							.valueOf("Cause"))) {
 						event.setCause(protein.getId());
+					}
 				}
 				// event
-					for (Event causeEvent : events.values()) {
-						
-						Instance triggerInstance = triggerToInstance(jcas,
-								protein, event, null, dependencyExtractor);
-						themeRegconiser.classify(triggerInstance);
+				for (Event causeEvent : events) {
 
-						if (triggerInstance.classIndex() != classes
-								.indexOfValue(String.valueOf("Cause"))) {
-							event.setCause(causeEvent.getId());
+					Instance triggerTokenInstance = tokenToInstance(
+							getTriggerToken(jcas, causeEvent.getTrigger()),
+							null);
+					double prediction = causeRecogniser
+							.predict(triggerTokenInstance);
+
+					if (prediction == causeDict.getLabelNumeric(String
+							.valueOf("Cause"))) {
+						event.setCause(causeEvent.getId());
 					}
+				}
 			}
 		}
+
 	}
 
-	@Override
-	public File getTaeDescriptor() {
+	public static void main(String[] args) {
+		EventExtractor ee = new EventExtractor();
+		ee.setTaeDescriptor(new File("./desc/TestSetAnnotator.xml"));
 
-		return new File("./desc/TestSetAnnotator.xml");
+		ee.extract(new File(args[0]));
+
+		for (Event event : ee.events) {
+
+			if (!event.getTrigger().getEventType().equals("Non_trigger")) {
+				System.out.println(event.getTrigger().getEventType()
+						.concat("\t").concat(event.getThemes(0)));
+			}
+		}
 	}
 }

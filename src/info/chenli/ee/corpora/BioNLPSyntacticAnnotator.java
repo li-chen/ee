@@ -94,6 +94,7 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 							leftToken.setRightToken(token);
 						}
 						leftToken = token;
+						token.setDependentId(connlxToken.getDependentId());
 						token.setRelation(connlxToken.getRelation());
 						token.addToIndexes();
 
@@ -129,7 +130,7 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 						for (Token token : tokensOfSentence.values()) {
 
 							token.setDependent(tokensOfSentence.get(token
-									.getId()));
+									.getDependentId()));
 						}
 
 						tokensOfSentence = new TreeMap<Integer, Token>();

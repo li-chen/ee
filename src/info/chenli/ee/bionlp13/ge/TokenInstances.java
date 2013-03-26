@@ -20,8 +20,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.uimafit.util.JCasUtil;
 
-public class TokenInstances extends
-		info.chenli.ee.bionlp13.ge.AbstractInstances {
+public class TokenInstances extends AbstractInstances {
 
 	private final static Logger logger = Logger.getLogger(TokenInstances.class
 			.getName());
@@ -138,24 +137,18 @@ public class TokenInstances extends
 		return instance;
 	}
 
-	@Override
-	public File getTaeDescriptor() {
-
-		return new File("./desc/TrainingSetAnnotator.xml");
-	}
-
 	public static void main(String[] args) {
 
 		TokenInstances ti = new TokenInstances();
 		ti.getInstances(new File(args[0]));
 
-//		for (Instance instance : ti.getInstances()) {
-//			System.out.print(instance.getLabelString());
-//			for (String feature : instance.getFeaturesString()) {
-//				System.out.print("\t".concat(feature));
-//			}
-//			System.out.println();
-//		}
+		// for (Instance instance : ti.getInstances()) {
+		// System.out.print(instance.getLabelString());
+		// for (String feature : instance.getFeaturesString()) {
+		// System.out.print("\t".concat(feature));
+		// }
+		// System.out.println();
+		// }
 	}
 
 }

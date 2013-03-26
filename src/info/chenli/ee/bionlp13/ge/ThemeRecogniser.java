@@ -1,77 +1,50 @@
 package info.chenli.ee.bionlp13.ge;
 
-import info.chenli.classifier.AbstractClassifier;
+import info.chenli.classifier.Instance;
+import info.chenli.classifier.InstanceDictionary;
+import info.chenli.classifier.PerceptronClassifier;
 
 import java.io.File;
-import java.util.logging.Level;
+import java.util.List;
 import java.util.logging.Logger;
-
-import weka.classifiers.meta.MultiClassClassifier;
-import weka.core.Instance;
 
 /**
  * 
  * @author Chen Li
  * 
  */
-public class ThemeRecogniser extends AbstractClassifier {
+public class ThemeRecogniser extends PerceptronClassifier {
 
-	private final static Logger logger = Logger
-			.getLogger(ThemeRecogniser.class.getName());
+	private final static Logger logger = Logger.getLogger(ThemeRecogniser.class
+			.getName());
 
-	@Override
-	public void train(File trainingSet) {
-
-		train(trainingSet, false);
-
-	}
-
-	public void train(File trainingDir, boolean useSearn) {
-
-		ThemeInstances ti = new ThemeInstances();
-		ti.setTaeDescriptor(new File("./desc/BioNLPSyntacticAnnotator.xml"));
-
-		// prepare instances
-		ti.fetchInstances(trainingDir);
+	public void train(File trainingSet, boolean useSearn) {
 
 		if (useSearn) {
-			// initial the SEARN trainer
-			// Trainer trainer = new Trainer(new CSVotedPerceptron());
-			//
-			// // train
-			// trainer.train(ti.getStructuredInstances());
-			//
-			// // save the model to a physical file for later use
-			// classifier = trainer.getModel();
+
 		} else {
 
-			this.setClassifier(new MultiClassClassifier());
+			InstanceDictionary dict = new InstanceDictionary();
 
-			try {
-				getClassifier().buildClassifier(ti.getInstances());
-			} catch (Exception e) {
+			ThemeInstances trainingInstances = new ThemeInstances();
+			trainingInstances.setTaeDescriptor(new File(
+					"./desc/TrainingSetAnnotator.xml"));
+			List<Instance> instances = trainingInstances
+					.getInstances(trainingSet);
 
-				logger.log(Level.SEVERE, e.getMessage(), e);
-				throw new RuntimeException(e);
-			}
-		}
+			dict.creatDictionary(instances);
+			dict.saveDictionary(new File("./model/themes.dict"));
 
-	}
+			train(dict.instancesToNumeric(instances));
 
-	@Override
-	public void classify(Instance instance) {
+			System.out.println(accuracy(instances));
 
-		if (null == this.getClassifier()) {
-			loadModel();
-		}
+			ThemeInstances testInstances = new ThemeInstances();
+			testInstances.setTaeDescriptor(new File(
+					"./desc/TrainingSetAnnotator.xml"));
+			instances = testInstances.getInstances(new File("./data/test/"));
 
-		try {
-
-			this.getClassifier().classifyInstance(instance);
-
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
-			throw new RuntimeException(e);
+			System.out.println(accuracy(dict.instancesToNumeric(instances)));
 		}
 
 	}
@@ -80,8 +53,7 @@ public class ThemeRecogniser extends AbstractClassifier {
 
 		ThemeRecogniser tr = new ThemeRecogniser();
 		tr.train(new File(args[0]), false);
-		tr.setModelFileName("./model/themes.multiclassifier.model");
-		tr.saveModel();
+		tr.saveModel(new File("./model/themes.perceptron.model"));
 
 	}
 }
