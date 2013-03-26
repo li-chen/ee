@@ -1,7 +1,6 @@
 package info.chenli.ee.bionlp13.ge;
 
-import info.chenli.ee.corpora.Event;
-import info.chenli.ee.corpora.Protein;
+import info.chenli.classifier.Instance;
 import info.chenli.ee.corpora.Sentence;
 import info.chenli.ee.corpora.Token;
 import info.chenli.ee.corpora.Trigger;
@@ -21,12 +20,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.uimafit.util.JCasUtil;
 
-import weka.core.Attribute;
-import weka.core.DenseInstance;
-import weka.core.Instance;
-
-public class TokenInstances extends
-		info.chenli.ee.bionlp13.ge.AbstractInstances {
+public class TokenInstances extends AbstractInstances {
 
 	private final static Logger logger = Logger.getLogger(TokenInstances.class
 			.getName());
@@ -38,39 +32,33 @@ public class TokenInstances extends
 	}
 
 	@Override
-	protected void initAttributes() {
+	protected List<String> getFeaturesString() {
 
-		Attribute textAttr = new Attribute("text", (ArrayList<String>) null);
-		Attribute lemmaAttr = new Attribute("lemma", (ArrayList<String>) null);
-		Attribute posAttr = new Attribute("pos", (ArrayList<String>) null);
-		Attribute leftTokenAttr = new Attribute("leftToken",
-				(ArrayList<String>) null);
-		Attribute rightTokenAttr = new Attribute("rightToken",
-				(ArrayList<String>) null);
+		featuresString = new ArrayList<String>();
+		featuresString.add("text");
+		featuresString.add("lemma");
+		featuresString.add("stem");
+		featuresString.add("pos");
+		featuresString.add("leftToken");
+		featuresString.add("rightToken");
 
-		attributes = new ArrayList<Attribute>();
-		attributes.add(textAttr);
-		attributes.add(lemmaAttr);
-		attributes.add(posAttr);
-		attributes.add(leftTokenAttr);
-		attributes.add(rightTokenAttr);
-
+		return featuresString;
 	}
 
 	@Override
-	protected Attribute getClasses() {
+	protected List<String> getLabelsString() {
 
 		ArrayList<String> tokenTypes = new ArrayList<String>();
+
 		for (EventType eventType : EventType.values()) {
 			tokenTypes.add(String.valueOf(eventType));
 		}
 
-		return new Attribute("class", tokenTypes);
-
+		return tokenTypes;
 	}
 
 	@Override
-	protected List<StructuredInstance> fetchStructuredInstances(JCas jcas,
+	protected List<StructuredInstance> getStructuredInstances(JCas jcas,
 			FSIterator<Annotation> tokenIter) {
 
 		List<StructuredInstance> results = new LinkedList<StructuredInstance>();
@@ -125,44 +113,42 @@ public class TokenInstances extends
 	 */
 	protected Instance tokenToInstance(Token token,
 			Map<Integer, String> triggerTokens) {
-		double[] values = new double[instances.numAttributes()];
 
-		values[0] = instances.attribute(0).addStringValue(
-				token.getCoveredText());
-		values[1] = instances.attribute(1).addStringValue(token.getLemma());
-		values[2] = instances.attribute(2).addStringValue(token.getPos());
-		values[3] = instances.attribute(3).addStringValue(
-				null == token.getLeftToken() ? "" : token.getLeftToken()
-						.getCoveredText());
-		values[4] = instances.attribute(4).addStringValue(
-				null == token.getRightToken() ? "" : token.getRightToken()
-						.getCoveredText());
+		Instance instance = new Instance();
+
+		List<String> featureString = new ArrayList<String>();
+		instance.setFeaturesString(featureString);
+
+		featureString.add(token.getCoveredText());
+		featureString.add(token.getLemma());
+		featureString.add(token.getPos());
+		featureString.add(token.getStem());
+		featureString.add(null == token.getLeftToken() ? "" : token
+				.getLeftToken().getCoveredText());
+		featureString.add(null == token.getRightToken() ? "" : token
+				.getRightToken().getCoveredText());
+
 		if (null != triggerTokens) {
-			String eventType = triggerTokens.containsKey(token.getId()) ? triggerTokens
-					.get(token.getId()) : String.valueOf(EventType.Non_trigger);
-			values[5] = classes.indexOfValue(eventType);
-		}
 
-		Instance instance = new DenseInstance(1.0, values);
-
-		if (null == triggerTokens) {
-			instance.setClassMissing();
+			instance.setLabelString(triggerTokens.containsKey(token.getId()) ? triggerTokens
+					.get(token.getId()) : String.valueOf(EventType.Non_trigger));
 		}
 
 		return instance;
 	}
 
-	@Override
-	public File getTaeDescriptor() {
-
-		return new File("./desc/TrainingSetAnnotator.xml");
-	}
-
 	public static void main(String[] args) {
 
 		TokenInstances ti = new TokenInstances();
-		ti.fetchInstances(new File(args[0]));
-		System.out.println(ti.getInstances());
+		ti.getInstances(new File(args[0]));
+
+		// for (Instance instance : ti.getInstances()) {
+		// System.out.print(instance.getLabelString());
+		// for (String feature : instance.getFeaturesString()) {
+		// System.out.print("\t".concat(feature));
+		// }
+		// System.out.println();
+		// }
 	}
 
 }

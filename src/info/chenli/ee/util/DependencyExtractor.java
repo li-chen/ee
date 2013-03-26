@@ -33,7 +33,9 @@ public class DependencyExtractor {
 
 		// Add dependencies as edges.
 		for (Token token : tokens) {
-			network.addEdge(token, token.getDependent());
+			if (null != token.getDependent()) {
+				network.addEdge(token, token.getDependent());
+			}
 		}
 
 	}
@@ -41,10 +43,14 @@ public class DependencyExtractor {
 	public String getDijkstraShortestPath(Token startToken, Token endToken) {
 
 		String dependencyPath = "";
-		for (DefaultEdge edge : DijkstraShortestPath.findPathBetween(network,
-				startToken, endToken)) {
-			dependencyPath = dependencyPath.concat("_").concat(
-					network.getEdgeSource(edge).getRelation());
+		List<DefaultEdge> edges = DijkstraShortestPath.findPathBetween(network,
+				startToken, endToken);
+
+		if (null != edges && edges.size() > 0) {
+			for (DefaultEdge edge : edges) {
+				dependencyPath = dependencyPath.concat("_").concat(
+						network.getEdgeSource(edge).getRelation());
+			}
 		}
 
 		return dependencyPath;

@@ -110,14 +110,16 @@ public class GSAnnotator extends JCasAnnotator_ImplBase {
 			}
 		}
 
-		// an event must have at least one theme, but may not have cause.
+		// an event must have at least one theme, but may not have cause. When
+		// it has cause, it will only have one cause.
 		for (String eventId : eventThemeMap.keySet()) {
 
-			Event event = new Event(jCas);
+			Trigger trigger = triggerMap.get(eventTriggerMap.get(eventId));
+			Event event = new Event(jCas, trigger.getBegin(), trigger.getEnd());
 			event.setId(eventId);
 
 			// trigger
-			event.setTrigger(triggerMap.get(eventTriggerMap.get(eventId)));
+			event.setTrigger(trigger);
 
 			// themes
 			StringArray themes = new StringArray(jCas, eventThemeMap.get(
@@ -143,7 +145,9 @@ public class GSAnnotator extends JCasAnnotator_ImplBase {
 					causes.set(i++, causeId);
 
 				}
-				event.setCauses(causes);
+				// In GE task, each event only has one cause, but it is kept
+				// like this for further flexibility.
+				event.setCause(causes.get(0));
 			}
 
 			event.addToIndexes();

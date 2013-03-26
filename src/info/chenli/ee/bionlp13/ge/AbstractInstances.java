@@ -1,12 +1,13 @@
 package info.chenli.ee.bionlp13.ge;
 
+import info.chenli.classifier.Instance;
 import info.chenli.ee.corpora.Event;
 import info.chenli.ee.corpora.POS;
-import info.chenli.ee.corpora.Protein;
 import info.chenli.ee.corpora.Token;
 import info.chenli.ee.corpora.Trigger;
 import info.chenli.ee.searn.StructuredInstance;
 import info.chenli.ee.util.DependencyExtractor;
+import info.chenli.ee.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,11 +33,6 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.uimafit.util.JCasUtil;
 
-import weka.core.Attribute;
-import weka.core.DenseInstance;
-import weka.core.Instance;
-import weka.core.Instances;
-
 public abstract class AbstractInstances {
 
 	private final static Logger logger = Logger
@@ -46,9 +42,9 @@ public abstract class AbstractInstances {
 	private int annotationType;
 	private File taeDescriptor;
 	protected List<StructuredInstance> structuredInstances = new LinkedList<StructuredInstance>();
-	protected Instances instances;
-	protected ArrayList<Attribute> attributes;
-	protected Attribute classes;
+	protected List<Instance> instances;
+	protected List<String> featuresString;
+	protected List<String> labelsString;
 
 	protected void setTaeDescriptor(File taeDescriptor) {
 
@@ -71,15 +67,11 @@ public abstract class AbstractInstances {
 
 	private void init() {
 
-		initAttributes();
+		featuresString = getFeaturesString();
 
-		classes = getClasses();
+		labelsString = getLabelsString();
 
-		attributes.add(classes);
-
-		instances = new Instances(instancesName, attributes, 0);
-
-		instances.setClass(classes);
+		instances = new ArrayList<Instance>();
 
 		try {
 			XMLInputSource in = new XMLInputSource(getTaeDescriptor());
@@ -99,13 +91,13 @@ public abstract class AbstractInstances {
 		}
 	}
 
-	protected abstract void initAttributes();
+	protected abstract List<String> getLabelsString();
 
-	protected abstract Attribute getClasses();
+	protected abstract List<String> getFeaturesString();
 
-	public void fetchInstances(File dataDir) {
+	public List<Instance> getInstances(File dataDir) {
 
-		if (null == attributes || null == ae) {
+		if (null == featuresString || null == ae) {
 			init();
 		}
 
@@ -134,13 +126,12 @@ public abstract class AbstractInstances {
 		}
 		ae.destroy();
 
+		return getInstances();
 	}
 
 	protected JCas processSingleFile(File aFile, int annotationType) {
 
-		logger.log(Level.INFO, "Processing file " + aFile.getName());
-
-		if (null == attributes || null == ae) {
+		if (null == featuresString || null == ae) {
 			init();
 		}
 
@@ -175,8 +166,7 @@ public abstract class AbstractInstances {
 			JCas jcas = null;
 			jcas = cas.getJCas();
 			annoIter = jcas.getAnnotationIndex(annotationType).iterator();
-			structuredInstances
-					.addAll(fetchStructuredInstances(jcas, annoIter));
+			structuredInstances.addAll(getStructuredInstances(jcas, annoIter));
 
 			return jcas;
 
@@ -201,7 +191,7 @@ public abstract class AbstractInstances {
 
 	}
 
-	protected abstract List<StructuredInstance> fetchStructuredInstances(
+	protected abstract List<StructuredInstance> getStructuredInstances(
 			JCas jcas, FSIterator<Annotation> annoIter);
 
 	public List<StructuredInstance> getStructuredInstances() {
@@ -209,7 +199,7 @@ public abstract class AbstractInstances {
 		return structuredInstances;
 	}
 
-	public Instances getInstances() {
+	public List<Instance> getInstances() {
 
 		for (StructuredInstance si : structuredInstances) {
 			instances.addAll(si.getNodes());
@@ -227,8 +217,6 @@ public abstract class AbstractInstances {
 	 * Alternatively, it can be dynamically learned.
 	 */
 	protected Token getTriggerToken(List<Token> tokens) {
-
-		logger.info("Processing multi-token...");
 
 		if (tokens.size() > 1) {
 
@@ -277,26 +265,86 @@ public abstract class AbstractInstances {
 		return null;
 	}
 
+	public void saveInstances(File file) {
+
+		StringBuffer sb = new StringBuffer();
+
+		for (Instance instance : instances) {
+
+			sb.append(instance.getLabelString());
+
+			for (String feature : instance.getFeaturesString()) {
+				sb.append("\t".concat(feature));
+			}
+
+			sb.append("\n");
+		}
+
+		String instancesStr = sb.toString();
+		FileUtil.saveFile(instancesStr, file);
+	}
+
+	public void saveNumericInstances(File file) {
+
+		StringBuffer sb = new StringBuffer();
+
+		for (Instance instance : instances) {
+
+			sb.append(String.valueOf(instance.getLabel()));
+
+			for (double feature : instance.getFeatures()) {
+				sb.append("\t".concat(String.valueOf(feature)));
+			}
+
+			sb.append("\n");
+		}
+
+		String instancesStr = sb.toString();
+		FileUtil.saveFile(instancesStr, file);
+	}
+
 	/**
+	 * Convert a protein or event into an theme instance ready for training or
+	 * predicting.
 	 * 
 	 * @param jcas
 	 * @param anno
-	 * @param trigger
-	 * @param themeId
+	 *            It could be a protein or an event trigger.
+	 * @param event
 	 * @param dependencyExtractor
 	 * @return
 	 */
-	protected Instance themeToInstance(JCas jcas, Annotation anno, Event event,
-			DependencyExtractor dependencyExtractor) {
+	protected Instance themeToInstance(JCas jcas, Annotation anno,
+			Trigger trigger, DependencyExtractor dependencyExtractor,
+			boolean isTheme) {
 
 		List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class, anno);
+
+		// if protein is within a token
+		if (tokens.size() == 0) {
+			FSIterator<Annotation> iter = jcas.getAnnotationIndex(Token.type)
+					.iterator();
+			tokens = new ArrayList<Token>();
+			while (iter.hasNext()) {
+				Token token = (Token) iter.next();
+				if (token.getBegin() <= anno.getBegin()
+						&& token.getEnd() >= anno.getEnd()) {
+					tokens.add(token);
+					break;
+				}
+			}
+		}
+
 		String tokenLemma = "", tokenPos = "";
-		String leftToken = tokens.get(0).getCoveredText();
-		String rightToken = tokens.get(tokens.size() - 1).getCoveredText();
+		String leftToken = null == tokens.get(0).getLeftToken() ? "" : tokens
+				.get(0).getLeftToken().getCoveredText();
+		String rightToken = null == tokens.get(tokens.size() - 1)
+				.getRightToken() ? "" : tokens.get(tokens.size() - 1)
+				.getRightToken().getCoveredText();
 
 		// Take the last non-digital token if protein is
 		// multi-token.
-		Token annoToken = null;
+		Token annoToken = tokens.get(0);
 		for (Token token : tokens) {
 
 			try {
@@ -305,49 +353,37 @@ public abstract class AbstractInstances {
 				annoToken = token;
 			}
 
-			tokenLemma = tokenLemma.concat(token.getLemma()).concat("_");
-
-			tokenPos = tokenPos.concat(token.getPos()).concat("_");
 		}
 
-		double[] values = new double[instances.numAttributes()];
-		values[0] = instances.attribute(0)
-				.addStringValue(anno.getCoveredText());
-		values[1] = instances.attribute(0).addStringValue(tokenLemma);
-		values[2] = instances.attribute(0).addStringValue(tokenPos);
-		values[3] = instances.attribute(0).addStringValue(leftToken);
-		values[4] = instances.attribute(0).addStringValue(rightToken);
-		values[5] = instances.attribute(0).addStringValue(
-				event.getTrigger().getEventType());
-		values[6] = instances.attribute(0).addStringValue(
-				event.getTrigger().getCoveredText());
-		Token triggerToken = getTriggerToken(jcas, event.getTrigger());
-		values[7] = instances.attribute(0).addStringValue(
-				triggerToken.getCoveredText());
-		values[8] = instances.attribute(0).addStringValue(
-				triggerToken.getLemma());
-		values[9] = instances.attribute(0).addStringValue(
-				dependencyExtractor.getDijkstraShortestPath(annoToken,
-						triggerToken));
+		tokenLemma = annoToken.getLemma();
 
-		// protein that is theme
-		Protein protein = null;
-		if (anno instanceof Protein) {
-			protein = (Protein) anno;
-		}
-		// TODO consider more themes. e.g. themes in binding.
-		if (null != event.getThemes()
-				&& event.getThemes().get(0).equals(protein.getId())) {
+		tokenPos = annoToken.getPos();
 
-			values[10] = classes.indexOfValue("Theme");
+		Instance instance = new Instance();
+		List<String> featuresString = new ArrayList<String>();
+		instance.setFeaturesString(featuresString);
+		featuresString.add(anno.getCoveredText());
+		featuresString.add(tokenLemma);
+		featuresString.add(tokenPos);
+		featuresString.add(leftToken);
+		featuresString.add(rightToken);
+		featuresString.add(trigger.getEventType());
+		featuresString.add(trigger.getCoveredText());
+		Token triggerToken = getTriggerToken(jcas, trigger);
+		featuresString.add(triggerToken.getCoveredText());
+		featuresString.add(triggerToken.getLemma());
+		featuresString.add(dependencyExtractor.getDijkstraShortestPath(
+				annoToken, triggerToken));
 
-		} else
-		// protein that is not theme
-		{
-			values[10] = classes.indexOfValue("Non_theme");
+		if (isTheme) {
+
+			instance.setLabelString("Theme");
+
+		} else {
+			instance.setLabelString("Non_theme");
 		}
 
-		return new DenseInstance(1.0, values);
+		return instance;
 	}
 
 	/**
@@ -357,19 +393,39 @@ public abstract class AbstractInstances {
 	 * @param trigger
 	 * @param themeId
 	 * @param dependencyExtractor
+	 * @param isCause
 	 * @return
 	 */
 	protected Instance causeToInstance(JCas jcas, Annotation anno, Event event,
-			DependencyExtractor dependencyExtractor) {
+			DependencyExtractor dependencyExtractor, boolean isCause) {
 
 		List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class, anno);
+
+		// if protein is within a token
+		if (tokens.size() == 0) {
+			FSIterator<Annotation> iter = jcas.getAnnotationIndex(Token.type)
+					.iterator();
+			tokens = new ArrayList<Token>();
+			while (iter.hasNext()) {
+				Token token = (Token) iter.next();
+				if (token.getBegin() <= anno.getBegin()
+						&& token.getEnd() >= anno.getEnd()) {
+					tokens.add(token);
+					break;
+				}
+			}
+		}
+
 		String tokenLemma = "", tokenPos = "";
-		String leftToken = tokens.get(0).getCoveredText();
-		String rightToken = tokens.get(tokens.size() - 1).getCoveredText();
+		String leftToken = null == tokens.get(0).getLeftToken() ? "" : tokens
+				.get(0).getLeftToken().getCoveredText();
+		String rightToken = null == tokens.get(tokens.size() - 1)
+				.getRightToken() ? "" : tokens.get(tokens.size() - 1)
+				.getRightToken().getCoveredText();
 
 		// Take the last non-digital token if protein is
 		// multi-token.
-		Token annoToken = null;
+		Token annoToken = tokens.get(0);
 		for (Token token : tokens) {
 
 			try {
@@ -378,58 +434,46 @@ public abstract class AbstractInstances {
 				annoToken = token;
 			}
 
-			tokenLemma = tokenLemma.concat(token.getLemma()).concat("_");
-
-			tokenPos = tokenPos.concat(token.getPos()).concat("_");
 		}
 
-		double[] values = new double[instances.numAttributes()];
-		values[0] = instances.attribute(0)
-				.addStringValue(anno.getCoveredText());
-		values[1] = instances.attribute(0).addStringValue(tokenLemma);
-		values[2] = instances.attribute(0).addStringValue(tokenPos);
-		values[3] = instances.attribute(0).addStringValue(leftToken);
-		values[4] = instances.attribute(0).addStringValue(rightToken);
-		values[5] = instances.attribute(0).addStringValue(
-				event.getTrigger().getEventType());
-		values[6] = instances.attribute(0).addStringValue(
-				event.getTrigger().getCoveredText());
+		tokenLemma = annoToken.getLemma();
+
+		tokenPos = annoToken.getPos();
+
+		Instance instance = new Instance();
+		List<String> featuresString = new ArrayList<String>();
+		instance.setFeaturesString(featuresString);
+
+		featuresString.add(anno.getCoveredText());
+		featuresString.add(tokenLemma);
+		featuresString.add(tokenPos);
+		featuresString.add(leftToken);
+		featuresString.add(rightToken);
+		featuresString.add(event.getTrigger().getEventType());
+		featuresString.add(event.getTrigger().getCoveredText());
 		Token triggerToken = getTriggerToken(jcas, event.getTrigger());
-		values[7] = instances.attribute(0).addStringValue(
-				triggerToken.getCoveredText());
-		values[8] = instances.attribute(0).addStringValue(
-				triggerToken.getLemma());
-		values[9] = instances.attribute(0).addStringValue(
-				dependencyExtractor.getDijkstraShortestPath(annoToken,
-						triggerToken));
+		featuresString.add(triggerToken.getCoveredText());
+		featuresString.add(triggerToken.getLemma());
+		featuresString.add(dependencyExtractor.getDijkstraShortestPath(
+				annoToken, triggerToken));
 		// a regulatory event only has one theme
-		values[10] = instances.attribute(0).addStringValue(
-				event.getThemes().get(0));
-		values[11] = instances.attribute(0).addStringValue(
-				triggerToken.getCoveredText());
-		values[12] = instances.attribute(0).addStringValue(
-				triggerToken.getLemma());
-		values[13] = instances.attribute(0).addStringValue(
-				dependencyExtractor.getDijkstraShortestPath(annoToken,
-						triggerToken));
+		featuresString.add(event.getThemes().get(0));
+		featuresString.add(triggerToken.getCoveredText());
+		featuresString.add(triggerToken.getLemma());
+		featuresString.add(dependencyExtractor.getDijkstraShortestPath(
+				annoToken, triggerToken));
 
-		// protein that is theme
-		Protein protein = null;
-		if (anno instanceof Protein) {
-			protein = (Protein) anno;
-		}
 		// TODO consider more themes. e.g. themes in binding.
-		if (null != event.getThemes()
-				&& event.getThemes().get(0).equals(protein.getId())) {
+		if (isCause) {
 
-			values[10] = classes.indexOfValue("Theme");
+			instance.setLabelString("Cause");
 
 		} else
 		// protein that is not theme
 		{
-			values[10] = classes.indexOfValue("Non_theme");
+			instance.setLabelString("Non_cause");
 		}
 
-		return new DenseInstance(1.0, values);
+		return instance;
 	}
 }

@@ -1,5 +1,6 @@
 package info.chenli.ee.bionlp13.ge;
 
+import info.chenli.classifier.Instance;
 import info.chenli.ee.corpora.Event;
 import info.chenli.ee.corpora.Protein;
 import info.chenli.ee.corpora.Sentence;
@@ -11,7 +12,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.uima.cas.FSIterator;
@@ -20,12 +20,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.uimafit.util.JCasUtil;
 
-import weka.core.Attribute;
-import weka.core.DenseInstance;
-import weka.core.Instance;
-
-public class CauseInstances extends
-		info.chenli.ee.bionlp13.ge.AbstractInstances {
+public class CauseInstances extends AbstractInstances {
 
 	private final static Logger logger = Logger.getLogger(CauseInstances.class
 			.getName());
@@ -37,66 +32,41 @@ public class CauseInstances extends
 	}
 
 	@Override
-	protected void initAttributes() {
+	protected List<String> getFeaturesString() {
 
-		Attribute textAttr = new Attribute("text", (ArrayList<String>) null);
-		Attribute lemmaAttr = new Attribute("lemma", (ArrayList<String>) null);
-		Attribute posAttr = new Attribute("pos", (ArrayList<String>) null);
-		Attribute leftTokenAttr = new Attribute("leftToken",
-				(ArrayList<String>) null);
-		Attribute rightTokenAttr = new Attribute("rightToken",
-				(ArrayList<String>) null);
-		Attribute eventTypeAttr = new Attribute("eventType",
-				(ArrayList<String>) null);
-		Attribute triggerTextAttr = new Attribute("triggerText",
-				(ArrayList<String>) null);
-		Attribute triggerTokenTextAttr = new Attribute("triggerTokenText",
-				(ArrayList<String>) null);
-		Attribute triggerTokenLemmaAttr = new Attribute("triggerTokenLemma",
-				(ArrayList<String>) null);
-		Attribute dependencyPathToTriggerAttr = new Attribute(
-				"dependencyPathToTrigger", (ArrayList<String>) null);
-		Attribute themeTextAttr = new Attribute("themeText",
-				(ArrayList<String>) null);
-		Attribute themeTokenTextAttr = new Attribute("themeTokenText",
-				(ArrayList<String>) null);
-		Attribute themeTokenLemmaAttr = new Attribute("themeTokenLemma",
-				(ArrayList<String>) null);
-		Attribute dependencyPathToThemeAttr = new Attribute(
-				"dependencyPathToTheme", (ArrayList<String>) null);
+		featuresString = new ArrayList<String>();
+		featuresString.add("text");
+		featuresString.add("lemma");
+		featuresString.add("pos");
+		featuresString.add("leftToken");
+		featuresString.add("rightToken");
+		featuresString.add("eventType");
+		featuresString.add("triggerText");
+		featuresString.add("triggerTokenText");
+		featuresString.add("triggerTokenLemma");
+		featuresString.add("dependencyPathToTrigger");
+		featuresString.add("themeText");
+		featuresString.add("themeTokenText");
+		featuresString.add("themeTokenLemma");
+		featuresString.add("dependencyPathToTheme");
 
-		attributes = new ArrayList<Attribute>();
-		attributes.add(textAttr);
-		attributes.add(lemmaAttr);
-		attributes.add(posAttr);
-		attributes.add(leftTokenAttr);
-		attributes.add(rightTokenAttr);
-		attributes.add(eventTypeAttr);
-		attributes.add(triggerTextAttr);
-		attributes.add(triggerTokenTextAttr);
-		attributes.add(triggerTokenLemmaAttr);
-		attributes.add(dependencyPathToTriggerAttr);
-		attributes.add(themeTextAttr);
-		attributes.add(themeTokenTextAttr);
-		attributes.add(themeTokenLemmaAttr);
-		attributes.add(dependencyPathToThemeAttr);
+		return featuresString;
+	}
+
+	@Override
+	protected List<String> getLabelsString() {
+
+		ArrayList<String> causeTypes = new ArrayList<String>();
+
+		causeTypes.add("Cause");
+		causeTypes.add("Non_cause");
+
+		return causeTypes;
 
 	}
 
 	@Override
-	protected Attribute getClasses() {
-
-		ArrayList<String> themeTypes = new ArrayList<String>();
-
-		themeTypes.add("Theme");
-		themeTypes.add("Non_theme");
-
-		return new Attribute("class", themeTypes);
-
-	}
-
-	@Override
-	protected List<StructuredInstance> fetchStructuredInstances(JCas jcas,
+	protected List<StructuredInstance> getStructuredInstances(JCas jcas,
 			FSIterator<Annotation> tokenIter) {
 
 		List<StructuredInstance> results = new LinkedList<StructuredInstance>();
@@ -110,8 +80,8 @@ public class CauseInstances extends
 		while (sentenceIter.hasNext()) {
 
 			StructuredInstance si = new StructuredInstance();
-			List<Instance> themeCandidates = new LinkedList<Instance>();
-			si.setNodes(themeCandidates);
+			List<Instance> causeCandidates = new LinkedList<Instance>();
+			si.setNodes(causeCandidates);
 
 			Sentence sentence = (Sentence) sentenceIter.next();
 
@@ -125,20 +95,29 @@ public class CauseInstances extends
 
 			for (Event event : events) {
 
-				for (int i = 0; i < event.getThemes().size(); i++) {
+				// an event may not have an cause.
+				if (null == event.getCause() || event.getCause().equals("")) {
 
-					String themeId = event.getThemes(i);
+					continue;
+				}
 
-					// check protein themes
-					for (Protein protein : proteins) {
+				// check protein themes
+				for (Protein protein : proteins) {
 
-						themeCandidates.add(causeToInstance(jcas, protein, event, dependencyExtractor));
-					}
+					boolean isCause = event.getCause().equals(protein.getId());
 
-					// check event themes
-					for (Event themeEvent: events) {
-						themeCandidates.add(causeToInstance(jcas, themeEvent.getTrigger(), event, dependencyExtractor));
-					}
+					causeCandidates.add(causeToInstance(jcas, protein, event,
+							dependencyExtractor, isCause));
+				}
+
+				// check event themes
+				for (Event causeEvent : events) {
+
+					boolean isCause = event.getCause().equals(
+							causeEvent.getId());
+					causeCandidates.add(causeToInstance(jcas,
+							causeEvent.getTrigger(), event,
+							dependencyExtractor, isCause));
 				}
 			}
 
@@ -148,16 +127,10 @@ public class CauseInstances extends
 		return results;
 	}
 
-	@Override
-	public File getTaeDescriptor() {
-
-		return new File("./desc/TrainingSetAnnotator.xml");
-	}
-
 	public static void main(String[] args) {
 
 		TokenInstances ti = new TokenInstances();
-		ti.fetchInstances(new File(args[0]));
+		ti.getInstances(new File(args[0]));
 		System.out.println(ti.getInstances());
 	}
 

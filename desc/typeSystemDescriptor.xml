@@ -88,6 +88,11 @@
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
         <featureDescription>
+          <name>stem</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
           <name>leftToken</name>
           <description/>
           <rangeTypeName>info.chenli.ee.corpora.Token</rangeTypeName>
@@ -96,6 +101,11 @@
           <name>rightToken</name>
           <description/>
           <rangeTypeName>info.chenli.ee.corpora.Token</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>dependentId</name>
+          <description/>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>dependent</name>

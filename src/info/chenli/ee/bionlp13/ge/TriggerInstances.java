@@ -15,11 +15,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.uimafit.util.JCasUtil;
 
-import weka.core.Attribute;
-import weka.core.DenseInstance;
-
-public class TriggerInstances extends
-		info.chenli.ee.bionlp13.ge.AbstractInstances {
+public class TriggerInstances extends AbstractInstances {
 
 	private final static Logger logger = Logger
 			.getLogger(TriggerInstances.class.getName());
@@ -31,39 +27,25 @@ public class TriggerInstances extends
 	}
 
 	@Override
-	protected void initAttributes() {
+	protected List<String> getFeaturesString() {
 
-		Attribute textAttr = new Attribute("text", (ArrayList<String>) null);
-		Attribute lemmaAttr = new Attribute("lemma", (ArrayList<String>) null);
-		Attribute posAttr = new Attribute("pos", (ArrayList<String>) null);
-		Attribute leftTokenAttr = new Attribute("leftToken",
-				(ArrayList<String>) null);
-		Attribute rightTokenAttr = new Attribute("rightToken",
-				(ArrayList<String>) null);
-
-		attributes = new ArrayList<Attribute>();
-		attributes.add(textAttr);
-		attributes.add(lemmaAttr);
-		attributes.add(posAttr);
-		attributes.add(leftTokenAttr);
-		attributes.add(rightTokenAttr);
-
+		return null;
 	}
 
 	@Override
-	protected Attribute getClasses() {
+	protected List<String> getLabelsString() {
 
 		ArrayList<String> tokenTypes = new ArrayList<String>();
 		for (EventType eventType : EventType.values()) {
 			tokenTypes.add(String.valueOf(eventType));
 		}
 
-		return new Attribute("class", tokenTypes);
+		return tokenTypes;
 
 	}
 
 	@Override
-	protected List<StructuredInstance> fetchStructuredInstances(JCas jcas,
+	protected List<StructuredInstance> getStructuredInstances(JCas jcas,
 			FSIterator<Annotation> annoIter) {
 
 		List<StructuredInstance> results = new LinkedList<StructuredInstance>();
@@ -137,7 +119,7 @@ public class TriggerInstances extends
 	public static void main(String[] args) {
 
 		TriggerInstances ti = new TriggerInstances();
-		ti.fetchInstances(new File(args[0]));
+		ti.getInstances(new File(args[0]));
 		System.out.println(ti.getInstances());
 	}
 
