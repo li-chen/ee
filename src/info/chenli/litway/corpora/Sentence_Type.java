@@ -13,7 +13,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue Mar 26 13:33:27 GMT 2013
+ * Updated by JCasGen Wed Mar 27 09:29:54 GMT 2013
  * @generated */
 public class Sentence_Type extends Annotation_Type {
 	/** @generated */
@@ -43,7 +43,7 @@ public class Sentence_Type extends Annotation_Type {
 	 * @modifiable
 	 */
 	@SuppressWarnings("hiding")
-	public final static boolean featOkTst = JCasRegistry.getFeatOkTst("info.chenli.ee.corpora.Sentence");
+	public final static boolean featOkTst = JCasRegistry.getFeatOkTst("info.chenli.litway.corpora.Sentence");
 
 	/** @generated */
 	final Feature casFeat_id;
@@ -53,13 +53,13 @@ public class Sentence_Type extends Annotation_Type {
 	/** @generated */
 	public int getId(int addr) {
         if (featOkTst && casFeat_id == null)
-      jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Sentence");
+      jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Sentence");
     return ll_cas.ll_getIntValue(addr, casFeatCode_id);
   }
 	/** @generated */
 	public void setId(int addr, int v) {
         if (featOkTst && casFeat_id == null)
-      jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Sentence");
+      jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Sentence");
     ll_cas.ll_setIntValue(addr, casFeatCode_id, v);}
     
   

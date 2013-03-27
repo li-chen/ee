@@ -83,27 +83,27 @@ public class TriggerInstances extends AbstractInstances {
 				triggerToken = getTriggerToken(tokens);
 			}
 
-			double[] values = new double[instances.numAttributes()];
-
-			values[0] = instances.attribute(0).addStringValue(
-					triggerToken.getCoveredText());
-			values[1] = instances.attribute(1).addStringValue(
-					triggerToken.getLemma());
-			values[2] = instances.attribute(2).addStringValue(
-					triggerToken.getPos());
-			values[3] = instances.attribute(3).addStringValue(
-					null == triggerToken.getLeftToken() ? "" : triggerToken
-							.getLeftToken().getCoveredText());
-			values[4] = instances.attribute(4).addStringValue(
-					null == triggerToken.getRightToken() ? "" : triggerToken
-							.getRightToken().getCoveredText());
-			values[5] = classes.indexOfValue(trigger.getEventType());
-
-			StructuredInstance si = new StructuredInstance();
-			// TODO this part is wrong and doesn't work properly due to the
-			// change in the upper class. need to be updated.
-			new DenseInstance(1.0, values);
-			results.add(si);
+//			double[] values = new double[instances.numAttributes()];
+//
+//			values[0] = instances.attribute(0).addStringValue(
+//					triggerToken.getCoveredText());
+//			values[1] = instances.attribute(1).addStringValue(
+//					triggerToken.getLemma());
+//			values[2] = instances.attribute(2).addStringValue(
+//					triggerToken.getPos());
+//			values[3] = instances.attribute(3).addStringValue(
+//					null == triggerToken.getLeftToken() ? "" : triggerToken
+//							.getLeftToken().getCoveredText());
+//			values[4] = instances.attribute(4).addStringValue(
+//					null == triggerToken.getRightToken() ? "" : triggerToken
+//							.getRightToken().getCoveredText());
+//			values[5] = classes.indexOfValue(trigger.getEventType());
+//
+//			StructuredInstance si = new StructuredInstance();
+//			// TODO this part is wrong and doesn't work properly due to the
+//			// change in the upper class. need to be updated.
+//			new DenseInstance(1.0, values);
+//			results.add(si);
 
 			annoIter.moveToNext();
 		}

@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue Mar 26 13:33:27 GMT 2013
+ * Updated by JCasGen Wed Mar 27 09:29:54 GMT 2013
  * @generated */
 public class Token_Type extends Annotation_Type {
   /** @generated */
@@ -42,7 +42,7 @@ public class Token_Type extends Annotation_Type {
   /** @generated 
      @modifiable */
   @SuppressWarnings ("hiding")
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("info.chenli.ee.corpora.Token");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("info.chenli.litway.corpora.Token");
  
   /** @generated */
   final Feature casFeat_pos;
@@ -51,13 +51,13 @@ public class Token_Type extends Annotation_Type {
   /** @generated */ 
   public String getPos(int addr) {
         if (featOkTst && casFeat_pos == null)
-      jcas.throwFeatMissing("pos", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("pos", "info.chenli.litway.corpora.Token");
     return ll_cas.ll_getStringValue(addr, casFeatCode_pos);
   }
   /** @generated */    
   public void setPos(int addr, String v) {
         if (featOkTst && casFeat_pos == null)
-      jcas.throwFeatMissing("pos", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("pos", "info.chenli.litway.corpora.Token");
     ll_cas.ll_setStringValue(addr, casFeatCode_pos, v);}
     
   
@@ -69,13 +69,13 @@ public class Token_Type extends Annotation_Type {
   /** @generated */ 
   public String getLemma(int addr) {
         if (featOkTst && casFeat_lemma == null)
-      jcas.throwFeatMissing("lemma", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("lemma", "info.chenli.litway.corpora.Token");
     return ll_cas.ll_getStringValue(addr, casFeatCode_lemma);
   }
   /** @generated */    
   public void setLemma(int addr, String v) {
         if (featOkTst && casFeat_lemma == null)
-      jcas.throwFeatMissing("lemma", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("lemma", "info.chenli.litway.corpora.Token");
     ll_cas.ll_setStringValue(addr, casFeatCode_lemma, v);}
     
   
@@ -87,13 +87,13 @@ public class Token_Type extends Annotation_Type {
   /** @generated */ 
   public String getStem(int addr) {
         if (featOkTst && casFeat_stem == null)
-      jcas.throwFeatMissing("stem", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("stem", "info.chenli.litway.corpora.Token");
     return ll_cas.ll_getStringValue(addr, casFeatCode_stem);
   }
   /** @generated */    
   public void setStem(int addr, String v) {
         if (featOkTst && casFeat_stem == null)
-      jcas.throwFeatMissing("stem", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("stem", "info.chenli.litway.corpora.Token");
     ll_cas.ll_setStringValue(addr, casFeatCode_stem, v);}
     
   
@@ -105,13 +105,13 @@ public class Token_Type extends Annotation_Type {
   /** @generated */ 
   public int getLeftToken(int addr) {
         if (featOkTst && casFeat_leftToken == null)
-      jcas.throwFeatMissing("leftToken", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("leftToken", "info.chenli.litway.corpora.Token");
     return ll_cas.ll_getRefValue(addr, casFeatCode_leftToken);
   }
   /** @generated */    
   public void setLeftToken(int addr, int v) {
         if (featOkTst && casFeat_leftToken == null)
-      jcas.throwFeatMissing("leftToken", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("leftToken", "info.chenli.litway.corpora.Token");
     ll_cas.ll_setRefValue(addr, casFeatCode_leftToken, v);}
     
   
@@ -123,13 +123,13 @@ public class Token_Type extends Annotation_Type {
   /** @generated */ 
   public int getRightToken(int addr) {
         if (featOkTst && casFeat_rightToken == null)
-      jcas.throwFeatMissing("rightToken", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("rightToken", "info.chenli.litway.corpora.Token");
     return ll_cas.ll_getRefValue(addr, casFeatCode_rightToken);
   }
   /** @generated */    
   public void setRightToken(int addr, int v) {
         if (featOkTst && casFeat_rightToken == null)
-      jcas.throwFeatMissing("rightToken", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("rightToken", "info.chenli.litway.corpora.Token");
     ll_cas.ll_setRefValue(addr, casFeatCode_rightToken, v);}
     
   
@@ -141,13 +141,13 @@ public class Token_Type extends Annotation_Type {
   /** @generated */ 
   public int getDependentId(int addr) {
         if (featOkTst && casFeat_dependentId == null)
-      jcas.throwFeatMissing("dependentId", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("dependentId", "info.chenli.litway.corpora.Token");
     return ll_cas.ll_getIntValue(addr, casFeatCode_dependentId);
   }
   /** @generated */    
   public void setDependentId(int addr, int v) {
         if (featOkTst && casFeat_dependentId == null)
-      jcas.throwFeatMissing("dependentId", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("dependentId", "info.chenli.litway.corpora.Token");
     ll_cas.ll_setIntValue(addr, casFeatCode_dependentId, v);}
     
   
@@ -159,13 +159,13 @@ public class Token_Type extends Annotation_Type {
   /** @generated */ 
   public int getDependent(int addr) {
         if (featOkTst && casFeat_dependent == null)
-      jcas.throwFeatMissing("dependent", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("dependent", "info.chenli.litway.corpora.Token");
     return ll_cas.ll_getRefValue(addr, casFeatCode_dependent);
   }
   /** @generated */    
   public void setDependent(int addr, int v) {
         if (featOkTst && casFeat_dependent == null)
-      jcas.throwFeatMissing("dependent", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("dependent", "info.chenli.litway.corpora.Token");
     ll_cas.ll_setRefValue(addr, casFeatCode_dependent, v);}
     
   
@@ -177,13 +177,13 @@ public class Token_Type extends Annotation_Type {
   /** @generated */ 
   public String getRelation(int addr) {
         if (featOkTst && casFeat_relation == null)
-      jcas.throwFeatMissing("relation", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("relation", "info.chenli.litway.corpora.Token");
     return ll_cas.ll_getStringValue(addr, casFeatCode_relation);
   }
   /** @generated */    
   public void setRelation(int addr, String v) {
         if (featOkTst && casFeat_relation == null)
-      jcas.throwFeatMissing("relation", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("relation", "info.chenli.litway.corpora.Token");
     ll_cas.ll_setStringValue(addr, casFeatCode_relation, v);}
     
   
@@ -197,13 +197,13 @@ public class Token_Type extends Annotation_Type {
   /** @generated */ 
   public int getId(int addr) {
         if (featOkTst && casFeat_id == null)
-      jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Token");
     return ll_cas.ll_getIntValue(addr, casFeatCode_id);
   }
   /** @generated */    
   public void setId(int addr, int v) {
         if (featOkTst && casFeat_id == null)
-      jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Token");
+      jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Token");
     ll_cas.ll_setIntValue(addr, casFeatCode_id, v);}
     
   
@@ -231,11 +231,11 @@ public class Token_Type extends Annotation_Type {
     casFeatCode_stem  = (null == casFeat_stem) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_stem).getCode();
 
  
-    casFeat_leftToken = jcas.getRequiredFeatureDE(casType, "leftToken", "info.chenli.ee.corpora.Token", featOkTst);
+    casFeat_leftToken = jcas.getRequiredFeatureDE(casType, "leftToken", "info.chenli.litway.corpora.Token", featOkTst);
     casFeatCode_leftToken  = (null == casFeat_leftToken) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_leftToken).getCode();
 
  
-    casFeat_rightToken = jcas.getRequiredFeatureDE(casType, "rightToken", "info.chenli.ee.corpora.Token", featOkTst);
+    casFeat_rightToken = jcas.getRequiredFeatureDE(casType, "rightToken", "info.chenli.litway.corpora.Token", featOkTst);
     casFeatCode_rightToken  = (null == casFeat_rightToken) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_rightToken).getCode();
 
  
@@ -243,7 +243,7 @@ public class Token_Type extends Annotation_Type {
     casFeatCode_dependentId  = (null == casFeat_dependentId) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_dependentId).getCode();
 
  
-    casFeat_dependent = jcas.getRequiredFeatureDE(casType, "dependent", "info.chenli.ee.corpora.Token", featOkTst);
+    casFeat_dependent = jcas.getRequiredFeatureDE(casType, "dependent", "info.chenli.litway.corpora.Token", featOkTst);
     casFeatCode_dependent  = (null == casFeat_dependent) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_dependent).getCode();
 
  

@@ -1,0 +1,132 @@
+<!-- Ant file for LitWay -->
+<!-- Author: Chen Li -->
+<project name="litway" default="jar" basedir=".">
+	<description>LitWay - biological pathway extraction from scientific
+		literature
+	</description>
+	<!-- set global properties for this build -->
+	<property name="app.name" value="litway" />
+	<property name="src" location="src" />
+	<property name="lib" location="lib" />
+	<property name="build" location="build" />
+	<property name="meta.inf" location="${build}/META-INF" />
+	<property name="dist" location="dist" />
+	<property name="docs" location="docs" />
+	<!-- properties for compilation -->
+	<property name="debug" value="on" />
+	<property name="source" value="1.5" />
+	<property name="target" value="1.5" />
+	<property name="optimize" value="off" />
+	<property name="compilerarg" value="-Xlint:deprecation" />
+	<path id="project.classpath">
+		<fileset dir="${lib}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+
+	<!-- timestamp -->
+	<tstamp>
+		<format property="DSTAMP" pattern="yyyy-MM-dd" />
+		<format property="TSTAMP" pattern="hh:mm:ssZ" timezone="GMT" />
+		<format property="YSTAMP" pattern="yyyy" />
+	</tstamp>
+
+
+	<!-- Delete the ${build} and ${dist} directory trees -->
+	<target name="clean" description="clean up">
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+		<delete dir="${docs}" />
+	</target>
+
+
+	<!-- Initialize the environment, which includes get timestamp, create directories 
+		and copy relevant files -->
+	<target name="init" description="initialize the environment"
+		depends="clean">
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}" />
+		<mkdir dir="${dist}" />
+		<mkdir dir="${meta.inf}" />
+		<copy todir="${meta.inf}" file="./LICENSE" />
+		<copy todir="${build}">
+			<fileset dir="./desc" />
+		</copy>
+	</target>
+
+
+	<!-- compile -->
+	<target name="compile" depends="init" description="compile the source ">
+		<property name="implementation.version" value="0.8" />
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}/" source="${source}"
+			target="${target}" debug="${debug}" optimize="${optimize}"
+			includeantruntime="false">
+			<classpath refid="project.classpath" />
+			<!-- uncomment when need compiler arguments -->
+			<compilerarg value="${compilerarg}" />
+		</javac>
+
+	</target>
+
+
+	<!-- generate jar file -->
+	<target name="jar" depends="compile">
+		<jar basedir="${build}"
+			destfile="${dist}/${app.name}-${implementation.version}-standalone.jar"
+			description="Generate .jar file.">
+			<!-- uncomment when need a standalone package -->
+			<zipfileset src="${lib}/biolemmatizer-core-1.1-jar-with-dependencies.jar" />
+			<zipfileset src="${lib}/gson-2.2.2.jar" />
+			<zipfileset src="${lib}/jgrapht-jdk1.6.jar" />
+			<zipfileset src="${lib}/sharedtask.jar" />
+			<zipfileset src="${lib}/stax2-api-3.1.1.jar" />
+			<zipfileset src="${lib}/uima-core.jar" />
+			<zipfileset src="${lib}/uimafit-1.4.0.jar" />
+			<zipfileset src="${lib}/woodstox-core-asl-4.1.4.jar" />
+			<fileset dir="${src}" />
+			<manifest>
+				<attribute name="Author" value="Chen Li" />
+				<section name="Shared">
+					<attribute name="Title" value="LitWay Java Library" />
+					<attribute name="Vendor" value="EMBL-EBI" />
+					<attribute name="Date" value="${TODAY}" />
+				</section>
+				<section name="Copyright">
+					<attribute name="Copy"
+						value="Copyright (C) 2009-${YSTAMP} Chen Li, under the terms of the GNU GPL" />
+				</section>
+				<attribute name="Implementation-Version" value="${implementation.version}" />
+			</manifest>
+		</jar>
+		<jar basedir="${build}" destfile="${dist}/${app.name}-${implementation.version}.jar"
+			description="Generate a light-weight .jar file which doesn't inclued external dependencies.">
+			<manifest>
+				<attribute name="Author" value="Chen Li" />
+				<section name="Shared">
+					<attribute name="Title" value="LitWay Java Library" />
+					<attribute name="Vendor" value="EMBL-EBI" />
+					<attribute name="Date" value="${TODAY}" />
+				</section>
+				<section name="Copyright">
+					<attribute name="Copy"
+						value="Copyright (C) 2009-${YSTAMP} Chen Li, under the terms of the GNU GPL" />
+				</section>
+				<attribute name="Implementation-Version" value="${version}" />
+			</manifest>
+		</jar>
+	</target>
+	<target name="doc" depends="clean" description="Generate javadoc.">
+		<javadoc destdir="${docs}" author="true" version="true" use="true"
+			windowtitle="LitWay Java Library">
+			<classpath refid="project.classpath" />
+			<packageset dir="src" defaultexcludes="yes" />
+			<doctitle><![CDATA[<h1>LitWay Java Library</h1>]]>
+			</doctitle>
+			<bottom><![CDATA[Copyright &#169; 2007-${YSTAMP} Chen Li<br /><i>Last modified:&nbsp;${DSTAMP}T${TSTAMP}</i>]]>
+			</bottom>
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+		</javadoc>
+	</target>
+</project>

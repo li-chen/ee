@@ -12,7 +12,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Mar 26 13:33:27 GMT 2013
+ * Updated by JCasGen Wed Mar 27 09:29:54 GMT 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Sentence extends Annotation {
@@ -70,14 +70,14 @@ public class Sentence extends Annotation {
    * @generated */
   public int getId() {
     if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Sentence");
+      jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Sentence");
     return jcasType.ll_cas.ll_getIntValue(addr, ((Sentence_Type)jcasType).casFeatCode_id);}
     
   /** setter for id - sets  
    * @generated */
   public void setId(int v) {
     if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Sentence");
+      jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Sentence");
     jcasType.ll_cas.ll_setIntValue(addr, ((Sentence_Type)jcasType).casFeatCode_id, v);}    
   }
 

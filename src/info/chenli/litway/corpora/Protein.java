@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Mar 26 13:33:27 GMT 2013
+ * Updated by JCasGen Wed Mar 27 09:29:54 GMT 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Protein extends Annotation {
@@ -67,14 +67,14 @@ public class Protein extends Annotation {
    * @generated */
   public String getId() {
     if (Protein_Type.featOkTst && ((Protein_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Protein");
+      jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Protein");
     return jcasType.ll_cas.ll_getStringValue(addr, ((Protein_Type)jcasType).casFeatCode_id);}
     
   /** setter for id - sets  
    * @generated */
   public void setId(String v) {
     if (Protein_Type.featOkTst && ((Protein_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Protein");
+      jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Protein");
     jcasType.ll_cas.ll_setStringValue(addr, ((Protein_Type)jcasType).casFeatCode_id, v);}    
   }
 

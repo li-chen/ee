@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>info.chenli.ee.corpora.GSAnnotator</annotatorImplementationName>
+  <annotatorImplementationName>info.chenli.litway.corpora.GSAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>Gold Standard Annotator</name>
     <description>Merge the gold standard annotations from training/test data.</description>
@@ -21,9 +21,9 @@
       <capability>
         <inputs/>
         <outputs>
-          <type allAnnotatorFeatures="true">info.chenli.ee.corpora.Trigger</type>
-          <type allAnnotatorFeatures="true">info.chenli.ee.corpora.Relation</type>
-          <type allAnnotatorFeatures="true">info.chenli.ee.corpora.Event</type>
+          <type allAnnotatorFeatures="true">info.chenli.litway.corpora.Trigger</type>
+          <type allAnnotatorFeatures="true">info.chenli.litway.corpora.Relation</type>
+          <type allAnnotatorFeatures="true">info.chenli.litway.corpora.Event</type>
         </outputs>
         <languagesSupported/>
       </capability>

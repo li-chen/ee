@@ -6,7 +6,7 @@
   <vendor/>
   <types>
     <typeDescription>
-      <name>info.chenli.ee.corpora.Protein</name>
+      <name>info.chenli.litway.corpora.Protein</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -18,7 +18,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>info.chenli.ee.corpora.Trigger</name>
+      <name>info.chenli.litway.corpora.Trigger</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -40,7 +40,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>info.chenli.ee.corpora.Event</name>
+      <name>info.chenli.litway.corpora.Event</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -52,7 +52,7 @@
         <featureDescription>
           <name>trigger</name>
           <description/>
-          <rangeTypeName>info.chenli.ee.corpora.Trigger</rangeTypeName>
+          <rangeTypeName>info.chenli.litway.corpora.Trigger</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>themes</name>
@@ -68,7 +68,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>info.chenli.ee.corpora.Token</name>
+      <name>info.chenli.litway.corpora.Token</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -95,12 +95,12 @@
         <featureDescription>
           <name>leftToken</name>
           <description/>
-          <rangeTypeName>info.chenli.ee.corpora.Token</rangeTypeName>
+          <rangeTypeName>info.chenli.litway.corpora.Token</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>rightToken</name>
           <description/>
-          <rangeTypeName>info.chenli.ee.corpora.Token</rangeTypeName>
+          <rangeTypeName>info.chenli.litway.corpora.Token</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>dependentId</name>
@@ -110,7 +110,7 @@
         <featureDescription>
           <name>dependent</name>
           <description/>
-          <rangeTypeName>info.chenli.ee.corpora.Token</rangeTypeName>
+          <rangeTypeName>info.chenli.litway.corpora.Token</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>relation</name>
@@ -120,7 +120,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>info.chenli.ee.corpora.Sentence</name>
+      <name>info.chenli.litway.corpora.Sentence</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>

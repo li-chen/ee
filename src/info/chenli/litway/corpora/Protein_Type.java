@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue Mar 26 13:33:27 GMT 2013
+ * Updated by JCasGen Wed Mar 27 09:29:54 GMT 2013
  * @generated */
 public class Protein_Type extends Annotation_Type {
   /** @generated */
@@ -42,7 +42,7 @@ public class Protein_Type extends Annotation_Type {
   /** @generated 
      @modifiable */
   @SuppressWarnings ("hiding")
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("info.chenli.ee.corpora.Protein");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("info.chenli.litway.corpora.Protein");
 
 
 
@@ -53,13 +53,13 @@ public class Protein_Type extends Annotation_Type {
   /** @generated */ 
   public String getId(int addr) {
         if (featOkTst && casFeat_id == null)
-      jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Protein");
+      jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Protein");
     return ll_cas.ll_getStringValue(addr, casFeatCode_id);
   }
   /** @generated */    
   public void setId(int addr, String v) {
         if (featOkTst && casFeat_id == null)
-      jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Protein");
+      jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Protein");
     ll_cas.ll_setStringValue(addr, casFeatCode_id, v);}
     
   

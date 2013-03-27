@@ -29,9 +29,9 @@
     </flowConstraints>
     <typePriorities>
       <priorityList>
-        <type>info.chenli.ee.corpora.Token</type>
-        <type>info.chenli.ee.corpora.Protein</type>
-        <type>info.chenli.ee.corpora.Trigger</type>
+        <type>info.chenli.litway.corpora.Token</type>
+        <type>info.chenli.litway.corpora.Protein</type>
+        <type>info.chenli.litway.corpora.Trigger</type>
       </priorityList>
     </typePriorities>
     <fsIndexCollection/>

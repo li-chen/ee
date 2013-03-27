@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Mar 26 13:33:27 GMT 2013
+ * Updated by JCasGen Wed Mar 27 09:29:54 GMT 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Trigger extends Annotation {
@@ -67,14 +67,14 @@ public class Trigger extends Annotation {
    * @generated */
   public String getEventType() {
     if (Trigger_Type.featOkTst && ((Trigger_Type)jcasType).casFeat_eventType == null)
-      jcasType.jcas.throwFeatMissing("eventType", "info.chenli.ee.corpora.Trigger");
+      jcasType.jcas.throwFeatMissing("eventType", "info.chenli.litway.corpora.Trigger");
     return jcasType.ll_cas.ll_getStringValue(addr, ((Trigger_Type)jcasType).casFeatCode_eventType);}
     
   /** setter for EventType - sets  
    * @generated */
   public void setEventType(String v) {
     if (Trigger_Type.featOkTst && ((Trigger_Type)jcasType).casFeat_eventType == null)
-      jcasType.jcas.throwFeatMissing("eventType", "info.chenli.ee.corpora.Trigger");
+      jcasType.jcas.throwFeatMissing("eventType", "info.chenli.litway.corpora.Trigger");
     jcasType.ll_cas.ll_setStringValue(addr, ((Trigger_Type)jcasType).casFeatCode_eventType, v);}    
    
     
@@ -85,30 +85,30 @@ public class Trigger extends Annotation {
    * @generated */
   public String getEventType2() {
     if (Trigger_Type.featOkTst && ((Trigger_Type)jcasType).casFeat_eventType2 == null)
-      jcasType.jcas.throwFeatMissing("eventType2", "info.chenli.ee.corpora.Trigger");
+      jcasType.jcas.throwFeatMissing("eventType2", "info.chenli.litway.corpora.Trigger");
     return jcasType.ll_cas.ll_getStringValue(addr, ((Trigger_Type)jcasType).casFeatCode_eventType2);}
     
   /** setter for EventType2 - sets  
    * @generated */
   public void setEventType2(String v) {
     if (Trigger_Type.featOkTst && ((Trigger_Type)jcasType).casFeat_eventType2 == null)
-      jcasType.jcas.throwFeatMissing("eventType2", "info.chenli.ee.corpora.Trigger");
+      jcasType.jcas.throwFeatMissing("eventType2", "info.chenli.litway.corpora.Trigger");
     jcasType.ll_cas.ll_setStringValue(addr, ((Trigger_Type)jcasType).casFeatCode_eventType2, v);}    
-                //*--------------*
+                  //*--------------*
   //* Feature: id
 
   /** getter for id - gets 
    * @generated */
   public String getId() {
     if (Trigger_Type.featOkTst && ((Trigger_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Trigger");
+      jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Trigger");
     return jcasType.ll_cas.ll_getStringValue(addr, ((Trigger_Type)jcasType).casFeatCode_id);}
     
   /** setter for id - sets  
    * @generated */
   public void setId(String v) {
     if (Trigger_Type.featOkTst && ((Trigger_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "info.chenli.ee.corpora.Trigger");
+      jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Trigger");
     jcasType.ll_cas.ll_setStringValue(addr, ((Trigger_Type)jcasType).casFeatCode_id, v);}    
    
     
