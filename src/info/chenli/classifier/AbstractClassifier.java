@@ -1,6 +1,6 @@
 package info.chenli.classifier;
 
-import info.chenli.ee.util.FileUtil;
+import info.chenli.litway.util.FileUtil;
 
 import java.io.File;
 import java.util.List;

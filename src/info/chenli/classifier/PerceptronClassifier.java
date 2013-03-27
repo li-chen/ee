@@ -1,6 +1,6 @@
 package info.chenli.classifier;
 
-import info.chenli.ee.util.MathUtil;
+import info.chenli.litway.util.MathUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
