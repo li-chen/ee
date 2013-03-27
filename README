@@ -1,0 +1,12 @@
+LitWay - Support biological network study by text mining
+
+LitWay attempts to support biological network study by collecting evidential
+reactions from scientific literature.
+
+desc     - UIMA description files.
+lib      - The dependencies needed for the compilation.
+metadata - UIMA metadata folder.
+src      - The source code.
+LISENSE  - The license of LitWay.
+README   - This file.
+
