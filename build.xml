@@ -75,7 +75,24 @@
 
 	<!-- generate jar file -->
 	<target name="jar" depends="compile">
-	    <!--
+		<jar basedir="${build}" destfile="${dist}/${app.name}-${implementation.version}.jar"
+			description="Generate a light-weight .jar file which doesn't inclued external dependencies.">
+			<manifest>
+				<attribute name="Author" value="Chen Li" />
+				<section name="Shared">
+					<attribute name="Title" value="LitWay Java Library" />
+					<attribute name="Vendor" value="EMBL-EBI" />
+					<attribute name="Date" value="${TODAY}" />
+				</section>
+				<section name="Copyright">
+					<attribute name="Copy"
+						value="Copyright (C) 2009-${YSTAMP} Chen Li, under the terms of the GNU GPL" />
+				</section>
+				<attribute name="Implementation-Version" value="${version}" />
+			</manifest>
+		</jar>
+	</target>
+	<target name="standalone" depends="compile">
 		<jar basedir="${build}"
 			destfile="${dist}/${app.name}-${implementation.version}-standalone.jar"
 			description="Generate .jar file.">
@@ -101,24 +118,11 @@
 				</section>
 				<attribute name="Implementation-Version" value="${implementation.version}" />
 			</manifest>
-		</jar> -->
-		<jar basedir="${build}" destfile="${dist}/${app.name}-${implementation.version}.jar"
-			description="Generate a light-weight .jar file which doesn't inclued external dependencies.">
-			<manifest>
-				<attribute name="Author" value="Chen Li" />
-				<section name="Shared">
-					<attribute name="Title" value="LitWay Java Library" />
-					<attribute name="Vendor" value="EMBL-EBI" />
-					<attribute name="Date" value="${TODAY}" />
-				</section>
-				<section name="Copyright">
-					<attribute name="Copy"
-						value="Copyright (C) 2009-${YSTAMP} Chen Li, under the terms of the GNU GPL" />
-				</section>
-				<attribute name="Implementation-Version" value="${version}" />
-			</manifest>
 		</jar>
 	</target>
+
+
+	<!-- generate java doc -->
 	<target name="doc" depends="clean" description="Generate javadoc.">
 		<javadoc destdir="${docs}" author="true" version="true" use="true"
 			windowtitle="LitWay Java Library">

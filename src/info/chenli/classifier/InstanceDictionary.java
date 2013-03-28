@@ -207,4 +207,24 @@ public class InstanceDictionary {
 		return labels.get((int) label);
 
 	}
+
+	public void writeInstancesToFile(List<Instance> instances, File file,
+			boolean withOriginalValue) {
+		StringBuffer sb = new StringBuffer();
+		for (Instance instance : instances) {
+			sb.append(String.valueOf(instance.getLabel()));
+
+			Iterator<String> featureStrIter = instance.getFeaturesString()
+					.iterator();
+			for (Double feature : instance.getFeatures()) {
+				sb.append("\t".concat(String.valueOf(feature)));
+				if (withOriginalValue) {
+					sb.append(":");
+					sb.append(featureStrIter.next());
+				}
+			}
+			sb.append("\n");
+		}
+		FileUtil.saveFile(sb.toString(), file);
+	}
 }

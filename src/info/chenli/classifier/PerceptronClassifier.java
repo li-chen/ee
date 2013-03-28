@@ -393,7 +393,8 @@ public class PerceptronClassifier extends AbstractClassifier {
 
 		PerceptronClassifier classifier = new PerceptronClassifier();
 
-		classifier.train(instances, 15);
+		classifier.train(instances, 150);
+		System.out.println(classifier.accuracy(instances));
 
 		// restaurants sample test data.
 		in = new BufferedReader(new FileReader(

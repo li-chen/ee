@@ -36,29 +36,34 @@ public class TriggerRecogniser extends PerceptronClassifier {
 			dict.creatNumericDictionary(instances);
 			dict.saveDictionary(new File("./model/triggers.dict"));
 
+			dict.writeInstancesToFile(instances, new File("./instances.csv"),
+					false);
+			dict.writeInstancesToFile(instances, new File(
+					"./instances-original.csv"), true);
 			Collections.shuffle(instances);
-			train(instances, 15);
+			train(instances, 5000);
 
 			TokenInstances testInstances = new TokenInstances();
 			testInstances.setTaeDescriptor("/desc/TrainingSetAnnotator.xml");
 			instances = testInstances.getInstances(new File(
 			// "./data/test/PMC-2065877-01-Introduction.txt"));
-					"./data/train"));
+					"./data/"));
 
 			instances = dict.instancesToNumeric(instances);
-			int total = 0, correct = 0;
+			int total = 0, correct = 0, predicted = 0;
 			for (Instance instance : instances) {
 				double prediction = this.predict(instance);
 				if (prediction != dict.getLabelNumeric(String
 						.valueOf(EventType.Non_trigger))) {
-					System.out.print(instance.getFeaturesString().get(0));
-					System.out.print("\t".concat(dict
-							.getLabelString(prediction)));
+					// System.out.print(instance.getFeaturesString().get(0));
+					// System.out.print("\t".concat(dict
+					// .getLabelString(prediction)));
 					if (prediction == instance.getLabel()) {
 						correct++;
-						System.out.print("\t".concat(String.valueOf(true)));
+						// System.out.print("\t".concat(String.valueOf(true)));
 					}
 					System.out.println();
+					predicted++;
 				}
 				if (!instance.getLabelString().equals(
 						String.valueOf(EventType.Non_trigger))) {
@@ -66,6 +71,7 @@ public class TriggerRecogniser extends PerceptronClassifier {
 				}
 			}
 			System.out.println(String.valueOf(correct).concat("\t")
+					.concat(String.valueOf(predicted)).concat("\t")
 					.concat(String.valueOf(total)));
 		}
 

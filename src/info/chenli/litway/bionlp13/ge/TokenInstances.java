@@ -105,14 +105,14 @@ public class TokenInstances extends AbstractInstances {
 		List<String> featureString = new ArrayList<String>();
 		instance.setFeaturesString(featureString);
 
-		featureString.add(token.getCoveredText());
-		featureString.add(token.getLemma());
+		featureString.add(token.getCoveredText().toLowerCase());
+		featureString.add(token.getLemma().toLowerCase());
 		featureString.add(token.getPos());
-		featureString.add(token.getStem());
+		featureString.add(token.getStem().toLowerCase());
 		featureString.add(null == token.getLeftToken() ? "" : token
-				.getLeftToken().getCoveredText());
+				.getLeftToken().getCoveredText().toLowerCase());
 		featureString.add(null == token.getRightToken() ? "" : token
-				.getRightToken().getCoveredText());
+				.getRightToken().getCoveredText().toLowerCase());
 
 		if (null != triggerTokens) {
 
