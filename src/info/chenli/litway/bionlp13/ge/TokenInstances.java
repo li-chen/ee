@@ -32,20 +32,6 @@ public class TokenInstances extends AbstractInstances {
 	}
 
 	@Override
-	protected List<String> getFeaturesString() {
-
-		featuresString = new ArrayList<String>();
-		featuresString.add("text");
-		featuresString.add("lemma");
-		featuresString.add("stem");
-		featuresString.add("pos");
-		featuresString.add("leftToken");
-		featuresString.add("rightToken");
-
-		return featuresString;
-	}
-
-	@Override
 	protected List<String> getLabelsString() {
 
 		ArrayList<String> tokenTypes = new ArrayList<String>();

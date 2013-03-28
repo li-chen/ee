@@ -8,7 +8,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 public class InstanceDictionary {
@@ -17,13 +19,15 @@ public class InstanceDictionary {
 			.getLogger(InstanceDictionary.class.getName());
 
 	private List<String> labels = new ArrayList<String>();
-	private List<List<String>> features = new ArrayList<List<String>>();
+	private List<Map<String, Double>> features = new ArrayList<Map<String, Double>>();
 
-	public void creatDictionary(List<Instance> instances) {
+	public void creatNumericDictionary(List<Instance> instances) {
 
+		List<Double> maxFeatureValues = new ArrayList<Double>();
 		int featureNum = instances.get(0).getFeaturesString().size();
 		while (featureNum-- > 0) {
-			features.add(new ArrayList<String>());
+			features.add(new TreeMap<String, Double>());
+			maxFeatureValues.add(0.0);
 		}
 
 		for (Instance instance : instances) {
@@ -38,23 +42,48 @@ public class InstanceDictionary {
 			//
 			// features
 			//
-			Iterator<List<String>> featuresIter = features.iterator();
+			Iterator<Map<String, Double>> featuresIter = features.iterator();
 			Iterator<String> featureStrIter = instance.getFeaturesString()
 					.iterator();
+			List<Double> featuresNumeric = new ArrayList<Double>();
 
+			int i = 0;
 			while (featuresIter.hasNext()) {
 
-				List<String> feature = featuresIter.next();
+				Map<String, Double> feature = featuresIter.next();
 				String featureStr = featureStrIter.next();
 
-				if (!feature.contains(featureStr)) {
-					feature.add(featureStr);
+				if (!feature.containsKey(featureStr)) {
+					double currentValue = feature.keySet().size();
+					feature.put(featureStr, currentValue);
+					maxFeatureValues.set(i, currentValue);
 				}
 
-			}
+				featuresNumeric.add(feature.get(featureStr));
 
+				i++;
+			}
+			instance.setFeatures(featuresNumeric);
 		}
 
+		// update dictionary to distributional value [0 - 1]
+		int i = 0;
+		for (Map<String, Double> featureVector : features) {
+			Iterator<String> featureVectorIter = featureVector.keySet()
+					.iterator();
+
+			while (featureVectorIter.hasNext()) {
+
+				String featureStr = featureVectorIter.next();
+
+				featureVector.put(featureStr, featureVector.get(featureStr)
+						/ maxFeatureValues.get(i));
+			}
+			i++;
+		}
+
+		// convert to distributional value [0 - 1]
+		instancesToNumeric(instances);
 	}
 
 	public void saveDictionary(File file) {
@@ -67,13 +96,11 @@ public class InstanceDictionary {
 		}
 		sb.append("\n");
 
-		for (List<String> featureVector : this.features) {
+		for (Map<String, Double> featureVector : this.features) {
 
-			i = 0;
-
-			for (String feature : featureVector) {
-				sb.append(String.valueOf(i++)).append(":").append(feature)
-						.append("\t");
+			for (String feature : featureVector.keySet()) {
+				sb.append(featureVector.get(feature)).append(":")
+						.append(feature).append("\t");
 			}
 
 			sb.append("\n");
@@ -110,15 +137,16 @@ public class InstanceDictionary {
 			//
 			// load features
 			//
-			this.features = new ArrayList<List<String>>();
+			this.features = new ArrayList<Map<String, Double>>();
 			while ((line = br.readLine()) != null) {
 				st = new StringTokenizer(line, "\t");
 
-				List<String> featureVector = new ArrayList<String>();
+				Map<String, Double> featureVector = new TreeMap<String, Double>();
 				while (st.hasMoreElements()) {
 					String feature = st.nextToken();
-					featureVector
-							.add(feature.substring(feature.indexOf(":") + 1));
+					int indexColon = feature.indexOf(":");
+					featureVector.put(feature.substring(indexColon + 1), Double
+							.parseDouble(feature.substring(0, indexColon)));
 				}
 
 				features.add(featureVector);
@@ -135,6 +163,7 @@ public class InstanceDictionary {
 
 	public List<Instance> instancesToNumeric(List<Instance> instances) {
 
+		// set numeric values
 		for (Instance instance : instances) {
 
 			instanceToNumeric(instance);
@@ -147,7 +176,7 @@ public class InstanceDictionary {
 
 		instance.setLabel(labels.indexOf(instance.getLabelString()));
 
-		Iterator<List<String>> featuresIter = features.iterator();
+		Iterator<Map<String, Double>> featuresIter = features.iterator();
 		Iterator<String> featureStrIter = instance.getFeaturesString()
 				.iterator();
 
@@ -155,10 +184,12 @@ public class InstanceDictionary {
 
 		while (featureStrIter.hasNext()) {
 
-			List<String> feature = featuresIter.next();
+			Map<String, Double> feature = featuresIter.next();
 			String featureStr = featureStrIter.next();
 
-			featuresNumeric.add((double) feature.indexOf(featureStr));
+			double numericFeature = feature.get(featureStr);
+			featuresNumeric.add(numericFeature);
+
 		}
 
 		instance.setFeatures(featuresNumeric);

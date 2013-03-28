@@ -10,6 +10,7 @@
 	<property name="lib" location="lib" />
 	<property name="build" location="build" />
 	<property name="meta.inf" location="${build}/META-INF" />
+	<property name="uima.desc" location="${build}/desc" />
 	<property name="dist" location="dist" />
 	<property name="docs" location="docs" />
 	<!-- properties for compilation -->
@@ -49,8 +50,9 @@
 		<mkdir dir="${build}" />
 		<mkdir dir="${dist}" />
 		<mkdir dir="${meta.inf}" />
+		<mkdir dir="${uima.desc}" />
 		<copy todir="${meta.inf}" file="./LICENSE" />
-		<copy todir="${build}">
+		<copy todir="${uima.desc}">
 			<fileset dir="./desc" />
 		</copy>
 	</target>
@@ -73,10 +75,10 @@
 
 	<!-- generate jar file -->
 	<target name="jar" depends="compile">
+	    <!--
 		<jar basedir="${build}"
 			destfile="${dist}/${app.name}-${implementation.version}-standalone.jar"
 			description="Generate .jar file.">
-			<!-- uncomment when need a standalone package -->
 			<zipfileset src="${lib}/biolemmatizer-core-1.1-jar-with-dependencies.jar" />
 			<zipfileset src="${lib}/gson-2.2.2.jar" />
 			<zipfileset src="${lib}/jgrapht-jdk1.6.jar" />
@@ -99,7 +101,7 @@
 				</section>
 				<attribute name="Implementation-Version" value="${implementation.version}" />
 			</manifest>
-		</jar>
+		</jar> -->
 		<jar basedir="${build}" destfile="${dist}/${app.name}-${implementation.version}.jar"
 			description="Generate a light-weight .jar file which doesn't inclued external dependencies.">
 			<manifest>

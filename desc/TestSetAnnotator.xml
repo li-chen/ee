@@ -4,10 +4,10 @@
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
     <delegateAnalysisEngine key="BioNLPSyntacticAnnotator">
-      <import location="./BioNLPSyntacticAnnotator.xml"/>
+      <import name="desc.BioNLPSyntacticAnnotator"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="ProteinAnnotator">
-      <import location="./ProteinAnnotator.xml"/>
+      <import name="desc.ProteinAnnotator"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>

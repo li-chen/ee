@@ -27,24 +27,24 @@ public class CauseRecogniser extends PerceptronClassifier {
 			InstanceDictionary dict = new InstanceDictionary();
 
 			CauseInstances trainingInstances = new CauseInstances();
-			trainingInstances.setTaeDescriptor(new File(
-					"./desc/TrainingSetAnnotator.xml"));
+			trainingInstances
+					.setTaeDescriptor("/desc/TrainingSetAnnotator.xml");
 			List<Instance> instances = trainingInstances
 					.getInstances(trainingSet);
 
-			dict.creatDictionary(instances);
+			dict.creatNumericDictionary(instances);
 			dict.saveDictionary(new File("./model/causes.dict"));
 
-			this.train(dict.instancesToNumeric(instances));
+			this.train(instances);
 
 			System.out.println(this.accuracy(instances));
 
 			CauseInstances testInstances = new CauseInstances();
-			testInstances.setTaeDescriptor(new File(
-					"./desc/TrainingSetAnnotator.xml"));
+			testInstances.setTaeDescriptor("/desc/TrainingSetAnnotator.xml");
 			instances = testInstances.getInstances(new File("./data/test/"));
 
-			System.out.println(this.accuracy(dict.instancesToNumeric(instances)));
+			System.out
+					.println(this.accuracy(dict.instancesToNumeric(instances)));
 		}
 
 	}

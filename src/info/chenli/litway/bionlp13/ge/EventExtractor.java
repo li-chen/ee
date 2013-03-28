@@ -286,7 +286,7 @@ public class EventExtractor extends TokenInstances {
 	public static void main(String[] args) {
 
 		EventExtractor ee = new EventExtractor();
-		ee.setTaeDescriptor(new File("./desc/TestSetAnnotator.xml"));
+		ee.setTaeDescriptor("/desc/TestSetAnnotator.xml");
 
 		ee.extract(new File(args[0]));
 

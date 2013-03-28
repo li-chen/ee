@@ -32,28 +32,6 @@ public class CauseInstances extends AbstractInstances {
 	}
 
 	@Override
-	protected List<String> getFeaturesString() {
-
-		featuresString = new ArrayList<String>();
-		featuresString.add("text");
-		featuresString.add("lemma");
-		featuresString.add("pos");
-		featuresString.add("leftToken");
-		featuresString.add("rightToken");
-		featuresString.add("eventType");
-		featuresString.add("triggerText");
-		featuresString.add("triggerTokenText");
-		featuresString.add("triggerTokenLemma");
-		featuresString.add("dependencyPathToTrigger");
-		featuresString.add("themeText");
-		featuresString.add("themeTokenText");
-		featuresString.add("themeTokenLemma");
-		featuresString.add("dependencyPathToTheme");
-
-		return featuresString;
-	}
-
-	@Override
 	protected List<String> getLabelsString() {
 
 		ArrayList<String> causeTypes = new ArrayList<String>();

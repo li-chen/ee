@@ -27,12 +27,6 @@ public class TriggerInstances extends AbstractInstances {
 	}
 
 	@Override
-	protected List<String> getFeaturesString() {
-
-		return null;
-	}
-
-	@Override
 	protected List<String> getLabelsString() {
 
 		ArrayList<String> tokenTypes = new ArrayList<String>();
@@ -109,11 +103,6 @@ public class TriggerInstances extends AbstractInstances {
 		}
 
 		return results;
-	}
-
-	@Override
-	public File getTaeDescriptor() {
-		return new File("./desc/Annotator.xml");
 	}
 
 	public static void main(String[] args) {

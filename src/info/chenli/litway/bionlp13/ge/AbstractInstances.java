@@ -11,6 +11,8 @@ import info.chenli.litway.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,20 +42,22 @@ public abstract class AbstractInstances {
 
 	private String instancesName;
 	private int annotationType;
-	private File taeDescriptor;
+	private String taeDescriptor;
 	protected List<StructuredInstance> structuredInstances = new LinkedList<StructuredInstance>();
 	protected List<Instance> instances;
-	protected List<String> featuresString;
 	protected List<String> labelsString;
 
-	protected void setTaeDescriptor(File taeDescriptor) {
+	protected void setTaeDescriptor(String taeDescriptor) {
 
 		this.taeDescriptor = taeDescriptor;
 
 	}
 
-	protected File getTaeDescriptor() {
-		return taeDescriptor;
+	protected XMLInputSource getXMLInputSource() throws IOException,
+			URISyntaxException {
+
+		URL url = this.getClass().getResource(taeDescriptor);
+		return new XMLInputSource(url);
 	};
 
 	private AnalysisEngine ae = null;
@@ -67,14 +71,13 @@ public abstract class AbstractInstances {
 
 	private void init() {
 
-		featuresString = getFeaturesString();
-
 		labelsString = getLabelsString();
 
 		instances = new ArrayList<Instance>();
 
 		try {
-			XMLInputSource in = new XMLInputSource(getTaeDescriptor());
+
+			XMLInputSource in = getXMLInputSource();
 			ResourceSpecifier specifier = UIMAFramework.getXMLParser()
 					.parseResourceSpecifier(in);
 
@@ -93,11 +96,9 @@ public abstract class AbstractInstances {
 
 	protected abstract List<String> getLabelsString();
 
-	protected abstract List<String> getFeaturesString();
-
 	public List<Instance> getInstances(File dataDir) {
 
-		if (null == featuresString || null == ae) {
+		if (null == ae) {
 			init();
 		}
 
@@ -131,7 +132,7 @@ public abstract class AbstractInstances {
 
 	protected JCas processSingleFile(File aFile, int annotationType) {
 
-		if (null == featuresString || null == ae) {
+		if (null == ae) {
 			init();
 		}
 
