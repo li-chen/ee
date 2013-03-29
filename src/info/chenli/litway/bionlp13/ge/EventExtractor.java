@@ -11,6 +11,7 @@ import info.chenli.litway.util.DependencyExtractor;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -142,7 +143,7 @@ public class EventExtractor extends TokenInstances {
 						Instance proteinInstance = themeToInstance(jcas,
 								protein, trigger, dependencyExtractor, false);
 						double prediction = themeRecogniser
-								.predict(proteinInstance);
+								.predict(themeDict.instanceToNumeric(proteinInstance));
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							// TODO can a protein be a theme of multi-event?
@@ -169,7 +170,7 @@ public class EventExtractor extends TokenInstances {
 						Instance proteinInstance = themeToInstance(jcas,
 								protein, trigger, dependencyExtractor, false);
 						double prediction = themeRecogniser
-								.predict(proteinInstance);
+								.predict(themeDict.instanceToNumeric(proteinInstance));
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							event.setId(String.valueOf(eventIndex));
@@ -195,10 +196,15 @@ public class EventExtractor extends TokenInstances {
 
 					for (Protein protein : proteins) {
 
-						System.out.println(sentence.getCoveredText());
-						System.out.println(protein.getCoveredText());
-						Instance proteinInstance = themeToInstance(jcas,
-								protein, trigger, dependencyExtractor, false);
+						Instance proteinInstance = themeDict.instanceToNumeric(themeToInstance(jcas,
+								protein, trigger, dependencyExtractor, false));
+						Iterator<Double> featureNumIter = proteinInstance
+								.getFeatures().iterator();
+						for (String feature : proteinInstance
+								.getFeaturesString()) {
+							System.out.println(featureNumIter.next() + ":"
+									+ feature);
+						}
 						double prediction = themeRecogniser
 								.predict(proteinInstance);
 

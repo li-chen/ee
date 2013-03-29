@@ -35,7 +35,7 @@ public class ThemeRecogniser extends PerceptronClassifier {
 			dict.creatNumericDictionary(instances);
 			dict.saveDictionary(new File("./model/themes.dict"));
 
-			train(dict.instancesToNumeric(instances));
+			train(dict.instancesToNumeric(instances), 300);
 
 			System.out.println(accuracy(instances));
 
