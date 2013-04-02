@@ -54,7 +54,7 @@ public class InstanceDictionary {
 				String featureStr = featureStrIter.next();
 
 				if (!feature.containsKey(featureStr)) {
-					double currentValue = feature.keySet().size();
+					double currentValue = feature.keySet().size() + 1;
 					feature.put(featureStr, currentValue);
 					maxFeatureValues.set(i, currentValue);
 				}
@@ -187,7 +187,13 @@ public class InstanceDictionary {
 			Map<String, Double> feature = featuresIter.next();
 			String featureStr = featureStrIter.next();
 
-			double numericFeature = feature.get(featureStr);
+			double numericFeature;
+			if (feature.containsKey(featureStr)) {
+				numericFeature = feature.get(featureStr);
+			} else {
+				numericFeature = 0;
+			}
+
 			featuresNumeric.add(numericFeature);
 
 		}

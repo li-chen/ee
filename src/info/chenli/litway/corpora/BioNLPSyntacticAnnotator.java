@@ -62,6 +62,7 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 
 			// token map of each sentence
 			TreeMap<Integer, Token> tokensOfSentence = new TreeMap<Integer, Token>();
+			int sentenceId = 0;
 
 			while ((originalTextCh = originalTextStream.read()) != -1) {
 
@@ -123,6 +124,7 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 
 						Sentence sentence = new Sentence(jcas, sentenceBegin,
 								offset);
+						sentence.setId(sentenceId++);
 						sentence.addToIndexes();
 
 						// Once one sentence is finished, start appending

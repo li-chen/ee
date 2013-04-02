@@ -373,8 +373,14 @@ public abstract class AbstractInstances {
 		Token triggerToken = getTriggerToken(jcas, trigger);
 		featuresString.add(triggerToken.getCoveredText());
 		featuresString.add(triggerToken.getLemma());
-		featuresString.add(dependencyExtractor.getDijkstraShortestPath(
-				annoToken, triggerToken));
+		try {
+			featuresString.add(dependencyExtractor.getDijkstraShortestPath(
+					annoToken, triggerToken));
+		} catch (IllegalArgumentException e) {
+			System.out.println("NoPathToken:\t"
+					.concat(annoToken.getCoveredText()).concat("\t")
+					.concat(triggerToken.getCoveredText()));
+		}
 
 		if (isTheme) {
 

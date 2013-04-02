@@ -52,7 +52,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 	@Override
 	public void train(List<Instance> trainingInstances) {
 
-		initWeights(trainingInstances);
+		this.initWeights(trainingInstances);
 
 		for (Instance instance : trainingInstances) {
 
@@ -111,6 +111,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 		for (double label : weights.keySet()) {
 
 			List<Double> weight = weights.get(label);
+
 			double newPrediction = MathUtil.dot(instance.getFeatures(), weight);
 
 			if (newPrediction > max) {
@@ -122,7 +123,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 		return prediction;
 	}
 
-	public Fscore accuracy(List<Instance> instances) {
+	public Accurary accuracy(List<Instance> instances) {
 
 		int correct = 0;
 		int total = 0;
@@ -135,7 +136,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 			total++;
 		}
 
-		return new Fscore(correct, total);
+		return new Accurary(correct, total);
 	}
 
 	@Override
@@ -397,8 +398,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 		System.out.println(classifier.accuracy(instances));
 
 		// restaurants sample test data.
-		in = new BufferedReader(new FileReader(
-				"./test/restaurant_test.txt"));
+		in = new BufferedReader(new FileReader("./test/restaurant_test.txt"));
 		line = in.readLine();
 		instances = new ArrayList<Instance>();
 

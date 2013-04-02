@@ -3,6 +3,7 @@ package info.chenli.litway.bionlp13.ge;
 import info.chenli.classifier.Instance;
 import info.chenli.classifier.InstanceDictionary;
 import info.chenli.litway.corpora.Event;
+import info.chenli.litway.corpora.POS;
 import info.chenli.litway.corpora.Protein;
 import info.chenli.litway.corpora.Sentence;
 import info.chenli.litway.corpora.Token;
@@ -96,6 +97,10 @@ public class EventExtractor extends TokenInstances {
 			for (Token token : tokens) {
 
 				Instance tokenInstance = tokenToInstance(token, null);
+				if (!triggerRecogniser.isConsidered(tokenInstance
+						.getFeaturesString().get(2))) {
+					continue;
+				}
 				double prediction = triggerRecogniser.predict(triggerDict
 						.instanceToNumeric(tokenInstance));
 				// System.out.print(tokenInstance.getLabel());
@@ -134,21 +139,19 @@ public class EventExtractor extends TokenInstances {
 
 			for (Trigger trigger : triggers.get(sentence.getId())) {
 
-				System.out.println(trigger.getCoveredText().concat("\t")
-						.concat(trigger.getEventType()));
 				if (EventType.isSimpleEvent(trigger.getEventType())) {
 
 					for (Protein protein : proteins) {
 
 						Instance proteinInstance = themeToInstance(jcas,
 								protein, trigger, dependencyExtractor, false);
-						double prediction = themeRecogniser
-								.predict(themeDict.instanceToNumeric(proteinInstance));
+						double prediction = themeRecogniser.predict(themeDict
+								.instanceToNumeric(proteinInstance));
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							// TODO can a protein be a theme of multi-event?
 							Event event = new Event(jcas);
-							event.setId(String.valueOf(eventIndex));
+							event.setId(String.valueOf(eventIndex++));
 							event.setTrigger(trigger);
 							StringArray themes = new StringArray(jcas, 1);
 							themes.set(0, protein.getId());
@@ -169,11 +172,11 @@ public class EventExtractor extends TokenInstances {
 
 						Instance proteinInstance = themeToInstance(jcas,
 								protein, trigger, dependencyExtractor, false);
-						double prediction = themeRecogniser
-								.predict(themeDict.instanceToNumeric(proteinInstance));
+						double prediction = themeRecogniser.predict(themeDict
+								.instanceToNumeric(proteinInstance));
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
-							event.setId(String.valueOf(eventIndex));
+							event.setId(String.valueOf(eventIndex++));
 							event.setTrigger(trigger);
 							themes.set(themeIndex++, protein.getId());
 						}
@@ -190,28 +193,26 @@ public class EventExtractor extends TokenInstances {
 					}
 
 					events.get(sentence.getId()).add(event);
-					newEvents.add(event);
+					if (event.getThemes().size() > 0) {
+						newEvents.add(event);
+					}
 
 				} else if (EventType.isRegulatoryEvent(trigger.getEventType())) {
 
 					for (Protein protein : proteins) {
 
-						Instance proteinInstance = themeDict.instanceToNumeric(themeToInstance(jcas,
-								protein, trigger, dependencyExtractor, false));
-						Iterator<Double> featureNumIter = proteinInstance
-								.getFeatures().iterator();
-						for (String feature : proteinInstance
-								.getFeaturesString()) {
-							System.out.println(featureNumIter.next() + ":"
-									+ feature);
-						}
+						Instance proteinInstance = themeDict
+								.instanceToNumeric(themeToInstance(jcas,
+										protein, trigger, dependencyExtractor,
+										false));
+
 						double prediction = themeRecogniser
 								.predict(proteinInstance);
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							// TODO can a protein be a theme of multi-event?
 							Event event = new Event(jcas);
-							event.setId(String.valueOf(eventIndex));
+							event.setId(String.valueOf(eventIndex++));
 							event.setTrigger(trigger);
 							StringArray themes = new StringArray(jcas, 1);
 							themes.set(0, protein.getId());
@@ -230,16 +231,17 @@ public class EventExtractor extends TokenInstances {
 
 					for (Event themeEvent : newEvents) {
 
-						Instance triggerTokenInstance = tokenToInstance(
-								getTriggerToken(jcas, themeEvent.getTrigger()),
-								null);
+						Instance triggerTokenInstance = themeToInstance(
+								jcas, getTriggerToken(jcas, themeEvent.getTrigger()),
+								trigger, dependencyExtractor, false);
+
 						double prediction = themeRecogniser
-								.predict(triggerTokenInstance);
+								.predict(themeDict.instanceToNumeric(triggerTokenInstance));
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 
 							Event event = new Event(jcas);
-							event.setId(String.valueOf(eventIndex));
+							event.setId(String.valueOf(eventIndex++));
 							event.setTrigger(trigger);
 							StringArray themes = new StringArray(jcas, 1);
 							themes.set(0, "E".concat(themeEvent.getId()));
