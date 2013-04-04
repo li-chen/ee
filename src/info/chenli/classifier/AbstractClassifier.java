@@ -26,10 +26,10 @@ public abstract class AbstractClassifier {
 	/**
 	 * Classify the instance and assign a label the instance.
 	 * 
-	 * @param instance
+	 * @param featureVector
 	 * @return The predicted label.
 	 */
-	public abstract int predict(List<SparseVector> featureVector);
+	public abstract int predict(int[] featureSparseVector);
 
 	public abstract String modelToString();
 

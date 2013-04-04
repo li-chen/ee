@@ -8,7 +8,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 public class InstanceDictionary {
@@ -17,50 +19,48 @@ public class InstanceDictionary {
 			.getLogger(InstanceDictionary.class.getName());
 
 	private List<String> labelDict = new ArrayList<String>();
-	private List<List<String>> featuresDict = new ArrayList<List<String>>();
+	private List<Map<String, Integer>> featureStringNumericDict = new ArrayList<Map<String, Integer>>();
 
 	public List<String> getLabelDict() {
 		return labelDict;
 	}
 
-	public List<List<String>> getFeaturesDict() {
-		return featuresDict;
+	public List<Map<String, Integer>> getFeaturesDict() {
+		return featureStringNumericDict;
 	}
 
 	public void creatNumericDictionary(List<Instance> instances) {
 
 		int featureNum = instances.get(0).getFeaturesString().size();
 		while (featureNum-- > 0) {
-			featuresDict.add(new ArrayList<String>());
+			featureStringNumericDict.add(new TreeMap<String, Integer>());
 		}
 
+		//
+		// labels
+		//
 		for (Instance instance : instances) {
 
-			//
-			// labels
-			//
 			if (!labelDict.contains(instance.getLabelString())) {
 				labelDict.add(instance.getLabelString());
 			}
 
-			//
-			// features
-			//
-			Iterator<List<String>> featuresDictIter = featuresDict.iterator();
-			Iterator<String> instanceFeatureStrIter = instance.getFeaturesString()
-					.iterator();
+		}
 
-			while (featuresDictIter.hasNext()) {
+		//
+		// features
+		//
+		int i = 0, index = 0;
+		for (Map<String, Integer> aFeatureMap : featureStringNumericDict) {
 
-				List<String> feature = featuresDictIter.next();
-				String featureStrValue = instanceFeatureStrIter.next();
-
-				if (!feature.contains(featureStrValue)) {
-
-					feature.add(featureStrValue);
-
+			for (Instance instance : instances) {
+				String featureStringValue = instance.getFeaturesString().get(i);
+				if (!aFeatureMap.containsKey(featureStringValue)) {
+					aFeatureMap.put(featureStringValue, index++);
 				}
 			}
+
+			i++;
 		}
 
 		instancesToNumeric(instances);
@@ -76,11 +76,11 @@ public class InstanceDictionary {
 		}
 		sb.append("\n");
 
-		for (List<String> featureVector : this.featuresDict) {
+		for (Map<String, Integer> aFeatureMap : this.featureStringNumericDict) {
 
-			for (String feature : featureVector) {
-				sb.append(String.valueOf(featureVector.indexOf(feature))
-						.concat(":").concat(feature).concat("\t"));
+			for (String feature : aFeatureMap.keySet()) {
+				sb.append(String.valueOf(aFeatureMap.get(feature)).concat(":")
+						.concat(feature).concat("\t"));
 			}
 
 			sb.append("\n");
@@ -119,20 +119,19 @@ public class InstanceDictionary {
 			//
 			// load features
 			//
-			this.featuresDict = new ArrayList<List<String>>();
+			this.featureStringNumericDict = new ArrayList<Map<String, Integer>>();
 			while ((line = br.readLine()) != null) {
 				st = new StringTokenizer(line, "\t");
 
-				List<String> featureVector = new ArrayList<String>();
+				Map<String, Integer> aFeatureMap = new TreeMap<String, Integer>();
 				while (st.hasMoreElements()) {
 					String feature = st.nextToken();
 					int indexColon = feature.indexOf(":");
-					featureVector.set(
-							Integer.parseInt(feature.substring(0, indexColon)),
-							feature.substring(indexColon + 1));
+					aFeatureMap.put(feature.substring(indexColon + 1),
+							Integer.parseInt(feature.substring(0, indexColon)));
 				}
 
-				featuresDict.add(featureVector);
+				featureStringNumericDict.add(aFeatureMap);
 			}
 
 			br.close();
@@ -159,32 +158,29 @@ public class InstanceDictionary {
 
 		instance.setLabel(labelDict.indexOf(instance.getLabelString()));
 
-		Iterator<List<String>> featuresDictIter = featuresDict.iterator();
+		Iterator<Map<String, Integer>> featuresDictIter = featureStringNumericDict
+				.iterator();
 		Iterator<String> featureStrIter = instance.getFeaturesString()
 				.iterator();
 
-		List<SparseVector> featuresNumeric = new ArrayList<SparseVector>();
+		int[] featuresNumeric = new int[instance.getFeaturesString().size()];
 
+		int i = 0;
 		while (featureStrIter.hasNext()) {
 
-			List<String> featureDict = featuresDictIter.next();
+			Map<String, Integer> aFeatureDict = featuresDictIter.next();
 			String featureStr = featureStrIter.next();
 
-			SparseVector numericFeature = new SparseVector();
-			numericFeature.setLength(featureDict.size());
-			if (featureDict.contains(featureStr)) {
-				numericFeature.setPosition(featureDict.indexOf(featureStr));
-				numericFeature.setValue(1);
-			} else {
-				numericFeature.setPosition(-1);
-				numericFeature.setValue(0);
+			int numericValue = -1;
+			if (aFeatureDict.containsKey(featureStr)) {
+				numericValue = aFeatureDict.get(featureStr);
 			}
-
-			featuresNumeric.add(numericFeature);
+			featuresNumeric[i++] = numericValue;
 
 		}
 
-		instance.setFeatures(featuresNumeric);
+		instance.setFeaturesNumeric(featuresNumeric);
+
 		return instance;
 	}
 
@@ -202,21 +198,13 @@ public class InstanceDictionary {
 
 	public void writeInstancesToFile(List<Instance> instances, File file,
 			boolean withOriginalValue) {
-		StringBuffer sb = new StringBuffer();
-		for (Instance instance : instances) {
-			sb.append(String.valueOf(instance.getLabel()));
 
-			Iterator<String> featureStrIter = instance.getFeaturesString()
-					.iterator();
-			for (SparseVector feature : instance.getFeatures()) {
-				sb.append("\t".concat(String.valueOf(feature.getPosition())));
-				if (withOriginalValue) {
-					sb.append(":");
-					sb.append(featureStrIter.next());
-				}
-			}
-			sb.append("\n");
+		StringBuffer sb = new StringBuffer();
+
+		for (Instance instance : instances) {
+			sb.append(instance.toString().concat("\n"));
 		}
+
 		FileUtil.saveFile(sb.toString(), file);
 	}
 }

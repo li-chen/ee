@@ -9,8 +9,8 @@ public class Instance {
 	private String id;
 	private int label;
 	private String labelString;
-	private List<SparseVector> features;
 	private List<String> featuresString;
+	private int[] featuresNumeric;
 
 	public String getId() {
 		return id;
@@ -28,12 +28,12 @@ public class Instance {
 		this.label = label;
 	}
 
-	public List<SparseVector> getFeatures() {
-		return features;
+	public int[] getFeaturesNumeric() {
+		return featuresNumeric;
 	}
 
-	public void setFeatures(List<SparseVector> features) {
-		this.features = features;
+	public void setFeaturesNumeric(int[] featuresNumeric) {
+		this.featuresNumeric = featuresNumeric;
 	}
 
 	public String getLabelString() {
@@ -60,11 +60,12 @@ public class Instance {
 				.concat(getLabelString()));
 
 		Iterator<String> featureStrIter = getFeaturesString().iterator();
-		for (SparseVector feature : getFeatures()) {
-			sb.append("\t".concat(String.valueOf(feature.getPosition())
-					.concat(":").concat(featureStrIter.next())));
+		for (int featureNumeric : getFeaturesNumeric()) {
+			sb.append("\t".concat(String.valueOf(featureNumeric).concat(":")
+					.concat(featureStrIter.next())));
 		}
 
 		return sb.toString();
 	}
+
 }

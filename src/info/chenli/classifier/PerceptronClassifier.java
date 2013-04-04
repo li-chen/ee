@@ -1,7 +1,6 @@
 package info.chenli.classifier;
 
 import info.chenli.litway.util.MathUtil;
-import info.chenli.litway.util.Timer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,31 +24,37 @@ public class PerceptronClassifier extends AbstractClassifier {
 
 	private Map<Integer, List<Integer>> weights = null;
 
-	private void initWeights(List<Instance> trainingInstances) {
+	private void initWeights(List<Instance> instances) {
 
 		if (null == weights || weights.size() == 0) {
 
 			logger.info("Initial weight.");
 			List<Integer> labels = new ArrayList<Integer>();
 
-			for (Instance instance : trainingInstances) {
+			int inputNeuronNumber = 0;
+			int attributeNum = instances.get(0).getFeaturesNumeric().length;
+
+			for (Instance instance : instances) {
 				if (!labels.contains(instance.getLabel())) {
 					labels.add(instance.getLabel());
+				}
+				int lastFeatureIndex = instance.getFeaturesNumeric()[attributeNum - 1];
+				if (lastFeatureIndex + 1 > inputNeuronNumber) {
+					inputNeuronNumber = lastFeatureIndex + 1;
 				}
 			}
 
 			weights = new HashMap<Integer, List<Integer>>();
 
 			for (int label : labels) {
-				List<Integer> features = new ArrayList<Integer>();
-				for (SparseVector vector : trainingInstances.get(0)
-						.getFeatures()) {
-					int size = vector.getLength();
-					while (size-- > 0) {
-						features.add(0);
-					}
+
+				int i = inputNeuronNumber;
+				List<Integer> weightsOfALabel = new ArrayList<Integer>();
+				while (i-- > 0) {
+					weightsOfALabel.add(0);
 				}
-				weights.put(label, features);
+
+				weights.put(label, weightsOfALabel);
 			}
 
 			logger.info("Weights["
@@ -62,26 +67,48 @@ public class PerceptronClassifier extends AbstractClassifier {
 	}
 
 	@Override
-	public void train(List<Instance> trainingInstances) {
+	public void train(List<Instance> instances) {
 
-		this.initWeights(trainingInstances);
+		this.initWeights(instances);
 
 		logger.info("Start training.");
-		for (Instance instance : trainingInstances) {
+		for (Instance instance : instances) {
 
-			int prediction = predict(instance.getFeatures());
+			int prediction = predict(instance.getFeaturesNumeric());
 
 			if (prediction != instance.getLabel()) {
 
 				try {
 
+					// System.out.print("GS before:");
+					// for (Integer weight :
+					// this.weights.get(instance.getLabel())) {
+					// System.out.print("\t".concat(String.valueOf(weight)));
+					// }
+					// System.out.println();
 					this.weights.put(instance.getLabel(), MathUtil.add(
 							this.weights.get(instance.getLabel()),
-							instance.getFeatures()));
-
+							instance.getFeaturesNumeric()));
+					// System.out.print("GS after:");
+					// for (Integer weight :
+					// this.weights.get(instance.getLabel())) {
+					// System.out.print("\t".concat(String.valueOf(weight)));
+					// }
+					// System.out.println();
+					//
+					// System.out.print("Pred before:");
+					// for (Integer weight : this.weights.get(prediction)) {
+					// System.out.print("\t".concat(String.valueOf(weight)));
+					// }
+					// System.out.println();
 					this.weights.put(prediction, MathUtil.subtract(
 							this.weights.get(prediction),
-							instance.getFeatures()));
+							instance.getFeaturesNumeric()));
+					// System.out.print("Pred after:");
+					// for (Integer weight : this.weights.get(prediction)) {
+					// System.out.print("\t".concat(String.valueOf(weight)));
+					// }
+					// System.out.println();
 
 				} catch (IllegalArgumentException e) {
 
@@ -89,6 +116,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 					throw new RuntimeException(e);
 				}
 			}
+			System.out.println();
 		}
 
 		logger.info("End training.");
@@ -111,19 +139,18 @@ public class PerceptronClassifier extends AbstractClassifier {
 	}
 
 	@Override
-	public int predict(List<SparseVector> featureVector) {
+	public int predict(int[] featureSparseVector) {
 
 		Iterator<Integer> weightsIter = weights.keySet().iterator();
 
 		int prediction = weightsIter.next();
-		int max = MathUtil.dot(featureVector, weights.get(prediction));
+		int max = MathUtil.dot(weights.get(prediction), featureSparseVector);
 
 		while (weightsIter.hasNext()) {
 
 			int label = weightsIter.next();
-			List<Integer> weight = weights.get(label);
-
-			int newPrediction = MathUtil.dot(featureVector, weight);
+			int newPrediction = MathUtil.dot(weights.get(label),
+					featureSparseVector);
 
 			if (newPrediction > max) {
 				prediction = label;
@@ -139,7 +166,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 		int correct = 0;
 		int total = 0;
 		for (Instance instance : instances) {
-			double predicted_label = predict(instance.getFeatures());
+			double predicted_label = predict(instance.getFeaturesNumeric());
 
 			if (predicted_label == instance.getLabel()) {
 				correct++;
@@ -162,7 +189,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 			int i = 0;
 			for (Integer weight : weights.get(label)) {
 				sb.append("\t")
-//				.append(String.valueOf(i++)).append("-")
+				// .append(String.valueOf(i++)).append("-")
 						.append(String.valueOf(weight));
 			}
 
@@ -376,6 +403,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 		Collections.shuffle(instances);
 		InstanceDictionary dict = new InstanceDictionary();
 		dict.creatNumericDictionary(instances);
+		dict.saveDictionary(new File("./model/test.dict"));
 
 		PerceptronClassifier classifier = new PerceptronClassifier();
 

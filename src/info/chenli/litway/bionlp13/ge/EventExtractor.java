@@ -102,7 +102,7 @@ public class EventExtractor extends TokenInstances {
 					continue;
 				}
 				int prediction = triggerRecogniser.predict(triggerDict
-						.instanceToNumeric(tokenInstance).getFeatures());
+						.instanceToNumeric(tokenInstance).getFeaturesNumeric());
 				// System.out.print(tokenInstance.getLabel());
 				// Iterator<Double> iter1 =
 				// tokenInstance.getFeatures().iterator();
@@ -146,7 +146,7 @@ public class EventExtractor extends TokenInstances {
 						Instance proteinInstance = themeToInstance(jcas,
 								protein, trigger, dependencyExtractor, false);
 						double prediction = themeRecogniser.predict(themeDict
-								.instanceToNumeric(proteinInstance).getFeatures());
+								.instanceToNumeric(proteinInstance).getFeaturesNumeric());
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							// TODO can a protein be a theme of multi-event?
@@ -173,7 +173,7 @@ public class EventExtractor extends TokenInstances {
 						Instance proteinInstance = themeToInstance(jcas,
 								protein, trigger, dependencyExtractor, false);
 						double prediction = themeRecogniser.predict(themeDict
-								.instanceToNumeric(proteinInstance).getFeatures());
+								.instanceToNumeric(proteinInstance).getFeaturesNumeric());
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							event.setId(String.valueOf(eventIndex++));
@@ -207,7 +207,7 @@ public class EventExtractor extends TokenInstances {
 										false));
 
 						double prediction = themeRecogniser
-								.predict(proteinInstance.getFeatures());
+								.predict(proteinInstance.getFeaturesNumeric());
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							// TODO can a protein be a theme of multi-event?
@@ -236,7 +236,7 @@ public class EventExtractor extends TokenInstances {
 								trigger, dependencyExtractor, false);
 
 						double prediction = themeRecogniser.predict(themeDict
-								.instanceToNumeric(triggerTokenInstance).getFeatures());
+								.instanceToNumeric(triggerTokenInstance).getFeaturesNumeric());
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 
@@ -265,7 +265,7 @@ public class EventExtractor extends TokenInstances {
 					Instance proteinInstance = causeToInstance(jcas, protein,
 							event, dependencyExtractor, false);
 					double prediction = causeRecogniser
-							.predict(proteinInstance.getFeatures());
+							.predict(proteinInstance.getFeaturesNumeric());
 
 					if (prediction == causeDict.getLabelNumeric(String
 							.valueOf("Cause"))) {
@@ -279,7 +279,7 @@ public class EventExtractor extends TokenInstances {
 							getTriggerToken(jcas, causeEvent.getTrigger()),
 							null);
 					double prediction = causeRecogniser
-							.predict(triggerTokenInstance.getFeatures());
+							.predict(triggerTokenInstance.getFeaturesNumeric());
 
 					if (prediction == causeDict.getLabelNumeric(String
 							.valueOf("Cause"))) {

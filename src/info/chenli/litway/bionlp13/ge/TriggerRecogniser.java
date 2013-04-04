@@ -89,7 +89,7 @@ public class TriggerRecogniser extends PerceptronClassifier {
 				continue;
 			}
 
-			int prediction = this.predict(instance.getFeatures());
+			int prediction = this.predict(instance.getFeaturesNumeric());
 			if (instance.getLabelString() == String
 					.valueOf(EventType.Non_trigger)) {
 
