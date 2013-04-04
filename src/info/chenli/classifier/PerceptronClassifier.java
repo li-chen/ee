@@ -116,7 +116,6 @@ public class PerceptronClassifier extends AbstractClassifier {
 					throw new RuntimeException(e);
 				}
 			}
-			System.out.println();
 		}
 
 		logger.info("End training.");
