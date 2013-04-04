@@ -101,8 +101,8 @@ public class EventExtractor extends TokenInstances {
 						.getFeaturesString().get(2))) {
 					continue;
 				}
-				double prediction = triggerRecogniser.predict(triggerDict
-						.instanceToNumeric(tokenInstance));
+				int prediction = triggerRecogniser.predict(triggerDict
+						.instanceToNumeric(tokenInstance).getFeatures());
 				// System.out.print(tokenInstance.getLabel());
 				// Iterator<Double> iter1 =
 				// tokenInstance.getFeatures().iterator();
@@ -146,7 +146,7 @@ public class EventExtractor extends TokenInstances {
 						Instance proteinInstance = themeToInstance(jcas,
 								protein, trigger, dependencyExtractor, false);
 						double prediction = themeRecogniser.predict(themeDict
-								.instanceToNumeric(proteinInstance));
+								.instanceToNumeric(proteinInstance).getFeatures());
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							// TODO can a protein be a theme of multi-event?
@@ -173,7 +173,7 @@ public class EventExtractor extends TokenInstances {
 						Instance proteinInstance = themeToInstance(jcas,
 								protein, trigger, dependencyExtractor, false);
 						double prediction = themeRecogniser.predict(themeDict
-								.instanceToNumeric(proteinInstance));
+								.instanceToNumeric(proteinInstance).getFeatures());
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							event.setId(String.valueOf(eventIndex++));
@@ -197,7 +197,7 @@ public class EventExtractor extends TokenInstances {
 						newEvents.add(event);
 					}
 
-				} else if (EventType.isRegulatoryEvent(trigger.getEventType())) {
+				} else if (EventType.isComplexEvent(trigger.getEventType())) {
 
 					for (Protein protein : proteins) {
 
@@ -207,7 +207,7 @@ public class EventExtractor extends TokenInstances {
 										false));
 
 						double prediction = themeRecogniser
-								.predict(proteinInstance);
+								.predict(proteinInstance.getFeatures());
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							// TODO can a protein be a theme of multi-event?
@@ -227,16 +227,16 @@ public class EventExtractor extends TokenInstances {
 			// 2. check all discovered events whether they can be themes
 			for (Trigger trigger : triggers.get(sentence.getId())) {
 
-				if (EventType.isRegulatoryEvent(trigger.getEventType())) {
+				if (EventType.isComplexEvent(trigger.getEventType())) {
 
 					for (Event themeEvent : newEvents) {
 
-						Instance triggerTokenInstance = themeToInstance(
-								jcas, getTriggerToken(jcas, themeEvent.getTrigger()),
+						Instance triggerTokenInstance = themeToInstance(jcas,
+								getTriggerToken(jcas, themeEvent.getTrigger()),
 								trigger, dependencyExtractor, false);
 
-						double prediction = themeRecogniser
-								.predict(themeDict.instanceToNumeric(triggerTokenInstance));
+						double prediction = themeRecogniser.predict(themeDict
+								.instanceToNumeric(triggerTokenInstance).getFeatures());
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 
@@ -265,7 +265,7 @@ public class EventExtractor extends TokenInstances {
 					Instance proteinInstance = causeToInstance(jcas, protein,
 							event, dependencyExtractor, false);
 					double prediction = causeRecogniser
-							.predict(proteinInstance);
+							.predict(proteinInstance.getFeatures());
 
 					if (prediction == causeDict.getLabelNumeric(String
 							.valueOf("Cause"))) {
@@ -279,7 +279,7 @@ public class EventExtractor extends TokenInstances {
 							getTriggerToken(jcas, causeEvent.getTrigger()),
 							null);
 					double prediction = causeRecogniser
-							.predict(triggerTokenInstance);
+							.predict(triggerTokenInstance.getFeatures());
 
 					if (prediction == causeDict.getLabelNumeric(String
 							.valueOf("Cause"))) {

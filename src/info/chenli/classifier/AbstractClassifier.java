@@ -29,7 +29,7 @@ public abstract class AbstractClassifier {
 	 * @param instance
 	 * @return The predicted label.
 	 */
-	public abstract double predict(Instance instance);
+	public abstract int predict(List<SparseVector> featureVector);
 
 	public abstract String modelToString();
 

@@ -1,6 +1,7 @@
 package info.chenli.litway.bionlp13.ge;
 
 import info.chenli.classifier.Instance;
+import info.chenli.classifier.SparseVector;
 import info.chenli.litway.corpora.Event;
 import info.chenli.litway.corpora.POS;
 import info.chenli.litway.corpora.Token;
@@ -293,8 +294,8 @@ public abstract class AbstractInstances {
 
 			sb.append(String.valueOf(instance.getLabel()));
 
-			for (double feature : instance.getFeatures()) {
-				sb.append("\t".concat(String.valueOf(feature)));
+			for (SparseVector feature : instance.getFeatures()) {
+				sb.append("\t".concat(String.valueOf(feature.getPosition())));
 			}
 
 			sb.append("\n");

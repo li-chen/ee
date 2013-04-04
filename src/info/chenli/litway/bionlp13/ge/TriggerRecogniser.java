@@ -7,13 +7,12 @@ import info.chenli.classifier.InstanceDictionary;
 import info.chenli.classifier.PerceptronClassifier;
 import info.chenli.litway.corpora.POS;
 import info.chenli.litway.util.FileUtil;
+import info.chenli.litway.util.Timer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.logging.Logger;
 
 /**
@@ -30,7 +29,9 @@ public class TriggerRecogniser extends PerceptronClassifier {
 
 	private final static Logger logger = Logger
 			.getLogger(TriggerRecogniser.class.getName());
+
 	private static List<POS> consideredPOS = new ArrayList<POS>();
+
 	static {
 		consideredPOS.add(POS.JJ);
 		consideredPOS.add(POS.JJR);
@@ -68,100 +69,6 @@ public class TriggerRecogniser extends PerceptronClassifier {
 		return false;
 	}
 
-	public void train(File trainingSet, boolean useSearn) {
-
-		if (useSearn) {
-
-		} else {
-
-			TokenInstances trainingInstances = new TokenInstances();
-			trainingInstances
-					.setTaeDescriptor("/desc/TrainingSetAnnotator.xml");
-			List<Instance> instances = trainingInstances
-					.getInstances(trainingSet);
-
-			// balance the instances
-			// Collections.shuffle(instances);
-			List<Instance> balancedInstances = new ArrayList<Instance>();
-
-			int nonTriggerTokenNum = 0;
-			Map<String, Integer> occurrenceMap = new TreeMap<String, Integer>();
-			for (Instance instance : instances) {
-
-				if (!isConsidered(instance.getFeaturesString().get(2))) {
-
-					continue;
-
-				} else if (!instance.getFeaturesString().get(0)
-						.matches("^[a-zA-Z].+")) {
-
-					continue;
-				}
-				if (instance.getLabelString().equals(
-						String.valueOf(EventType.Non_trigger))) {
-					nonTriggerTokenNum++;
-				}
-				if (!occurrenceMap.containsKey(instance.getLabelString())) {
-					occurrenceMap.put(instance.getLabelString(), 0);
-				}
-				Integer occurrence = occurrenceMap.get(instance
-						.getLabelString()) + 1;
-				occurrenceMap.put(instance.getLabelString(), occurrence);
-			}
-
-			for (Instance instance : instances) {
-
-				if (!isConsidered(instance.getFeaturesString().get(2))) {
-
-					continue;
-
-				} else if (!instance.getFeaturesString().get(0)
-						.matches("^[a-zA-Z].+")) {
-
-					continue;
-				}
-
-				int copyNumber = nonTriggerTokenNum
-						/ occurrenceMap.get(instance.getLabelString());
-
-				while (copyNumber-- > 0) {
-					balancedInstances.add(instance);
-				}
-			}
-			Collections.shuffle(balancedInstances);
-
-			InstanceDictionary dict = new InstanceDictionary();
-			dict.creatNumericDictionary(balancedInstances);
-			dict.saveDictionary(new File("./model/triggers.dict"));
-
-			// dict.writeInstancesToFile(balancedInstances, new File(
-			// "./instances.csv"), false);
-			// dict.writeInstancesToFile(balancedInstances, new File(
-			// "./instances-original.csv"), true);
-
-			// cross validation
-			int step = balancedInstances.size() / 10;
-			for (int i = 0; i < 10; i++) {
-
-				List<Instance> subTestingInstances = balancedInstances.subList(
-						step * i, step * (i + 1));
-				List<Instance> subTrainingInstances = new ArrayList<Instance>();
-				subTrainingInstances.addAll(balancedInstances.subList(0, step
-						* i));
-				subTrainingInstances.addAll(balancedInstances.subList(step
-						* (i + 1), balancedInstances.size()));
-
-				Collections.shuffle(subTrainingInstances);
-				Collections.shuffle(subTestingInstances);
-
-				train(subTrainingInstances, 100);
-
-				test(subTestingInstances, dict);
-			}
-
-		}
-	}
-
 	private Fscore test(List<Instance> instances, InstanceDictionary dict) {
 
 		int tp = 0, fp = 0, tn = 0, fn = 0, correct = 0, total = 0;
@@ -182,7 +89,7 @@ public class TriggerRecogniser extends PerceptronClassifier {
 				continue;
 			}
 
-			double prediction = this.predict(instance);
+			int prediction = this.predict(instance.getFeatures());
 			if (instance.getLabelString() == String
 					.valueOf(EventType.Non_trigger)) {
 
@@ -233,103 +140,52 @@ public class TriggerRecogniser extends PerceptronClassifier {
 		trainingInstances.setTaeDescriptor("/desc/TrainingSetAnnotator.xml");
 		List<Instance> instances = trainingInstances.getInstances(new File(
 				args[0]));
+		logger.info(String.valueOf(instances.size()).concat(
+				" instances are collected."));
 
-		// balance the instances
-		List<Instance> balancedInstances = new ArrayList<Instance>();
-		// // subsampling
-		// int nonTriggerNumber = 0;
-		// for (Instance instance : instances) {
-		//
-		// if (!isConsidered(instance.getFeaturesString().get(2))) {
-		//
-		// continue;
-		//
-		// } else if (!instance.getFeaturesString().get(0)
-		// .matches("^[a-zA-Z].+")) {
-		//
-		// continue;
-		// } else if (instance.getLabelString().equals(
-		// String.valueOf(EventType.Non_trigger))) {
-		//
-		// if (nonTriggerNumber > 10000) {
-		// continue;
-		// }
-		//
-		// nonTriggerNumber++;
-		// }
-		// balancedInstances.add(instance);
-		// }
-
-		int nonTriggerTokenNum = 0;
-		Map<String, Integer> occurrenceMap = new TreeMap<String, Integer>();
-		for (Instance instance : instances) {
-
-			if (!isConsidered(instance.getFeaturesString().get(2))) {
-
-				continue;
-
-			} else if (!instance.getFeaturesString().get(0)
-					.matches("^[a-zA-Z].+")) {
-
-				continue;
-			}
-			if (instance.getLabelString().equals(
-					String.valueOf(EventType.Non_trigger))) {
-				nonTriggerTokenNum++;
-			}
-			if (!occurrenceMap.containsKey(instance.getLabelString())) {
-				occurrenceMap.put(instance.getLabelString(), 0);
-			}
-			Integer occurrence = occurrenceMap.get(instance.getLabelString()) + 1;
-			occurrenceMap.put(instance.getLabelString(), occurrence);
-		}
-
-		for (Instance instance : instances) {
-
-			if (!isConsidered(instance.getFeaturesString().get(2))) {
-
-				continue;
-
-			} else if (!instance.getFeaturesString().get(0)
-					.matches("^[a-zA-Z].+")) {
-
-				continue;
-			}
-
-			int copyNumber = nonTriggerTokenNum
-					/ occurrenceMap.get(instance.getLabelString());
-
-			while (copyNumber-- > 0) {
-				balancedInstances.add(instance);
-			}
-		}
-		Collections.shuffle(balancedInstances);
+		Collections.shuffle(instances);
+		logger.info("Shuffle instances.");
 
 		InstanceDictionary dict = new InstanceDictionary();
-		dict.creatNumericDictionary(balancedInstances);
+		dict.creatNumericDictionary(instances);
+		logger.info("Create dictionary.");
 		dict.saveDictionary(new File("./model/triggers.dict"));
+		logger.info("Save dictionary.");
 
 		// 10-fold cross validation
 		int fold = 10;
-		int step = balancedInstances.size() / fold;
-		for (int i = 0; i < fold; i++) {
+		int step = instances.size() / fold;
+		int i =0;
+
+//		logger.info(String.valueOf(fold).concat(" fold cross validatation."));
+//
+//		for (int i = 0; i < fold; i++) {
+//
+//			logger.info(String.valueOf(i).concat(" fold cross validatation."));
 
 			TriggerRecogniser tr = new TriggerRecogniser();
 
-			List<Instance> subTestingInstances = balancedInstances.subList(step
-					* i, step * (i + 1));
+			List<Instance> subTestingInstances = instances.subList(step * i,
+					step * (i + 1));
 			List<Instance> subTrainingInstances = new ArrayList<Instance>();
-			subTrainingInstances.addAll(balancedInstances.subList(0, step * i));
-			subTrainingInstances.addAll(balancedInstances.subList(step
-					* (i + 1), balancedInstances.size()));
+			subTrainingInstances.addAll(instances.subList(0, step * i));
+			subTrainingInstances.addAll(instances.subList(step * (i + 1),
+					instances.size()));
 
 			Collections.shuffle(subTrainingInstances);
 			Collections.shuffle(subTestingInstances);
 
-			tr.train(subTrainingInstances, 1000);
+			Timer timer = new Timer();
+			timer.start();
+
+			tr.train(subTrainingInstances, 10);
+			timer.stop();
+//			logger.info(String.valueOf(i).concat(" fold training takes ")
+//					.concat(String.valueOf(timer.getRunningTime())));
 
 			tr.test(subTestingInstances, dict);
-		}
+//		}
 
+			tr.saveModel(new File("./model/triggers.perceptron.model"));
 	}
 }

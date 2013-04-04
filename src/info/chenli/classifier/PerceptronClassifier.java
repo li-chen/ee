@@ -1,13 +1,16 @@
 package info.chenli.classifier;
 
 import info.chenli.litway.util.MathUtil;
+import info.chenli.litway.util.Timer;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -20,31 +23,40 @@ public class PerceptronClassifier extends AbstractClassifier {
 	private final static Logger logger = Logger
 			.getLogger(PerceptronClassifier.class.getName());
 
-	private Map<Double, List<Double>> weights = null;
+	private Map<Integer, List<Integer>> weights = null;
 
 	private void initWeights(List<Instance> trainingInstances) {
 
-		int featureNum = trainingInstances.get(0).getFeatures().size();
-		List<Double> labels = new ArrayList<Double>();
-
-		for (Instance instance : trainingInstances) {
-			if (!labels.contains(instance.getLabel())) {
-				labels.add(instance.getLabel());
-			}
-		}
-
 		if (null == weights || weights.size() == 0) {
 
-			weights = new HashMap<Double, List<Double>>();
+			logger.info("Initial weight.");
+			List<Integer> labels = new ArrayList<Integer>();
 
-			for (Double label : labels) {
+			for (Instance instance : trainingInstances) {
+				if (!labels.contains(instance.getLabel())) {
+					labels.add(instance.getLabel());
+				}
+			}
 
-				List<Double> features = new ArrayList<Double>();
-				for (int i = 0; i < featureNum; i++) {
-					features.add(0.0);
+			weights = new HashMap<Integer, List<Integer>>();
+
+			for (int label : labels) {
+				List<Integer> features = new ArrayList<Integer>();
+				for (SparseVector vector : trainingInstances.get(0)
+						.getFeatures()) {
+					int size = vector.getLength();
+					while (size-- > 0) {
+						features.add(0);
+					}
 				}
 				weights.put(label, features);
 			}
+
+			logger.info("Weights["
+					.concat(String.valueOf(weights.size()))
+					.concat("][")
+					.concat(String.valueOf(weights.values().iterator().next()
+							.size())).concat("] are set to 0."));
 		}
 
 	}
@@ -54,28 +66,22 @@ public class PerceptronClassifier extends AbstractClassifier {
 
 		this.initWeights(trainingInstances);
 
+		logger.info("Start training.");
 		for (Instance instance : trainingInstances) {
 
-			double prediction = predict(instance);
+			int prediction = predict(instance.getFeatures());
 
 			if (prediction != instance.getLabel()) {
 
 				try {
 
-					// System.out.print(instance.getLabel());
-					// for (double feature : instance.getFeatures()) {
-					// System.out.print("\t");
-					// System.out.print(feature);
-					// }
-					// System.out.println(prediction);
 					this.weights.put(instance.getLabel(), MathUtil.add(
 							this.weights.get(instance.getLabel()),
-							MathUtil.multiply(instance.getFeatures(),
-									instance.getLabel())));
+							instance.getFeatures()));
 
-					this.weights.put(prediction, MathUtil.subtract(this.weights
-							.get(prediction), MathUtil.multiply(
-							instance.getFeatures(), prediction)));
+					this.weights.put(prediction, MathUtil.subtract(
+							this.weights.get(prediction),
+							instance.getFeatures()));
 
 				} catch (IllegalArgumentException e) {
 
@@ -84,6 +90,8 @@ public class PerceptronClassifier extends AbstractClassifier {
 				}
 			}
 		}
+
+		logger.info("End training.");
 
 	}
 
@@ -103,16 +111,19 @@ public class PerceptronClassifier extends AbstractClassifier {
 	}
 
 	@Override
-	public double predict(Instance instance) {
+	public int predict(List<SparseVector> featureVector) {
 
-		double prediction = -100000000;
-		double max = -100000000;
+		Iterator<Integer> weightsIter = weights.keySet().iterator();
 
-		for (double label : weights.keySet()) {
+		int prediction = weightsIter.next();
+		int max = MathUtil.dot(featureVector, weights.get(prediction));
 
-			List<Double> weight = weights.get(label);
+		while (weightsIter.hasNext()) {
 
-			double newPrediction = MathUtil.dot(instance.getFeatures(), weight);
+			int label = weightsIter.next();
+			List<Integer> weight = weights.get(label);
+
+			int newPrediction = MathUtil.dot(featureVector, weight);
 
 			if (newPrediction > max) {
 				prediction = label;
@@ -128,7 +139,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 		int correct = 0;
 		int total = 0;
 		for (Instance instance : instances) {
-			double predicted_label = predict(instance);
+			double predicted_label = predict(instance.getFeatures());
 
 			if (predicted_label == instance.getLabel()) {
 				correct++;
@@ -144,12 +155,15 @@ public class PerceptronClassifier extends AbstractClassifier {
 
 		StringBuffer sb = new StringBuffer();
 
-		for (double label : weights.keySet()) {
+		for (Integer label : weights.keySet()) {
 
 			sb.append(String.valueOf(label));
 
-			for (double weight : weights.get(label)) {
-				sb.append("\t").append(String.valueOf(weight));
+			int i = 0;
+			for (Integer weight : weights.get(label)) {
+				sb.append("\t")
+//				.append(String.valueOf(i++)).append("-")
+						.append(String.valueOf(weight));
 			}
 
 			sb.append("\n");
@@ -166,16 +180,16 @@ public class PerceptronClassifier extends AbstractClassifier {
 			BufferedReader br = new BufferedReader(new FileReader(modelFile));
 
 			String line;
-			this.weights = new TreeMap<Double, List<Double>>();
+			this.weights = new TreeMap<Integer, List<Integer>>();
 
 			while ((line = br.readLine()) != null) {
 
 				StringTokenizer st = new StringTokenizer(line, "\t");
-				double label = Double.parseDouble(st.nextToken());
+				int label = Integer.parseInt(st.nextToken());
 
-				List<Double> weightVector = new ArrayList<Double>();
+				List<Integer> weightVector = new ArrayList<Integer>();
 				while (st.hasMoreTokens()) {
-					weightVector.add(Double.parseDouble(st.nextToken()));
+					weightVector.add(Integer.parseInt(st.nextToken()));
 				}
 				weights.put(label, weightVector);
 			}
@@ -344,90 +358,96 @@ public class PerceptronClassifier extends AbstractClassifier {
 				{ "6.2", "3.4", "5.4", "2.3", "Iris-virginica" },
 				{ "5.9", "3.0", "5.1", "1.8", "Iris-virginica" } };
 
-		// for (int i = 0; i < iris.length; i++) {
-		// Instance instance = new Instance();
-		// if (iris[i][4].equals("Iris-setosa")) {
-		// instance.setLabel(1);
-		// } else if (iris[i][4].equals("Iris-virginica")) {
-		// instance.setLabel(2);
-		// } else {
-		// instance.setLabel(3);
-		// }
-		//
-		// List<Double> features = new ArrayList<Double>();
-		//
-		// for (int j = 0; j < 4; j++) {
-		// features.add(Double.parseDouble(iris[i][j]));
-		// }
-		//
-		// instance.setFeatures(features);
-		//
-		// instances.add(instance);
-		// }
-
-		// restaurants sample training data.
-		BufferedReader in = new BufferedReader(new FileReader(
-				"./test/restaurant_train.txt"));
-		String line = in.readLine();
-
-		while (line != null) {
-
+		for (int i = 0; i < iris.length; i++) {
 			Instance instance = new Instance();
-			double[] features = new double[9492];
-			String[] toks = line.split(" ");
-			instance.setLabel(Double.parseDouble(toks[0]));
-			for (int i = 1; i < toks.length; i++) {
-				int f = Integer.parseInt(toks[i].split(":")[0]);
-				double v = Double.parseDouble(toks[i].split(":")[1]);
-				features[f] = v;
+			instance.setLabelString(iris[i][4]);
+
+			List<String> features = new ArrayList<String>();
+
+			for (int j = 0; j < 4; j++) {
+				features.add(iris[i][j]);
 			}
 
-			List<Double> featuresDouble = new ArrayList<Double>();
-			for (double feature : features) {
-				featuresDouble.add(feature);
-			}
-			instance.setFeatures(featuresDouble);
+			instance.setFeaturesString(features);
+
 			instances.add(instance);
-
-			line = in.readLine();
 		}
+
+		Collections.shuffle(instances);
+		InstanceDictionary dict = new InstanceDictionary();
+		dict.creatNumericDictionary(instances);
 
 		PerceptronClassifier classifier = new PerceptronClassifier();
 
-		classifier.train(instances, 150);
+		classifier.train(instances, 15);
 		System.out.println(classifier.accuracy(instances));
+		System.out.println(classifier.modelToString());
 
-		// restaurants sample test data.
-		in = new BufferedReader(new FileReader("./test/restaurant_test.txt"));
-		line = in.readLine();
-		instances = new ArrayList<Instance>();
+		// restaurants sample training data.
 
-		while (line != null) {
-
-			Instance instance = new Instance();
-			double[] features = new double[9492];
-			String[] toks = line.split(" ");
-			instance.setLabel(Double.parseDouble(toks[0]));
-			for (int i = 1; i < toks.length; i++) {
-				int f = Integer.parseInt(toks[i].split(":")[0]);
-				double v = Double.parseDouble(toks[i].split(":")[1]);
-				features[f] = v;
-			}
-
-			List<Double> featuresDouble = new ArrayList<Double>();
-			for (double feature : features) {
-				featuresDouble.add(feature);
-			}
-			instance.setFeatures(featuresDouble);
-			instances.add(instance);
-
-			line = in.readLine();
-		}
-		System.out.println(classifier.accuracy(instances));
-		// Instance testInstance = instances.get(0);
-		// double prediction = classifier.predict(testInstance);
-		// System.out.print(prediction);
-		// System.out.print("\t");
+		// BufferedReader in = new BufferedReader(new FileReader(
+		// "./test/restaurant_train.txt"));
+		// String line = in.readLine();
+		//
+		// while (line != null) {
+		//
+		// Instance instance = new Instance();
+		// int[] features = new int[9492];
+		// String[] toks = line.split(" ");
+		// instance.setLabel(Integer.parseInt(toks[0]));
+		// for (int i = 1; i < toks.length; i++) {
+		// int f = Integer.parseInt(toks[i].split(":")[0]);
+		// int v = Integer.parseInt(toks[i].split(":")[1]);
+		// features[f] = v;
+		// }
+		//
+		// List<Integer> featuresDouble = new ArrayList<Integer>();
+		// for (int feature : features) {
+		// featuresDouble.add(feature);
+		// }
+		// instance.setFeatures(featuresDouble);
+		// instances.add(instance);
+		//
+		// line = in.readLine();
+		// }
+		//
+		// PerceptronClassifier classifier = new PerceptronClassifier();
+		//
+		// classifier.train(instances, 150);
+		// System.out.println(classifier.accuracy(instances));
+		//
+		// // restaurants sample test data.
+		// in = new BufferedReader(new
+		// FileReader("./test/restaurant_test.txt"));
+		// line = in.readLine();
+		// instances = new ArrayList<Instance>();
+		//
+		// while (line != null) {
+		//
+		// Instance instance = new Instance();
+		// double[] features = new double[9492];
+		// String[] toks = line.split(" ");
+		// instance.setLabel(Double.parseDouble(toks[0]));
+		// for (int i = 1; i < toks.length; i++) {
+		// int f = Integer.parseInt(toks[i].split(":")[0]);
+		// double v = Double.parseDouble(toks[i].split(":")[1]);
+		// features[f] = v;
+		// }
+		//
+		// List<Double> featuresDouble = new ArrayList<Double>();
+		// for (double feature : features) {
+		// featuresDouble.add(feature);
+		// }
+		// instance.setFeatures(featuresDouble);
+		// instances.add(instance);
+		//
+		// line = in.readLine();
+		// }
+		// System.out.println(classifier.accuracy(instances)); // Instance
+		// testInstance = instances.get(0); // double prediction =
+		// classifier.predict(testInstance); // System.out.print(prediction); //
+		// System.out.print("\t"); //
 		// System.out.println(testInstance.getLabel());
+
 	}
 }

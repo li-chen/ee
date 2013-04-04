@@ -115,6 +115,11 @@ public class GSAnnotator extends JCasAnnotator_ImplBase {
 		for (String eventId : eventThemeMap.keySet()) {
 
 			Trigger trigger = triggerMap.get(eventTriggerMap.get(eventId));
+			if (trigger == null) {
+				System.out.println(eventId + document.getSource_id()
+						+ document.getSection() + document.getDivistion_id());
+				System.out.println(UimaUtil.getJCasFileName(jCas));
+			}
 			Event event = new Event(jCas, trigger.getBegin(), trigger.getEnd());
 			event.setId(eventId);
 

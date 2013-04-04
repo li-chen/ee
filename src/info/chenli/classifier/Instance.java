@@ -7,9 +7,9 @@ public class Instance {
 
 	// instance ID
 	private String id;
-	private double label;
+	private int label;
 	private String labelString;
-	private List<Double> features;
+	private List<SparseVector> features;
 	private List<String> featuresString;
 
 	public String getId() {
@@ -20,19 +20,19 @@ public class Instance {
 		this.id = id;
 	}
 
-	public double getLabel() {
+	public int getLabel() {
 		return label;
 	}
 
-	public void setLabel(double label) {
+	public void setLabel(int label) {
 		this.label = label;
 	}
 
-	public List<Double> getFeatures() {
+	public List<SparseVector> getFeatures() {
 		return features;
 	}
 
-	public void setFeatures(List<Double> features) {
+	public void setFeatures(List<SparseVector> features) {
 		this.features = features;
 	}
 
@@ -60,9 +60,9 @@ public class Instance {
 				.concat(getLabelString()));
 
 		Iterator<String> featureStrIter = getFeaturesString().iterator();
-		for (double feature : getFeatures()) {
-			sb.append("\t".concat(String.valueOf(feature).concat(":")
-					.concat(featureStrIter.next())));
+		for (SparseVector feature : getFeatures()) {
+			sb.append("\t".concat(String.valueOf(feature.getPosition())
+					.concat(":").concat(featureStrIter.next())));
 		}
 
 		return sb.toString();
