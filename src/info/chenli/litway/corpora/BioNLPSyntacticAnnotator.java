@@ -131,8 +131,12 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 						// dependent for each token.
 						for (Token token : tokensOfSentence.values()) {
 
-							token.setDependent(tokensOfSentence.get(token
-									.getDependentId()));
+							Token dependent = tokensOfSentence.get(token
+									.getDependentId());
+							token.setDependent(dependent);
+							if (null != dependent) {
+								dependent.setGovernor(token);
+							}
 						}
 
 						tokensOfSentence = new TreeMap<Integer, Token>();

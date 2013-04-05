@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Wed Mar 27 09:29:54 GMT 2013
+ * Updated by JCasGen Fri Apr 05 15:52:12 BST 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Token extends Annotation {
@@ -153,6 +153,24 @@ public class Token extends Annotation {
    
     
   //*--------------*
+  //* Feature: governor
+
+  /** getter for governor - gets 
+   * @generated */
+  public Token getGovernor() {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_governor == null)
+      jcasType.jcas.throwFeatMissing("governor", "info.chenli.litway.corpora.Token");
+    return (Token)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_governor)));}
+    
+  /** setter for governor - sets  
+   * @generated */
+  public void setGovernor(Token v) {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_governor == null)
+      jcasType.jcas.throwFeatMissing("governor", "info.chenli.litway.corpora.Token");
+    jcasType.ll_cas.ll_setRefValue(addr, ((Token_Type)jcasType).casFeatCode_governor, jcasType.ll_cas.ll_getFSRef(v));}    
+   
+    
+  //*--------------*
   //* Feature: dependentId
 
   /** getter for dependentId - gets 
@@ -204,7 +222,7 @@ public class Token extends Annotation {
     if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_relation == null)
       jcasType.jcas.throwFeatMissing("relation", "info.chenli.litway.corpora.Token");
     jcasType.ll_cas.ll_setStringValue(addr, ((Token_Type)jcasType).casFeatCode_relation, v);}    
-                                        //*--------------*
+                                            //*--------------*
   //* Feature: id
 
   /** getter for id - gets 

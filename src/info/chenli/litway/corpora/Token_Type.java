@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Wed Mar 27 09:29:54 GMT 2013
+ * Updated by JCasGen Fri Apr 05 15:52:12 BST 2013
  * @generated */
 public class Token_Type extends Annotation_Type {
   /** @generated */
@@ -135,6 +135,24 @@ public class Token_Type extends Annotation_Type {
   
  
   /** @generated */
+  final Feature casFeat_governor;
+  /** @generated */
+  final int     casFeatCode_governor;
+  /** @generated */ 
+  public int getGovernor(int addr) {
+        if (featOkTst && casFeat_governor == null)
+      jcas.throwFeatMissing("governor", "info.chenli.litway.corpora.Token");
+    return ll_cas.ll_getRefValue(addr, casFeatCode_governor);
+  }
+  /** @generated */    
+  public void setGovernor(int addr, int v) {
+        if (featOkTst && casFeat_governor == null)
+      jcas.throwFeatMissing("governor", "info.chenli.litway.corpora.Token");
+    ll_cas.ll_setRefValue(addr, casFeatCode_governor, v);}
+    
+  
+ 
+  /** @generated */
   final Feature casFeat_dependentId;
   /** @generated */
   final int     casFeatCode_dependentId;
@@ -237,6 +255,10 @@ public class Token_Type extends Annotation_Type {
  
     casFeat_rightToken = jcas.getRequiredFeatureDE(casType, "rightToken", "info.chenli.litway.corpora.Token", featOkTst);
     casFeatCode_rightToken  = (null == casFeat_rightToken) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_rightToken).getCode();
+
+ 
+    casFeat_governor = jcas.getRequiredFeatureDE(casType, "governor", "info.chenli.litway.corpora.Token", featOkTst);
+    casFeatCode_governor  = (null == casFeat_governor) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_governor).getCode();
 
  
     casFeat_dependentId = jcas.getRequiredFeatureDE(casType, "dependentId", "uima.cas.Integer", featOkTst);

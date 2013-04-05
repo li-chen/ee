@@ -103,6 +103,11 @@
           <rangeTypeName>info.chenli.litway.corpora.Token</rangeTypeName>
         </featureDescription>
         <featureDescription>
+          <name>governor</name>
+          <description/>
+          <rangeTypeName>info.chenli.litway.corpora.Token</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
           <name>dependentId</name>
           <description/>
           <rangeTypeName>uima.cas.Integer</rangeTypeName>

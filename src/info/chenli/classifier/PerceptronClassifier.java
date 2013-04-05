@@ -80,35 +80,13 @@ public class PerceptronClassifier extends AbstractClassifier {
 
 				try {
 
-					// System.out.print("GS before:");
-					// for (Integer weight :
-					// this.weights.get(instance.getLabel())) {
-					// System.out.print("\t".concat(String.valueOf(weight)));
-					// }
-					// System.out.println();
 					this.weights.put(instance.getLabel(), MathUtil.add(
 							this.weights.get(instance.getLabel()),
 							instance.getFeaturesNumeric()));
-					// System.out.print("GS after:");
-					// for (Integer weight :
-					// this.weights.get(instance.getLabel())) {
-					// System.out.print("\t".concat(String.valueOf(weight)));
-					// }
-					// System.out.println();
-					//
-					// System.out.print("Pred before:");
-					// for (Integer weight : this.weights.get(prediction)) {
-					// System.out.print("\t".concat(String.valueOf(weight)));
-					// }
-					// System.out.println();
+
 					this.weights.put(prediction, MathUtil.subtract(
 							this.weights.get(prediction),
 							instance.getFeaturesNumeric()));
-					// System.out.print("Pred after:");
-					// for (Integer weight : this.weights.get(prediction)) {
-					// System.out.print("\t".concat(String.valueOf(weight)));
-					// }
-					// System.out.println();
 
 				} catch (IllegalArgumentException e) {
 
@@ -424,15 +402,11 @@ public class PerceptronClassifier extends AbstractClassifier {
 		// instance.setLabel(Integer.parseInt(toks[0]));
 		// for (int i = 1; i < toks.length; i++) {
 		// int f = Integer.parseInt(toks[i].split(":")[0]);
-		// int v = Integer.parseInt(toks[i].split(":")[1]);
+		// int v = (int) Double.parseDouble(toks[i].split(":")[1]);
 		// features[f] = v;
 		// }
 		//
-		// List<Integer> featuresDouble = new ArrayList<Integer>();
-		// for (int feature : features) {
-		// featuresDouble.add(feature);
-		// }
-		// instance.setFeatures(featuresDouble);
+		// instance.setFeaturesNumeric(features);
 		// instances.add(instance);
 		//
 		// line = in.readLine();
@@ -440,7 +414,7 @@ public class PerceptronClassifier extends AbstractClassifier {
 		//
 		// PerceptronClassifier classifier = new PerceptronClassifier();
 		//
-		// classifier.train(instances, 150);
+		// classifier.train(instances, 15);
 		// System.out.println(classifier.accuracy(instances));
 		//
 		// // restaurants sample test data.
@@ -452,20 +426,16 @@ public class PerceptronClassifier extends AbstractClassifier {
 		// while (line != null) {
 		//
 		// Instance instance = new Instance();
-		// double[] features = new double[9492];
+		// int[] features = new int[9492];
 		// String[] toks = line.split(" ");
-		// instance.setLabel(Double.parseDouble(toks[0]));
+		// instance.setLabel(Integer.parseInt(toks[0]));
 		// for (int i = 1; i < toks.length; i++) {
 		// int f = Integer.parseInt(toks[i].split(":")[0]);
-		// double v = Double.parseDouble(toks[i].split(":")[1]);
+		// int v = (int) Double.parseDouble(toks[i].split(":")[1]);
 		// features[f] = v;
 		// }
 		//
-		// List<Double> featuresDouble = new ArrayList<Double>();
-		// for (double feature : features) {
-		// featuresDouble.add(feature);
-		// }
-		// instance.setFeatures(featuresDouble);
+		// instance.setFeaturesNumeric(features);
 		// instances.add(instance);
 		//
 		// line = in.readLine();

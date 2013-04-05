@@ -11,6 +11,7 @@
 	<property name="build" location="build" />
 	<property name="meta.inf" location="${build}/META-INF" />
 	<property name="uima.desc" location="${build}/desc" />
+	<property name="stop.words" location="${build}/stopWords" />
 	<property name="dist" location="dist" />
 	<property name="docs" location="docs" />
 	<!-- properties for compilation -->
@@ -51,9 +52,13 @@
 		<mkdir dir="${dist}" />
 		<mkdir dir="${meta.inf}" />
 		<mkdir dir="${uima.desc}" />
+		<mkdir dir="${stop.words}" />
 		<copy todir="${meta.inf}" file="./LICENSE" />
 		<copy todir="${uima.desc}">
 			<fileset dir="./desc" />
+		</copy>
+		<copy todir="${stop.words}">
+			<fileset dir="./resources/stopWords" />
 		</copy>
 	</target>
 

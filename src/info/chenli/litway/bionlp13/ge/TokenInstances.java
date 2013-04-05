@@ -1,6 +1,7 @@
 package info.chenli.litway.bionlp13.ge;
 
 import info.chenli.classifier.Instance;
+import info.chenli.litway.StopWords;
 import info.chenli.litway.corpora.Sentence;
 import info.chenli.litway.corpora.Token;
 import info.chenli.litway.corpora.Trigger;
@@ -24,6 +25,8 @@ public class TokenInstances extends AbstractInstances {
 
 	private final static Logger logger = Logger.getLogger(TokenInstances.class
 			.getName());
+
+	private static final String aStopWord = "!AStopWord!";
 
 	public TokenInstances() {
 
@@ -80,6 +83,12 @@ public class TokenInstances extends AbstractInstances {
 
 			for (Token token : tokens) {
 
+				if (!isWord(token.getCoveredText().toLowerCase())
+						|| StopWords.isAStopWordShort(token.getCoveredText()
+								.toLowerCase())) {
+					continue;
+				}
+
 				nodes.add(tokenToInstance(token, triggerTokens));
 			}
 
@@ -100,19 +109,46 @@ public class TokenInstances extends AbstractInstances {
 	protected Instance tokenToInstance(Token token,
 			Map<Integer, String> triggerTokens) {
 
+		// only consider the tokens, which are words.
 		Instance instance = new Instance();
 
 		List<String> featureString = new ArrayList<String>();
 		instance.setFeaturesString(featureString);
 
 		featureString.add(token.getCoveredText().toLowerCase());
-		featureString.add(token.getLemma().toLowerCase());
-		featureString.add(token.getPos());
+		String lemma = token.getLemma().toLowerCase();
+		featureString.add(lemma);
+		String pos = token.getPos();
+		featureString.add(pos);
 		featureString.add(token.getStem().toLowerCase());
-		featureString.add(null == token.getLeftToken() ? "" : token
-				.getLeftToken().getCoveredText().toLowerCase());
-		featureString.add(null == token.getRightToken() ? "" : token
-				.getRightToken().getCoveredText().toLowerCase());
+		featureString.add(lemma.concat("_").concat(pos));
+		String leftTokenText = null == token.getLeftToken() ? "" : token
+				.getLeftToken().getCoveredText().toLowerCase();// combine lemma
+																// with lemma
+		featureString.add(isWord(leftTokenText)
+				&& !StopWords.isAStopWordShortForNgram(leftTokenText) ? lemma
+				.concat("_").concat(leftTokenText) : aStopWord);
+
+		String rightTokenText = null == token.getRightToken() ? "" : token
+				.getRightToken().getCoveredText().toLowerCase();
+		featureString.add(isWord(rightTokenText)
+				&& StopWords.isAStopWordShortForNgram(leftTokenText) ? lemma
+				.concat("_").concat(rightTokenText) : aStopWord);
+
+		String dependentText = null == token.getDependent() ? "" : token
+				.getDependent().getCoveredText().toLowerCase();
+		featureString.add(isWord(dependentText)
+				&& !StopWords.isAStopWordShortForNgram(dependentText) ? lemma
+				.concat("_").concat(
+						token.getDependent().getLemma().toLowerCase())
+				: aStopWord);
+		String governorText = null == token.getGovernor() ? "" : token
+				.getGovernor().getCoveredText().toLowerCase();
+		featureString.add(isWord(governorText)
+				&& !StopWords.isAStopWordShortForNgram(governorText) ? lemma
+				.concat("_").concat(
+						token.getGovernor().getLemma().toLowerCase())
+				: aStopWord);
 
 		if (null != triggerTokens) {
 
@@ -121,6 +157,11 @@ public class TokenInstances extends AbstractInstances {
 		}
 
 		return instance;
+	}
+
+	private boolean isWord(String text) {
+
+		return text.matches("^[a-zA-Z].+");
 	}
 
 	public static void main(String[] args) {

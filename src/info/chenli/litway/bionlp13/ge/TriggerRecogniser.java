@@ -178,7 +178,7 @@ public class TriggerRecogniser extends PerceptronClassifier {
 			Timer timer = new Timer();
 			timer.start();
 
-			tr.train(subTrainingInstances, 10);
+			tr.train(subTrainingInstances, 500);
 			timer.stop();
 //			logger.info(String.valueOf(i).concat(" fold training takes ")
 //					.concat(String.valueOf(timer.getRunningTime())));
