@@ -2,6 +2,7 @@ package info.chenli.litway.bionlp13.ge;
 
 import info.chenli.classifier.Instance;
 import info.chenli.litway.StopWords;
+import info.chenli.litway.corpora.POS;
 import info.chenli.litway.corpora.Sentence;
 import info.chenli.litway.corpora.Token;
 import info.chenli.litway.corpora.Trigger;
@@ -26,7 +27,7 @@ public class TokenInstances extends AbstractInstances {
 	private final static Logger logger = Logger.getLogger(TokenInstances.class
 			.getName());
 
-	private static final String aStopWord = "!AStopWord!";
+	public static final String aStopWord = "!AStopWord!";
 
 	public TokenInstances() {
 
@@ -84,8 +85,10 @@ public class TokenInstances extends AbstractInstances {
 			for (Token token : tokens) {
 
 				if (!isWord(token.getCoveredText().toLowerCase())
-						|| StopWords.isAStopWordShort(token.getCoveredText()
-								.toLowerCase())) {
+						|| !POS.isPos(token.getPos())
+				// || StopWords.isAStopWordShort(token.getCoveredText()
+				// .toLowerCase())
+				) {
 					continue;
 				}
 

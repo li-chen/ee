@@ -18,15 +18,20 @@ public class UimaUtil {
 
 	public static String getJCasFileName(JCas jCas) {
 
+		String filePath = getJCasFilePath(jCas);
+
+		return filePath.substring(filePath.lastIndexOf(File.separator));
+	}
+
+	public static String getJCasFilePath(JCas jCas) {
+
 		try {
-			return jCas.getView("FileName").getSofaDataURI();
+			return jCas.getView("FilePath").getSofaDataURI();
 
 		} catch (CASException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.severe(e.getMessage());
+			throw new RuntimeException(e);
 		}
-
-		return null;
 
 	}
 

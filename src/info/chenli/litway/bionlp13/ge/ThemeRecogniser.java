@@ -27,21 +27,20 @@ public class ThemeRecogniser extends PerceptronClassifier {
 			InstanceDictionary dict = new InstanceDictionary();
 
 			ThemeInstances trainingInstances = new ThemeInstances();
-			trainingInstances.setTaeDescriptor(
-					"/desc/TrainingSetAnnotator.xml");
+			trainingInstances
+					.setTaeDescriptor("/desc/TrainingSetAnnotator.xml");
 			List<Instance> instances = trainingInstances
 					.getInstances(trainingSet);
 
 			dict.creatNumericDictionary(instances);
 			dict.saveDictionary(new File("./model/themes.dict"));
 
-			train(dict.instancesToNumeric(instances), 300);
+			train(dict.instancesToNumeric(instances), 500);
 
 			System.out.println(accuracy(instances));
 
 			ThemeInstances testInstances = new ThemeInstances();
-			testInstances.setTaeDescriptor(
-					"/desc/TrainingSetAnnotator.xml");
+			testInstances.setTaeDescriptor("/desc/TrainingSetAnnotator.xml");
 			instances = testInstances.getInstances(new File("./data/test/"));
 
 			System.out.println(accuracy(dict.instancesToNumeric(instances)));

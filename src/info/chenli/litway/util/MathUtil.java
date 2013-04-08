@@ -100,6 +100,9 @@ public class MathUtil {
 
 		List<Integer> result = new ArrayList<Integer>(vector);
 		for (int offset : sparseVector) {
+			if (offset == -1) {
+				continue;
+			}
 			result.set(offset, result.get(offset) + 1);
 
 		}
@@ -161,6 +164,9 @@ public class MathUtil {
 
 		List<Integer> result = new ArrayList<Integer>(vector);
 		for (int offset : sparseVector) {
+			if (offset == -1) {
+				continue;
+			}
 			result.set(offset, result.get(offset) - 1);
 
 		}

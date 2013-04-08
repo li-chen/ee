@@ -113,7 +113,7 @@ public class Application {
 		aCAS.setDocumentText(document);
 
 		// set the path of resource file
-		aCAS.createView("FileName").setSofaDataURI(aFile.getName(), "text");
+		aCAS.createView("FilePath").setSofaDataURI(aFile.getAbsolutePath(), "text");
 
 		// process
 		aAE.process(aCAS);

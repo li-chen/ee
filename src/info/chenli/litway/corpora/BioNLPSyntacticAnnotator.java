@@ -28,18 +28,13 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 
-		File sentencisedFile = new File(
-				"./resources/syntacticAnalysis/sentences/BioNLP-ST-2013_GE_train_data_rev2/"
-						.concat(FileUtil.removeFileNameExtension(UimaUtil
-								.getJCasFileName(jcas))).concat(".ss"));
-		File tokenisedFile = new File(
-				"./resources/syntacticAnalysis/tokenization/BioNLP-ST-2013_GE_train_data_rev2/"
-						.concat(FileUtil.removeFileNameExtension(UimaUtil
-								.getJCasFileName(jcas))).concat(".tok"));
-		List<ConnlxReader.Token> tokens = ConnlxReader.getTokens(new File(
-				"./resources/syntacticAnalysis/McCCJ/BioNLP-ST-2013_GE_train_data_rev2/"
-						.concat(FileUtil.removeFileNameExtension(UimaUtil
-								.getJCasFileName(jcas))).concat(".connlx")));
+		File sentencisedFile = new File(FileUtil.removeFileNameExtension(
+				UimaUtil.getJCasFilePath(jcas)).concat(".ss"));
+		File tokenisedFile = new File(FileUtil.removeFileNameExtension(
+				UimaUtil.getJCasFilePath(jcas)).concat(".tok"));
+		List<ConnlxReader.Token> tokens = ConnlxReader
+				.getTokens(new File(FileUtil.removeFileNameExtension(
+						UimaUtil.getJCasFilePath(jcas)).concat(".connlx")));
 
 		try {
 

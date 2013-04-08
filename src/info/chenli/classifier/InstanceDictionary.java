@@ -1,5 +1,6 @@
 package info.chenli.classifier;
 
+import info.chenli.litway.bionlp13.ge.TokenInstances;
 import info.chenli.litway.util.FileUtil;
 
 import java.io.BufferedReader;
@@ -111,9 +112,7 @@ public class InstanceDictionary {
 			StringTokenizer st = new StringTokenizer(line, "\t");
 			while (st.hasMoreTokens()) {
 				String label = st.nextToken();
-				labelDict.set(Integer.parseInt(label.substring(0,
-						label.indexOf(":"))), label.substring(label
-						.indexOf(":") + 1));
+				labelDict.add(label.substring(label.indexOf(":") + 1));
 			}
 
 			//
@@ -172,7 +171,8 @@ public class InstanceDictionary {
 			String featureStr = featureStrIter.next();
 
 			int numericValue = -1;
-			if (aFeatureDict.containsKey(featureStr)) {
+			if (aFeatureDict.containsKey(featureStr)
+					&& !featureStr.equals(TokenInstances.aStopWord)) {
 				numericValue = aFeatureDict.get(featureStr);
 			}
 			featuresNumeric[i++] = numericValue;

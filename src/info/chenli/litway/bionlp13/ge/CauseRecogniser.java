@@ -35,7 +35,7 @@ public class CauseRecogniser extends PerceptronClassifier {
 			dict.creatNumericDictionary(instances);
 			dict.saveDictionary(new File("./model/causes.dict"));
 
-			this.train(instances);
+			this.train(instances, 500);
 
 			System.out.println(this.accuracy(instances));
 

@@ -158,7 +158,7 @@ public abstract class AbstractInstances {
 			cas.setDocumentText(document);
 
 			// set the path of resource file
-			cas.createView("FileName").setSofaDataURI(aFile.getName(), "text");
+			cas.createView("FilePath").setSofaDataURI(aFile.getAbsolutePath(), "text");
 
 			// process
 			ae.process(cas);
@@ -377,9 +377,8 @@ public abstract class AbstractInstances {
 			featuresString.add(dependencyExtractor.getDijkstraShortestPath(
 					annoToken, triggerToken));
 		} catch (IllegalArgumentException e) {
-			System.out.println("NoPathToken:\t"
-					.concat(annoToken.getCoveredText()).concat("\t")
-					.concat(triggerToken.getCoveredText()));
+			logger.warning("NoPathToken:\t".concat(annoToken.getCoveredText())
+					.concat("\t").concat(triggerToken.getCoveredText()));
 		}
 
 		if (isTheme) {

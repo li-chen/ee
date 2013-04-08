@@ -17,10 +17,9 @@ public class ProteinAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 
-		GsonDocument document = GsonFacade.instance.getDocument(new File(
-				"./resources/training/ge/".concat(
-						FileUtil.removeFileNameExtension(UimaUtil
-								.getJCasFileName(jCas))).concat(".json")));
+		GsonDocument document = GsonFacade.instance
+				.getDocument(new File(FileUtil.removeFileNameExtension(
+						UimaUtil.getJCasFilePath(jCas)).concat(".json")));
 
 		EntityAnnotation[] entityAnnotations = document.getCatanns();
 		if (null == entityAnnotations || entityAnnotations.length == 0) {

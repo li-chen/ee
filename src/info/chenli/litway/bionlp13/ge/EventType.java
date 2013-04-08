@@ -2,7 +2,7 @@ package info.chenli.litway.bionlp13.ge;
 
 public enum EventType {
 
-	Non_trigger, Gene_expression, Transcription, Binding, Localization, Protein_catabolism, Protein_modification, Phosphorylation, Ubiquitination, Acetylation, Deacetylation, Regulation, Positive_regulation, Negative_regulation;
+	Non_trigger, Gene_expression, Transcription, Protein_catabolism, Binding, Localization, Protein_modification, Phosphorylation, Ubiquitination, Acetylation, Deacetylation, Regulation, Positive_regulation, Negative_regulation;
 
 	public static boolean isSimpleEvent(String eventType) {
 
@@ -12,9 +12,9 @@ public enum EventType {
 	public static boolean isSimpleEvent(EventType eventType) {
 
 		if (eventType == EventType.Gene_expression
+				|| eventType == EventType.Transcription
 				|| eventType == EventType.Protein_catabolism
-				|| eventType == EventType.Localization
-				|| eventType == EventType.Transcription) {
+				|| eventType == EventType.Localization) {
 			return true;
 		}
 
@@ -41,14 +41,14 @@ public enum EventType {
 
 	public static boolean isComplexEvent(EventType eventType) {
 
-		if (eventType == EventType.Regulation
-				|| eventType == EventType.Positive_regulation
-				|| eventType == EventType.Negative_regulation
-				|| eventType == EventType.Protein_modification
+		if (eventType == EventType.Protein_modification
 				|| eventType == EventType.Phosphorylation
 				|| eventType == EventType.Ubiquitination
 				|| eventType == EventType.Acetylation
-				|| eventType == EventType.Deacetylation) {
+				|| eventType == EventType.Deacetylation
+				|| eventType == EventType.Regulation
+				|| eventType == EventType.Positive_regulation
+				|| eventType == EventType.Negative_regulation) {
 
 			return true;
 		}

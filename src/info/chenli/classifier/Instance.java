@@ -7,13 +7,13 @@ public class Instance {
 
 	// instance ID
 	private String id;
-	private int label;
+	private int label = -1;
 	private String labelString;
 	private List<String> featuresString;
 	private int[] featuresNumeric;
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -21,7 +21,7 @@ public class Instance {
 	}
 
 	public int getLabel() {
-		return label;
+		return this.label;
 	}
 
 	public void setLabel(int label) {
@@ -56,8 +56,10 @@ public class Instance {
 	public String toString() {
 
 		StringBuffer sb = new StringBuffer();
-		sb.append(String.valueOf(getLabel()).concat(":")
-				.concat(getLabelString()));
+		if (null != getLabelString()) {
+			sb.append(String.valueOf(getLabel()).concat(":")
+					.concat(getLabelString()));
+		}
 
 		Iterator<String> featureStrIter = getFeaturesString().iterator();
 		for (int featureNumeric : getFeaturesNumeric()) {

@@ -18,7 +18,7 @@ public class BioCAnnotator extends JCasAnnotator_ImplBase {
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 
 		for (Document document : BioCFacade.instance
-				.getDocuments("/Users/chenli/projects/bionlp2013/data/supportRes/bioc/data/bionlp-st-2013_ge_train_devel_texts_pos+lemma.xml")) {
+				.getDocuments("./resources/syntacticAnalysis/bioc/bionlp-st-2013_ge_train_devel_texts_pos+lemma.xml")) {
 
 			if (document.id.equals(UimaUtil.getJCasFileName(jCas))) {
 
