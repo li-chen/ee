@@ -7,6 +7,7 @@ import info.chenli.litway.corpora.Token;
 import info.chenli.litway.corpora.Trigger;
 import info.chenli.litway.searn.StructuredInstance;
 import info.chenli.litway.util.DependencyExtractor;
+import info.chenli.litway.util.FileFilterImpl;
 import info.chenli.litway.util.FileUtil;
 
 import java.io.File;
@@ -108,7 +109,7 @@ public abstract class AbstractInstances {
 
 		} else {
 			// get all files in the input directory
-			File[] files = dataDir.listFiles();
+			File[] files = dataDir.listFiles(new FileFilterImpl(".txt"));
 			if (files == null) {
 
 				logger.log(Level.WARNING, "Empty directory.");
