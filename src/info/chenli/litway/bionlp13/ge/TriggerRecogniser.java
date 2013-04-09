@@ -30,8 +30,6 @@ public class TriggerRecogniser extends PerceptronClassifier {
 	private final static Logger logger = Logger
 			.getLogger(TriggerRecogniser.class.getName());
 
-	private int counter = 0; // a counter for internal testing use n-fold cross validation
-
 	private static List<POS> consideredPOS = new ArrayList<POS>();
 
 	static {
@@ -85,7 +83,8 @@ public class TriggerRecogniser extends PerceptronClassifier {
 		return predict(instance.getFeaturesNumeric());
 	}
 
-	private Fscore test(List<Instance> instances, InstanceDictionary dict) {
+	private Fscore test(List<Instance> instances, InstanceDictionary dict,
+			int counter) {
 
 		int tp = 0, fp = 0, tn = 0, fn = 0, correct = 0, total = 0;
 		StringBuffer tp_instances = new StringBuffer();
@@ -136,7 +135,7 @@ public class TriggerRecogniser extends PerceptronClassifier {
 				new File("./result/fp_trigger".concat(String.valueOf(counter))
 						.concat(".txt")));
 		FileUtil.saveFile(tp_instances.toString(), new File("./result/tp"
-				.concat(String.valueOf(counter++)).concat(".txt")));
+				.concat(String.valueOf(counter)).concat(".txt")));
 
 		Fscore fscore = new Fscore(tp, fp, tn, fn);
 		System.out.println(fscore);
@@ -184,8 +183,8 @@ public class TriggerRecogniser extends PerceptronClassifier {
 			InstanceDictionary dict = new InstanceDictionary();
 			dict.creatNumericDictionary(subTrainingInstances);
 			logger.info("Create dictionary.");
-			// dict.saveDictionary(new File("./model/triggers.dict"));
-			// logger.info("Save dictionary.");
+			dict.saveDictionary(new File("./model/triggers." + i + ".dict"));
+			logger.info("Save dictionary.");
 
 			Collections.shuffle(subTrainingInstances);
 			Collections.shuffle(subTestingInstances);
@@ -195,19 +194,20 @@ public class TriggerRecogniser extends PerceptronClassifier {
 
 			TriggerRecogniser tr = new TriggerRecogniser();
 
-			tr.train(subTrainingInstances, 50);
+			tr.train(subTrainingInstances, 500);
 			timer.stop();
 			logger.info(String.valueOf(i).concat(" fold training takes ")
 					.concat(String.valueOf(timer.getRunningTime())));
 
-			Fscore fscore = tr.test(subTestingInstances, dict);
+			Fscore fscore = tr.test(subTestingInstances, dict, i);
 
 			recallSum = recallSum + fscore.getRecall();
 			precisionSum = precisionSum + fscore.getPrecision();
+
+			tr.saveModel(new File("./model/triggers.perceptron." + i + ".model"));
 		}
 
 		System.out.println(new Fscore(recallSum / fold, precisionSum / fold));
 
-		// tr.saveModel(new File("./model/triggers.perceptron.model"));
 	}
 }
