@@ -31,6 +31,25 @@ public class EventExtractor extends TokenInstances {
 	private final static Logger logger = Logger.getLogger(EventExtractor.class
 			.getName());
 
+	public void train(File dir) {
+
+		if (!dir.isDirectory()) {
+			logger.info(dir.getAbsolutePath().concat(" is not a directory."));
+		}
+
+		//
+		// train trigger
+		//
+
+		//
+		// train theme
+		//
+
+		//
+		// train cause
+		//
+	}
+
 	public void extract(File file) {
 
 		if (file.isDirectory()) {

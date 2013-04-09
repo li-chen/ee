@@ -10,8 +10,8 @@ public class Fscore {
 		this.fp = fp;
 		this.tn = tn;
 		this.fn = fn;
-		this.recall = tp / (tp + fn);
-		this.precision = tp / (tp + fp);
+		this.recall = this.tp / (this.tp + this.fn);
+		this.precision = this.tp / (this.tp + this.fp);
 	}
 
 	public Fscore(double recall, double precision) {

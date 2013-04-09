@@ -30,6 +30,8 @@ public class TriggerRecogniser extends PerceptronClassifier {
 	private final static Logger logger = Logger
 			.getLogger(TriggerRecogniser.class.getName());
 
+	private int counter = 0; // a counter for internal testing use n-fold cross validation
+
 	private static List<POS> consideredPOS = new ArrayList<POS>();
 
 	static {
@@ -69,6 +71,20 @@ public class TriggerRecogniser extends PerceptronClassifier {
 		return false;
 	}
 
+	public int predict(Instance instance, InstanceDictionary dict) {
+
+		if (!isConsidered(instance.getFeaturesString().get(2))) {
+
+			return dict.getLabelNumeric(String.valueOf(EventType.Non_trigger));
+
+		} else if (!instance.getFeaturesString().get(0).matches("^[a-zA-Z].+")) {
+
+			return dict.getLabelNumeric(String.valueOf(EventType.Non_trigger));
+		}
+
+		return predict(instance.getFeaturesNumeric());
+	}
+
 	private Fscore test(List<Instance> instances, InstanceDictionary dict) {
 
 		int tp = 0, fp = 0, tn = 0, fn = 0, correct = 0, total = 0;
@@ -79,17 +95,9 @@ public class TriggerRecogniser extends PerceptronClassifier {
 		Collections.shuffle(instances);
 		for (Instance instance : instances) {
 
-			if (!isConsidered(instance.getFeaturesString().get(2))) {
+			instance = dict.instanceToNumeric(instance);
 
-				continue;
-
-			} else if (!instance.getFeaturesString().get(0)
-					.matches("^[a-zA-Z].+")) {
-
-				continue;
-			}
-
-			int prediction = this.predict(instance.getFeaturesNumeric());
+			int prediction = this.predict(instance, dict);
 			if (instance.getLabelString() == String
 					.valueOf(EventType.Non_trigger)) {
 
@@ -122,10 +130,13 @@ public class TriggerRecogniser extends PerceptronClassifier {
 		}
 
 		FileUtil.saveFile(fp_nonTrigger_instances.toString(), new File(
-				"./result/fp_nonTrigger.txt"));
-		FileUtil.saveFile(fp_trigger_instances.toString(), new File(
-				"./result/fp_trigger.txt"));
-		FileUtil.saveFile(tp_instances.toString(), new File("./result/tp.txt"));
+				"./result/fp_nonTrigger".concat(String.valueOf(counter))
+						.concat(".txt")));
+		FileUtil.saveFile(fp_trigger_instances.toString(),
+				new File("./result/fp_trigger".concat(String.valueOf(counter))
+						.concat(".txt")));
+		FileUtil.saveFile(tp_instances.toString(), new File("./result/tp"
+				.concat(String.valueOf(counter++)).concat(".txt")));
 
 		Fscore fscore = new Fscore(tp, fp, tn, fn);
 		System.out.println(fscore);
@@ -136,6 +147,9 @@ public class TriggerRecogniser extends PerceptronClassifier {
 
 	public static void main(String[] args) {
 
+		//
+		// collect all instances and fetch syntactical information
+		//
 		TokenInstances trainingInstances = new TokenInstances();
 		trainingInstances.setTaeDescriptor("/desc/TrainingSetAnnotator.xml");
 		List<Instance> instances = trainingInstances.getInstances(new File(
@@ -146,13 +160,9 @@ public class TriggerRecogniser extends PerceptronClassifier {
 		Collections.shuffle(instances);
 		logger.info("Shuffle instances.");
 
-		InstanceDictionary dict = new InstanceDictionary();
-		dict.creatNumericDictionary(instances);
-		logger.info("Create dictionary.");
-		dict.saveDictionary(new File("./model/triggers.dict"));
-		logger.info("Save dictionary.");
-
-		// 10-fold cross validation
+		//
+		// n-fold cross validation
+		//
 		int fold = 10;
 		int step = instances.size() / fold;
 		// int i = 0;
@@ -164,8 +174,6 @@ public class TriggerRecogniser extends PerceptronClassifier {
 
 			logger.info(String.valueOf(i).concat(" fold cross validatation."));
 
-			TriggerRecogniser tr = new TriggerRecogniser();
-
 			List<Instance> subTestingInstances = instances.subList(step * i,
 					step * (i + 1));
 			List<Instance> subTrainingInstances = new ArrayList<Instance>();
@@ -173,13 +181,21 @@ public class TriggerRecogniser extends PerceptronClassifier {
 			subTrainingInstances.addAll(instances.subList(step * (i + 1),
 					instances.size()));
 
+			InstanceDictionary dict = new InstanceDictionary();
+			dict.creatNumericDictionary(subTrainingInstances);
+			logger.info("Create dictionary.");
+			// dict.saveDictionary(new File("./model/triggers.dict"));
+			// logger.info("Save dictionary.");
+
 			Collections.shuffle(subTrainingInstances);
 			Collections.shuffle(subTestingInstances);
 
 			Timer timer = new Timer();
 			timer.start();
 
-			tr.train(subTrainingInstances, 500);
+			TriggerRecogniser tr = new TriggerRecogniser();
+
+			tr.train(subTrainingInstances, 50);
 			timer.stop();
 			logger.info(String.valueOf(i).concat(" fold training takes ")
 					.concat(String.valueOf(timer.getRunningTime())));

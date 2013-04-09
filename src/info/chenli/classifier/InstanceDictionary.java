@@ -184,7 +184,7 @@ public class InstanceDictionary {
 		return instance;
 	}
 
-	public double getLabelNumeric(String labelString) {
+	public int getLabelNumeric(String labelString) {
 
 		return labelDict.indexOf(labelString);
 
