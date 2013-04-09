@@ -155,13 +155,14 @@ public class TriggerRecogniser extends PerceptronClassifier {
 		// 10-fold cross validation
 		int fold = 10;
 		int step = instances.size() / fold;
-		int i =0;
+		// int i = 0;
 
-//		logger.info(String.valueOf(fold).concat(" fold cross validatation."));
-//
-//		for (int i = 0; i < fold; i++) {
-//
-//			logger.info(String.valueOf(i).concat(" fold cross validatation."));
+		logger.info(String.valueOf(fold).concat(" fold cross validatation."));
+
+		double recallSum = 0, precisionSum = 0;
+		for (int i = 0; i < fold; i++) {
+
+			logger.info(String.valueOf(i).concat(" fold cross validatation."));
 
 			TriggerRecogniser tr = new TriggerRecogniser();
 
@@ -180,12 +181,17 @@ public class TriggerRecogniser extends PerceptronClassifier {
 
 			tr.train(subTrainingInstances, 500);
 			timer.stop();
-//			logger.info(String.valueOf(i).concat(" fold training takes ")
-//					.concat(String.valueOf(timer.getRunningTime())));
+			logger.info(String.valueOf(i).concat(" fold training takes ")
+					.concat(String.valueOf(timer.getRunningTime())));
 
-			tr.test(subTestingInstances, dict);
-//		}
+			Fscore fscore = tr.test(subTestingInstances, dict);
 
-			tr.saveModel(new File("./model/triggers.perceptron.model"));
+			recallSum = recallSum + fscore.getRecall();
+			precisionSum = precisionSum + fscore.getPrecision();
+		}
+
+		System.out.println(new Fscore(recallSum / fold, precisionSum / fold));
+
+		// tr.saveModel(new File("./model/triggers.perceptron.model"));
 	}
 }

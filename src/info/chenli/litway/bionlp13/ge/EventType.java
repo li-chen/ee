@@ -34,6 +34,23 @@ public enum EventType {
 		return false;
 	}
 
+	public static boolean isRegulatoryEvent(String eventType) {
+
+		return isRegulatoryEvent(EventType.valueOf(eventType));
+	}
+
+	public static boolean isRegulatoryEvent(EventType eventType) {
+
+		if (eventType == EventType.Regulation
+				|| eventType == EventType.Positive_regulation
+				|| eventType == EventType.Negative_regulation) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	public static boolean isComplexEvent(String eventType) {
 
 		return isComplexEvent(EventType.valueOf(eventType));

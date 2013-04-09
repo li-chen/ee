@@ -2,7 +2,7 @@ package info.chenli.classifier;
 
 public class Fscore {
 
-	private double tp, fp, tn, fn;
+	private double tp, fp, tn, fn, recall, precision;
 
 	public Fscore(int tp, int fp, int tn, int fn) {
 
@@ -10,15 +10,24 @@ public class Fscore {
 		this.fp = fp;
 		this.tn = tn;
 		this.fn = fn;
+		this.recall = tp / (tp + fn);
+		this.precision = tp / (tp + fp);
+	}
+
+	public Fscore(double recall, double precision) {
+
+		this.recall = recall;
+		this.precision = precision;
 	}
 
 	public double getPrecision() {
-		return tp / (tp + fp);
+
+		return this.precision;
 	}
 
 	public double getRecall() {
 
-		return tp / (tp + fn);
+		return this.recall;
 	}
 
 	public double getFscore() {
