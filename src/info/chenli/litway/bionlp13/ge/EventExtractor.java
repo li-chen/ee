@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Logger;
 
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
@@ -26,6 +27,9 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.uimafit.util.JCasUtil;
 
 public class EventExtractor extends TokenInstances {
+
+	private final static Logger logger = Logger.getLogger(EventExtractor.class
+			.getName());
 
 	public void extract(File file) {
 
@@ -37,12 +41,14 @@ public class EventExtractor extends TokenInstances {
 
 		} else if (file.isFile()) {
 
+			logger.info("Extracting from ".concat(file.getName()));
 			String newFileName = "./result/".concat(
 					file.getName()
 							.substring(0, file.getName().lastIndexOf(".")))
 					.concat(".a2");
 			FileUtil.saveFile(extractFromSingleFile(file),
 					new File(newFileName));
+			logger.info("Result saved in ".concat(newFileName));
 		}
 	}
 
@@ -57,7 +63,7 @@ public class EventExtractor extends TokenInstances {
 		Map<Integer, List<Event>> events = new TreeMap<Integer, List<Event>>();
 		// Initialize the file
 		JCas jcas = this.processSingleFile(file, Token.type);
-		int proteinNum = jcas.getAnnotationIndex(Sentence.type).size();
+		int proteinNum = jcas.getAnnotationIndex(Protein.type).size();
 		//
 		// Initialize the classifiers
 		//
@@ -245,6 +251,11 @@ public class EventExtractor extends TokenInstances {
 
 					for (Event themeEvent : newEvents) {
 
+						if (themeEvent.getTrigger().getBegin() == trigger
+								.getBegin()) {
+							continue;
+						}
+
 						Instance triggerTokenInstance = themeToInstance(jcas,
 								getTriggerToken(jcas, themeEvent.getTrigger()),
 								trigger, dependencyExtractor, false);
@@ -262,7 +273,7 @@ public class EventExtractor extends TokenInstances {
 							themes.set(0, "E".concat(themeEvent.getId()));
 							event.setThemes(themes);
 							events.get(sentence.getId()).add(event);
-							newEvents.add(event);
+							// newEvents.add(event);
 						}
 
 					}
@@ -273,6 +284,11 @@ public class EventExtractor extends TokenInstances {
 			// cause
 			//
 			for (Event event : events.get(sentence.getId())) {
+
+				if (!EventType
+						.isComplexEvent(event.getTrigger().getEventType())) {
+					continue;
+				}
 
 				// protein
 				for (Protein protein : sentenceProteins) {
@@ -288,8 +304,19 @@ public class EventExtractor extends TokenInstances {
 						event.setCause(protein.getId());
 					}
 				}
+
+				if (!EventType.isRegulatoryEvent(event.getTrigger()
+						.getEventType())) {
+					continue;
+				}
+
 				// event
 				for (Event causeEvent : events.get(sentence.getId())) {
+
+					if (causeEvent.getTrigger().getBegin() == event
+							.getTrigger().getBegin()) {
+						continue;
+					}
 
 					Instance triggerTokenInstance = tokenToInstance(
 							getTriggerToken(jcas, causeEvent.getTrigger()),
@@ -300,7 +327,7 @@ public class EventExtractor extends TokenInstances {
 
 					if (prediction == causeDict.getLabelNumeric(String
 							.valueOf("Cause"))) {
-						event.setCause(causeEvent.getId());
+						event.setCause("E".concat(causeEvent.getId()));
 					}
 				}
 			}
@@ -325,15 +352,15 @@ public class EventExtractor extends TokenInstances {
 			}
 		}
 
-		int i = 1;
 		for (List<Event> sentenceEvents : events.values()) {
 			for (Event event : sentenceEvents) {
-				sb.append("E").append(i++).append("\t")
+				sb.append("E").append(event.getId()).append("\t")
 						.append(event.getTrigger().getEventType()).append(":")
 						.append(event.getTrigger().getId());
 
 				for (int j = 0; j < event.getThemes().size(); j++) {
-					sb.append(" Theme:").append(event.getThemes(j));
+					sb.append(" Theme").append(j == 0 ? "" : j + 1).append(":")
+							.append(event.getThemes(j));
 				}
 
 				if (null != event.getCause() && "" != event.getCause()) {
