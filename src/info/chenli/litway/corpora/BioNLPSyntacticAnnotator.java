@@ -80,18 +80,32 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 						token.setPos(pos);
 						token.setLemma(BioLemmatizerUtil.lemmatizeWord(
 								token.getCoveredText(), pos));
-						Stemmer stemmer = new Stemmer();
-						stemmer.add(token.getCoveredText().toCharArray(), token
-								.getCoveredText().length());
-						stemmer.stem();
-						token.setStem(stemmer.toString());
+						Stemmer stemmer1 = new Stemmer();
+						stemmer1.add(token.getCoveredText().toCharArray(),
+								token.getCoveredText().length());
+						stemmer1.stem();
+						token.setStem(stemmer1.toString());
+						String subWord = "", subLemma = "", subStem = "";
+						if (token.getCoveredText().indexOf("-") > -1) {
+							subWord = token.getCoveredText()
+									.substring(
+											token.getCoveredText().lastIndexOf(
+													"-") + 1);
+							subLemma = BioLemmatizerUtil.lemmatizeWord(subWord,
+									pos);
+							Stemmer stemmer2 = new Stemmer();
+							stemmer2.add(subWord.toCharArray(),
+									subWord.length());
+							stemmer2.stem();
+							subStem = stemmer2.toString();
+						}
+						token.setSubLemma(subLemma);
+						token.setSubStem(subStem);
 						token.setLeftToken(leftToken);
 						if (null != leftToken) {
 							leftToken.setRightToken(token);
 						}
 						leftToken = token;
-						token.setDependentId(connlxToken.getDependentId());
-						token.setRelation(connlxToken.getRelation());
 						token.addToIndexes();
 
 						// put tokens in same sentence into a map.
@@ -122,18 +136,6 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 						sentence.setId(sentenceId++);
 						sentence.addToIndexes();
 
-						// Once one sentence is finished, start appending
-						// dependent for each token.
-						for (Token token : tokensOfSentence.values()) {
-
-							Token dependent = tokensOfSentence.get(token
-									.getDependentId());
-							token.setDependent(dependent);
-							if (null != dependent) {
-								dependent.setGovernor(token);
-							}
-						}
-
 						tokensOfSentence = new TreeMap<Integer, Token>();
 
 						sentenceBegin = offset;
@@ -150,6 +152,12 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 
 				offset++;
 			}
+
+			// the last sentence is missed due to reaching the end of the file.
+			Sentence sentence = new Sentence(jcas, sentenceBegin,
+					offset);
+			sentence.setId(sentenceId++);
+			sentence.addToIndexes();
 
 			sentencisedFileStream.close();
 			tokenisedFileStream.close();

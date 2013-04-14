@@ -1,11 +1,11 @@
-package info.chenli.litway.bionlp13.ge;
+package info.chenli.litway.bionlp13.pc;
 
 import info.chenli.classifier.Instance;
 import info.chenli.litway.StopWords;
+import info.chenli.litway.bionlp13.ge.POSPrioritizer;
 import info.chenli.litway.corpora.Event;
 import info.chenli.litway.corpora.POS;
 import info.chenli.litway.corpora.Prefix;
-import info.chenli.litway.corpora.Protein;
 import info.chenli.litway.corpora.Suffix;
 import info.chenli.litway.corpora.Token;
 import info.chenli.litway.corpora.Trigger;
@@ -13,7 +13,7 @@ import info.chenli.litway.searn.StructuredInstance;
 import info.chenli.litway.util.DependencyExtractor;
 import info.chenli.litway.util.FileFilterImpl;
 import info.chenli.litway.util.FileUtil;
-import info.chenli.litway.util.StanfordDependencyReader.Pair;
+import info.chenli.litway.util.UimaUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +33,6 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.CASRuntimeException;
 import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -52,7 +50,7 @@ public abstract class AbstractInstances {
 	private int[] annotationTypes; // the annotation types need consideration
 	private String taeDescriptor;
 	protected List<StructuredInstance> structuredInstances = new LinkedList<StructuredInstance>();
-	protected List<Instance> instances = null;
+	protected List<Instance> instances;
 	protected List<String> labelsString;
 
 	public static final String aStopWord = "!AStopWord!";
@@ -216,10 +214,8 @@ public abstract class AbstractInstances {
 
 	public List<Instance> getInstances() {
 
-		if (instances.size() == 0) {
-			for (StructuredInstance si : structuredInstances) {
-				instances.addAll(si.getNodes());
-			}
+		for (StructuredInstance si : structuredInstances) {
+			instances.addAll(si.getNodes());
 		}
 
 		return instances;
@@ -243,9 +239,9 @@ public abstract class AbstractInstances {
 			for (Token token : tokens) {
 
 				sortedTokens.put(POS.valueOf(token.getPos()), token);
-				if (TriggerWord.isATriggerWord(token.getCoveredText()) != null) {
-					return token;
-				}
+//				if (TriggerWord.isATriggerWord(token.getCoveredText()) != null) {
+//					return token;
+//				}
 			}
 
 			return sortedTokens.firstEntry().getValue();
@@ -259,6 +255,7 @@ public abstract class AbstractInstances {
 	}
 
 	protected Token getTriggerToken(JCas jcas, Trigger trigger) {
+
 		// get tokens
 		List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class, trigger);
 
@@ -293,10 +290,8 @@ public abstract class AbstractInstances {
 
 			sb.append(instance.getLabelString());
 
-			for (String[] features : instance.getFeaturesString()) {
-				for (String feature : features) {
-					sb.append("\t".concat(feature));
-				}
+			for (String[] feature : instance.getFeaturesString()) {
+				sb.append("\t".concat(feature[0]));
 			}
 
 			sb.append("\n");
@@ -325,30 +320,6 @@ public abstract class AbstractInstances {
 		FileUtil.saveFile(instancesStr, file);
 	}
 
-	public void saveSvmLightInstances(File file) {
-
-		StringBuffer sb = new StringBuffer();
-
-		for (Instance instance : instances) {
-
-			sb.append(String.valueOf(instance.getLabel()));
-
-			int previousIndex = 0;
-			for (int feature : instance.getFeaturesNumeric()) {
-				if (feature + 1 > previousIndex) {
-					sb.append(" ".concat(String.valueOf(feature + 1)).concat(
-							":1"));
-				}
-				previousIndex = feature + 1;
-			}
-
-			sb.append("\n");
-		}
-
-		String instancesStr = sb.toString();
-		FileUtil.saveFile(instancesStr, file);
-	}
-
 	/**
 	 * Convert a protein or event into an theme instance ready for training or
 	 * predicting.
@@ -361,12 +332,12 @@ public abstract class AbstractInstances {
 	 * @return
 	 */
 	protected Instance themeToInstance(JCas jcas, Annotation anno,
-			Trigger trigger, Set<Pair> pairsOfSentence,
-			DependencyExtractor dependencyExtractor, boolean isTheme) {
+			Trigger trigger, DependencyExtractor dependencyExtractor,
+			boolean isTheme) {
 
 		List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class, anno);
 
-		// if protein/trigger is within a token
+		// if protein is within a token
 		if (tokens.size() == 0) {
 			FSIterator<Annotation> iter = jcas.getAnnotationIndex(Token.type)
 					.iterator();
@@ -381,150 +352,112 @@ public abstract class AbstractInstances {
 			}
 		}
 
-		Token token = null;
-		if (anno instanceof Protein)
+		String tokenLemma = "", tokenPos = "";
+
 		// Take the last non-digital token if protein is
 		// multi-token.
-		{
-			token = tokens.get(0);
-			for (Token aToken : tokens) {
+		Token annoToken = tokens.get(0);
+		for (Token token : tokens) {
 
-				try {
-					Double.parseDouble(aToken.getLemma());
-				} catch (NumberFormatException e) {
-					token = aToken;
-				}
-
+			try {
+				Double.parseDouble(token.getLemma());
+			} catch (NumberFormatException e) {
+				annoToken = token;
 			}
-		} else if (anno instanceof Trigger) {
-			token = getTriggerToken(jcas, (Trigger) anno);
+
 		}
 
-		String tokenLemma = token.getLemma().toLowerCase();
-		String tokenPos = token.getPos();
+		tokenLemma = annoToken.getLemma().toLowerCase();
+
+		tokenPos = annoToken.getPos();
 
 		Instance instance = new Instance();
-		List<String[]> featuresString = new ArrayList<String[]>();
-		instance.setFeaturesString(featuresString);
+		List<String> featuresString = new ArrayList<String>();
+//		instance.setFeaturesString(featuresString);
+		featuresString.add(anno.getCoveredText().toLowerCase());
+		featuresString.add(tokenLemma);
+		featuresString.add(tokenPos);
+		featuresString.add(annoToken.getStem().toLowerCase());
 
-		// get trigger token
-		Token triggerToken = getTriggerToken(jcas, trigger);
+		String leftTokenText = null == annoToken.getLeftToken() ? ""
+				: annoToken.getLeftToken().getCoveredText().toLowerCase();
+		featuresString
+				.add(isWord(leftTokenText)
+						&& !StopWords.isAStopWordShortForNgram(leftTokenText) ? tokenLemma
+						.concat("_").concat(leftTokenText) : aStopWord);
+		featuresString
+				.add(isWord(leftTokenText)
+						&& !StopWords.isAStopWordShortForNgram(leftTokenText) ? tokenLemma
+						.concat("_")
+						.concat(annoToken.getLeftToken().getLemma())
+						: aStopWord);
 
-		// parser : dependency path between trigger-argument
-		String dependencyPath = dependencyExtractor.getShortestPath(token,
-				triggerToken);
-		String featurePath = dependencyPath;
+		String rightTokenText = null == annoToken.getRightToken() ? ""
+				: annoToken.getRightToken().getCoveredText().toLowerCase();
+		featuresString
+				.add(isWord(rightTokenText)
+						&& StopWords.isAStopWordShortForNgram(leftTokenText) ? tokenLemma
+						.concat("_").concat(rightTokenText) : aStopWord);
+		featuresString
+				.add(isWord(rightTokenText)
+						&& StopWords.isAStopWordShortForNgram(leftTokenText) ? tokenLemma
+						.concat("_").concat(
+								annoToken.getRightToken().getLemma())
+						: aStopWord);
 
-		if (null == dependencyPath) {
-			featurePath = dependencyExtractor.getReversedShortestPath(token,
-					triggerToken);
-		}
-		featuresString.add(new String[] { featurePath });
-
-		// parser refined?
-
-		// parser_simple: grouping of dpendency type;
-		// amod, nn --> nmod
-		// anything ending in subj --> subj
-		// anything ending in subjpass --> subjpass
-		String simplifiedFeaturePath = null;
-		if (null != dependencyPath) {
-			simplifiedFeaturePath = dependencyExtractor
-					.getSimplifiedShortestPath(token, triggerToken);
-		} else {
-			simplifiedFeaturePath = dependencyExtractor
-					.getSimplifiedReversedShortestPath(token, triggerToken);
-		}
-		featuresString.add(new String[] { simplifiedFeaturePath });
-
-		// trigger class
-		String triggerClassString;
-		if (EventType.isSimpleEvent(trigger.getEventType())) {
-			triggerClassString = "Simple";
-		} else if (EventType.isBindingEvent(trigger.getEventType())) {
-			triggerClassString = "Binding";
-		} else if (EventType.isRegulatoryEvent(trigger.getEventType())) {
-			triggerClassString = "Regulation";
-		} else {
-			triggerClassString = "Complex";
-		}
-		featuresString.add(new String[] { triggerClassString
-				.concat(null == featurePath ? "" : "_".concat(featurePath)) });
-		featuresString.add(new String[] { triggerClassString
-				.concat(null == simplifiedFeaturePath ? "" : "_"
-						.concat(simplifiedFeaturePath)) });
-
-		// trigger token & trigger type
-		featuresString.add(new String[] { token.getCoveredText().toLowerCase()
-				.concat(null == featurePath ? "" : "_".concat(featurePath)) });
-		featuresString.add(new String[] { trigger.getEventType().concat(
-				null == featurePath ? "" : "_".concat(featurePath)) });
-
-		featuresString.add(new String[] { token
-				.getCoveredText()
-				.toLowerCase()
-				.concat(null == simplifiedFeaturePath ? "" : "_"
-						.concat(simplifiedFeaturePath)) });
-		featuresString.add(new String[] { trigger.getEventType().concat(
-				null == simplifiedFeaturePath ? "" : "_"
-						.concat(simplifiedFeaturePath)) });
-
-		// trigger lemma
-		featuresString.add(new String[] { triggerToken.getLemma().toLowerCase()
-				.concat(null == featurePath ? "" : "_".concat(featurePath)) });
-
-		// trigger sublemma
-		featuresString.add(new String[] { triggerToken.getSubLemma()
-				.toLowerCase()
-				.concat(null == featurePath ? "" : "_".concat(featurePath)) });
-
-		// trigger POS
-		featuresString.add(new String[] { triggerToken.getPos().concat(
-				null == featurePath ? "" : "_".concat(featurePath)) });
-		featuresString.add(new String[] { triggerToken.getPos().substring(0, 1)
-				.concat(null == featurePath ? "" : "_".concat(featurePath)) });
-
-		featuresString.add(new String[] { triggerToken.getLemma().toLowerCase()
-				.concat(triggerToken.getPos()) });
-		featuresString.add(new String[] { triggerToken.getLemma().toLowerCase()
-				.concat(triggerToken.getPos().substring(0, 1)) });
-		featuresString.add(new String[] { triggerToken.getSubLemma()
-				.toLowerCase().concat(triggerToken.getPos()) });
-		featuresString.add(new String[] { triggerToken.getSubLemma()
-				.toLowerCase().concat(triggerToken.getPos().substring(0, 1)) });
-
-		// argument type
-		String argType = null;
-		if (anno instanceof Protein) {
-			argType = "Protein";
-		} else if (anno instanceof Trigger) {
-			argType = ((Trigger) anno).getEventType();
-		}
-		featuresString.add(new String[] { triggerToken.getCoveredText()
-				.toLowerCase()
-				.concat(null == featurePath ? "" : "_".concat(featurePath))
-				.concat("_").concat(argType) });
-		featuresString.add(new String[] { triggerClassString
-				.concat(null == featurePath ? "" : "_".concat(featurePath))
-				.concat("_").concat(argType) });
-
-		// text string: compensate when parsing fails
-		// String tokensTextString = null;
-		// Annotation frontAnno, endAnno;
-		// FSIterator<Annotation> annoIter =
-		// jcas.getAnnotationIndex().iterator();
-		// boolean start = false, reversed = false;
-		// while (annoIter.hasNext()) {
-		// Annotation anAnnotation = annoIter.next();
-		// if (anAnnotation.getBegin() == anno.getBegin()) {
-		// reversed = true;
-		// start = !start;
-		// }
-		// if (anAnnotation.getBegin() == triggerToken.getBegin()) {
-		// start = !start;
-		// }
-		// }
-
+//		String dependentText = null == annoToken.getDependent() ? ""
+//				: annoToken.getDependent().getCoveredText().toLowerCase();
+//		featuresString
+//				.add(isWord(dependentText)
+//						&& !StopWords.isAStopWordShortForNgram(dependentText) ? tokenLemma
+//						.concat("_").concat(
+//								annoToken.getDependent().getLemma()
+//										.toLowerCase()) : aStopWord);
+//		featuresString
+//				.add(isWord(dependentText)
+//						&& !StopWords.isAStopWordShortForNgram(dependentText) ? tokenPos
+//						.concat("_").concat(annoToken.getDependent().getPos())
+//						: aStopWord);
+//
+//		String governorText = null == annoToken.getGovernor() ? "" : annoToken
+//				.getGovernor().getCoveredText().toLowerCase();
+//		featuresString
+//				.add(isWord(governorText)
+//						&& !StopWords.isAStopWordShortForNgram(governorText) ? tokenLemma
+//						.concat("_").concat(
+//								annoToken.getGovernor().getLemma()
+//										.toLowerCase()) : aStopWord);
+//		featuresString.add(isWord(governorText)
+//				&& !StopWords.isAStopWordShortForNgram(governorText) ? tokenPos
+//				.concat("_").concat(annoToken.getGovernor().getPos())
+//				: aStopWord);
+//
+//		featuresString.add(annoToken.getSubLemma().equals("") ? aStopWord
+//				: annoToken.getSubLemma());
+//		featuresString.add(annoToken.getSubStem().equals("") ? aStopWord
+//				: annoToken.getSubStem());
+//		featuresString.add(tokenLemma.concat("_").concat(
+//				Prefix.getPrefix(annoToken.getCoveredText())));
+//		featuresString.add(tokenLemma.concat("_").concat(
+//				Suffix.getSuffix(annoToken.getCoveredText())));
+//
+//		featuresString.add(trigger.getEventType());
+//
+//		Token triggerToken = getTriggerToken(jcas, trigger);
+//		featuresString.add(triggerToken.getCoveredText().toLowerCase());
+//		featuresString.add(triggerToken.getLemma().toLowerCase());
+//		featuresString.add(triggerToken.getPos());
+//		featuresString.add(triggerToken.getStem().toLowerCase());
+//		featuresString.add(annoToken.getPos().concat("_").concat(triggerToken.getPos()));
+//
+//		try {
+//			// dependency is the main feature; connect with lemma of trigger
+//			featuresString.add(dependencyExtractor.getDijkstraShortestPath(
+//					annoToken, triggerToken));
+//		} catch (IllegalArgumentException e) {
+//			logger.warning("NoPathToken:\t".concat(annoToken.getCoveredText())
+//					.concat("\t").concat(triggerToken.getCoveredText()));
+//		}
 		// concat dependency with other features.
 
 		if (isTheme) {
@@ -588,88 +521,85 @@ public abstract class AbstractInstances {
 		tokenPos = annoToken.getPos();
 
 		Instance instance = new Instance();
-		List<String[]> featuresString = new ArrayList<String[]>();
-		instance.setFeaturesString(featuresString);
+		List<String> featuresString = new ArrayList<String>();
+//		instance.setFeaturesString(featuresString);
 
-		featuresString
-				.add(new String[] { anno.getCoveredText().toLowerCase() });
-		featuresString.add(new String[] { tokenLemma.toLowerCase() });
-		featuresString.add(new String[] { tokenPos });
+		featuresString.add(anno.getCoveredText().toLowerCase());
+		featuresString.add(tokenLemma.toLowerCase());
+		featuresString.add(tokenPos);
 		String leftTokenText = null == annoToken.getLeftToken() ? ""
 				: annoToken.getLeftToken().getCoveredText().toLowerCase();
 		featuresString
-				.add(new String[] { isWord(leftTokenText)
+				.add(isWord(leftTokenText)
 						&& !StopWords.isAStopWordShortForNgram(leftTokenText) ? tokenLemma
-						.concat("_").concat(leftTokenText) : aStopWord });
+						.concat("_").concat(leftTokenText) : aStopWord);
 		featuresString
-				.add(new String[] { isWord(leftTokenText)
+				.add(isWord(leftTokenText)
 						&& !StopWords.isAStopWordShortForNgram(leftTokenText) ? tokenLemma
 						.concat("_")
 						.concat(annoToken.getLeftToken().getLemma())
-						: aStopWord });
+						: aStopWord);
 
 		String rightTokenText = null == annoToken.getRightToken() ? ""
 				: annoToken.getRightToken().getCoveredText().toLowerCase();
 		featuresString
-				.add(new String[] { isWord(rightTokenText)
+				.add(isWord(rightTokenText)
 						&& StopWords.isAStopWordShortForNgram(leftTokenText) ? tokenLemma
-						.concat("_").concat(rightTokenText) : aStopWord });
+						.concat("_").concat(rightTokenText) : aStopWord);
 		featuresString
-				.add(new String[] { isWord(rightTokenText)
+				.add(isWord(rightTokenText)
 						&& StopWords.isAStopWordShortForNgram(leftTokenText) ? tokenLemma
 						.concat("_").concat(
 								annoToken.getRightToken().getLemma())
-						: aStopWord });
+						: aStopWord);
 
-		// String dependentText = null == annoToken.getDependent() ? ""
-		// : annoToken.getDependent().getCoveredText().toLowerCase();
-		// featuresString
-		// .add(isWord(dependentText)
-		// && !StopWords.isAStopWordShortForNgram(dependentText) ? tokenLemma
-		// .concat("_").concat(
-		// annoToken.getDependent().getLemma()
-		// .toLowerCase()) : aStopWord);
-		// featuresString
-		// .add(isWord(dependentText)
-		// && !StopWords.isAStopWordShortForNgram(dependentText) ? tokenPos
-		// .concat("_").concat(annoToken.getDependent().getPos())
-		// : aStopWord);
-		//
-		// String governorText = null == annoToken.getGovernor() ? "" :
-		// annoToken
-		// .getGovernor().getCoveredText().toLowerCase();
-		// featuresString
-		// .add(isWord(governorText)
-		// && !StopWords.isAStopWordShortForNgram(governorText) ? tokenLemma
-		// .concat("_").concat(
-		// annoToken.getGovernor().getLemma()
-		// .toLowerCase()) : aStopWord);
-		// featuresString.add(isWord(governorText)
-		// && !StopWords.isAStopWordShortForNgram(governorText) ? tokenPos
-		// .concat("_").concat(annoToken.getGovernor().getPos())
-		// : aStopWord);
-		//
-		// featuresString.add(annoToken.getSubLemma().equals("") ? aStopWord
-		// : annoToken.getSubLemma());
-		// featuresString.add(annoToken.getSubStem().equals("") ? aStopWord
-		// : annoToken.getSubStem());
-		// featuresString.add(tokenLemma.concat("_").concat(
-		// Prefix.getPrefix(annoToken.getCoveredText())));
-		// featuresString.add(tokenLemma.concat("_").concat(
-		// Suffix.getSuffix(annoToken.getCoveredText())));
-		//
-		// featuresString.add(event.getTrigger().getEventType());
-		//
-		// Token triggerToken = getTriggerToken(jcas, event.getTrigger());
-		// featuresString.add(triggerToken.getCoveredText().toLowerCase());
-		// featuresString.add(triggerToken.getLemma().toLowerCase());
-		// featuresString.add(triggerToken.getPos());
-		// featuresString.add(triggerToken.getStem().toLowerCase());
-		// featuresString.add(annoToken.getPos().concat("_")
-		// .concat(triggerToken.getPos()));
-		//
-		// featuresString.add(dependencyExtractor.getDijkstraShortestPath(
-		// annoToken, triggerToken));
+//		String dependentText = null == annoToken.getDependent() ? ""
+//				: annoToken.getDependent().getCoveredText().toLowerCase();
+//		featuresString
+//				.add(isWord(dependentText)
+//						&& !StopWords.isAStopWordShortForNgram(dependentText) ? tokenLemma
+//						.concat("_").concat(
+//								annoToken.getDependent().getLemma()
+//										.toLowerCase()) : aStopWord);
+//		featuresString
+//				.add(isWord(dependentText)
+//						&& !StopWords.isAStopWordShortForNgram(dependentText) ? tokenPos
+//						.concat("_").concat(annoToken.getDependent().getPos())
+//						: aStopWord);
+//
+//		String governorText = null == annoToken.getGovernor() ? "" : annoToken
+//				.getGovernor().getCoveredText().toLowerCase();
+//		featuresString
+//				.add(isWord(governorText)
+//						&& !StopWords.isAStopWordShortForNgram(governorText) ? tokenLemma
+//						.concat("_").concat(
+//								annoToken.getGovernor().getLemma()
+//										.toLowerCase()) : aStopWord);
+//		featuresString.add(isWord(governorText)
+//				&& !StopWords.isAStopWordShortForNgram(governorText) ? tokenPos
+//				.concat("_").concat(annoToken.getGovernor().getPos())
+//				: aStopWord);
+//
+//		featuresString.add(annoToken.getSubLemma().equals("") ? aStopWord
+//				: annoToken.getSubLemma());
+//		featuresString.add(annoToken.getSubStem().equals("") ? aStopWord
+//				: annoToken.getSubStem());
+//		featuresString.add(tokenLemma.concat("_").concat(
+//				Prefix.getPrefix(annoToken.getCoveredText())));
+//		featuresString.add(tokenLemma.concat("_").concat(
+//				Suffix.getSuffix(annoToken.getCoveredText())));
+//
+//		featuresString.add(event.getTrigger().getEventType());
+//
+//		Token triggerToken = getTriggerToken(jcas, event.getTrigger());
+//		featuresString.add(triggerToken.getCoveredText().toLowerCase());
+//		featuresString.add(triggerToken.getLemma().toLowerCase());
+//		featuresString.add(triggerToken.getPos());
+//		featuresString.add(triggerToken.getStem().toLowerCase());
+//		featuresString.add(annoToken.getPos().concat("_").concat(triggerToken.getPos()));
+//
+//		featuresString.add(dependencyExtractor.getDijkstraShortestPath(
+//				annoToken, triggerToken));
 
 		// TODO consider more themes. e.g. themes in binding.
 		if (isCause) {

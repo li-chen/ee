@@ -3,14 +3,14 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="GeEventAnnotator">
+      <import name="desc.GeEventAnnotator"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EntityAnnotator">
+      <import name="desc.EntityAnnotator"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="BioNLPSyntacticAnnotator">
       <import name="desc.BioNLPSyntacticAnnotator"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ProteinAnnotator">
-      <import name="desc.ProteinAnnotator"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GSAnnotator">
-      <import name="desc.GSAnnotator"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -23,8 +23,8 @@
     <flowConstraints>
       <fixedFlow>
         <node>BioNLPSyntacticAnnotator</node>
-        <node>ProteinAnnotator</node>
-        <node>GSAnnotator</node>
+        <node>EntityAnnotator</node>
+        <node>GeEventAnnotator</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities>

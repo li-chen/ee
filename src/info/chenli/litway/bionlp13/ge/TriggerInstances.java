@@ -22,7 +22,7 @@ public class TriggerInstances extends AbstractInstances {
 
 	public TriggerInstances() {
 
-		super("triggers", Trigger.type);
+		super("triggers", new int[]{Trigger.type});
 
 	}
 

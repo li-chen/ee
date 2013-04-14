@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Apr 05 15:52:12 BST 2013
+ * Updated by JCasGen Thu Apr 11 16:40:07 BST 2013
  * @generated */
 public class Event_Type extends Annotation_Type {
   /** @generated */
@@ -100,6 +100,24 @@ public class Event_Type extends Annotation_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_cause, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_product;
+  /** @generated */
+  final int     casFeatCode_product;
+  /** @generated */ 
+  public String getProduct(int addr) {
+        if (featOkTst && casFeat_product == null)
+      jcas.throwFeatMissing("product", "info.chenli.litway.corpora.Event");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_product);
+  }
+  /** @generated */    
+  public void setProduct(int addr, String v) {
+        if (featOkTst && casFeat_product == null)
+      jcas.throwFeatMissing("product", "info.chenli.litway.corpora.Event");
+    ll_cas.ll_setStringValue(addr, casFeatCode_product, v);}
+    
+  
 
 
 
@@ -160,6 +178,10 @@ public class Event_Type extends Annotation_Type {
  
     casFeat_cause = jcas.getRequiredFeatureDE(casType, "cause", "uima.cas.String", featOkTst);
     casFeatCode_cause  = (null == casFeat_cause) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_cause).getCode();
+
+ 
+    casFeat_product = jcas.getRequiredFeatureDE(casType, "product", "uima.cas.String", featOkTst);
+    casFeatCode_product  = (null == casFeat_product) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_product).getCode();
 
   }
 }

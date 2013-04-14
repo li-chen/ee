@@ -7,11 +7,17 @@ import info.chenli.litway.corpora.Sentence;
 import info.chenli.litway.corpora.Token;
 import info.chenli.litway.searn.StructuredInstance;
 import info.chenli.litway.util.DependencyExtractor;
+import info.chenli.litway.util.FileUtil;
+import info.chenli.litway.util.StanfordDependencyReader;
+import info.chenli.litway.util.StanfordDependencyReader.Pair;
+import info.chenli.litway.util.UimaUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.uima.cas.FSIterator;
@@ -27,7 +33,7 @@ public class CauseInstances extends AbstractInstances {
 
 	public CauseInstances() {
 
-		super("causes", Protein.type);
+		super("causes", new int[] { Protein.type });
 
 	}
 
@@ -53,6 +59,9 @@ public class CauseInstances extends AbstractInstances {
 				.getAnnotationIndex(Sentence.type);
 
 		FSIterator<Annotation> sentenceIter = sentenceIndex.iterator();
+		Map<Integer, Set<Pair>> pairsOfArticle = StanfordDependencyReader
+				.getPairs(new File(FileUtil.removeFileNameExtension(
+						UimaUtil.getJCasFilePath(jcas)).concat(".sdepcc")));
 
 		// Currently, one sentence is considered as one structured instance.
 		while (sentenceIter.hasNext()) {
@@ -62,9 +71,11 @@ public class CauseInstances extends AbstractInstances {
 			si.setNodes(causeCandidates);
 
 			Sentence sentence = (Sentence) sentenceIter.next();
+			Set<Pair> pairsOfSentence = pairsOfArticle.get(sentence.getId());
 
 			DependencyExtractor dependencyExtractor = new DependencyExtractor(
-					JCasUtil.selectCovered(jcas, Token.class, sentence));
+					JCasUtil.selectCovered(jcas, Token.class, sentence),
+					pairsOfSentence);
 
 			List<Event> events = JCasUtil.selectCovered(jcas, Event.class,
 					sentence);

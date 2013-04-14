@@ -1,6 +1,6 @@
 
-/* First created by JCasGen Tue Mar 05 17:49:59 GMT+08:00 2013 */
-package info.chenli.litway.corpora;
+/* First created by JCasGen Wed Apr 10 17:53:25 BST 2013 */
+package info.chenli.litway.bionlp13;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -16,7 +16,7 @@ import org.apache.uima.jcas.tcas.Annotation_Type;
 /** 
  * Updated by JCasGen Thu Apr 11 16:40:07 BST 2013
  * @generated */
-public class Protein_Type extends Annotation_Type {
+public class Complex_Type extends Annotation_Type {
   /** @generated */
   @Override
   protected FSGenerator getFSGenerator() {return fsGenerator;}
@@ -24,28 +24,26 @@ public class Protein_Type extends Annotation_Type {
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (Protein_Type.this.useExistingInstance) {
+  			 if (Complex_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = Protein_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = Complex_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new Protein(addr, Protein_Type.this);
-  			   Protein_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new Complex(addr, Complex_Type.this);
+  			   Complex_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new Protein(addr, Protein_Type.this);
+        } else return new Complex(addr, Complex_Type.this);
   	  }
     };
   /** @generated */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = Protein.typeIndexID;
+  public final static int typeIndexID = Complex.typeIndexID;
   /** @generated 
      @modifiable */
   @SuppressWarnings ("hiding")
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("info.chenli.litway.corpora.Protein");
-
-
-
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("info.chenli.litway.bionlp13.Complex");
+ 
   /** @generated */
   final Feature casFeat_id;
   /** @generated */
@@ -53,13 +51,13 @@ public class Protein_Type extends Annotation_Type {
   /** @generated */ 
   public String getId(int addr) {
         if (featOkTst && casFeat_id == null)
-      jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Protein");
+      jcas.throwFeatMissing("id", "info.chenli.litway.bionlp13.Complex");
     return ll_cas.ll_getStringValue(addr, casFeatCode_id);
   }
   /** @generated */    
   public void setId(int addr, String v) {
         if (featOkTst && casFeat_id == null)
-      jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Protein");
+      jcas.throwFeatMissing("id", "info.chenli.litway.bionlp13.Complex");
     ll_cas.ll_setStringValue(addr, casFeatCode_id, v);}
     
   
@@ -68,7 +66,7 @@ public class Protein_Type extends Annotation_Type {
 
   /** initialize variables to correspond with Cas Type and Features
 	* @generated */
-  public Protein_Type(JCas jcas, Type casType) {
+  public Complex_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 

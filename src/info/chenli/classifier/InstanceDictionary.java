@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,6 @@ public class InstanceDictionary {
 			if (!labelDict.contains(instance.getLabelString())) {
 				labelDict.add(instance.getLabelString());
 			}
-
 		}
 
 		//
@@ -55,9 +55,14 @@ public class InstanceDictionary {
 		for (Map<String, Integer> aFeatureMap : featureStringNumericDict) {
 
 			for (Instance instance : instances) {
-				String featureStringValue = instance.getFeaturesString().get(i);
-				if (!aFeatureMap.containsKey(featureStringValue)) {
-					aFeatureMap.put(featureStringValue, index++);
+				String[] featureStringValues = instance.getFeaturesString()
+						.get(i);
+				for (String featureStringValue : featureStringValues) {
+					if (!aFeatureMap.containsKey(featureStringValue)
+							&& !featureStringValue
+									.equals(TokenInstances.aStopWord)) {
+						aFeatureMap.put(featureStringValue, index++);
+					}
 				}
 			}
 
@@ -159,26 +164,42 @@ public class InstanceDictionary {
 
 		Iterator<Map<String, Integer>> featuresDictIter = featureStringNumericDict
 				.iterator();
-		Iterator<String> featureStrIter = instance.getFeaturesString()
+		Iterator<String[]> featureStrIter = instance.getFeaturesString()
 				.iterator();
 
-		int[] featuresNumeric = new int[instance.getFeaturesString().size()];
+		ArrayList<Integer> featuresNumericList = new ArrayList<Integer>();
 
-		int i = 0;
 		while (featureStrIter.hasNext()) {
 
 			Map<String, Integer> aFeatureDict = featuresDictIter.next();
-			String featureStr = featureStrIter.next();
+			String[] featureStrings = featureStrIter.next();
 
-			int numericValue = -1;
-			if (aFeatureDict.containsKey(featureStr)
-					&& !featureStr.equals(TokenInstances.aStopWord)) {
-				numericValue = aFeatureDict.get(featureStr);
+			// String previousValue = "";
+			for (String featureStr : featureStrings) {
+
+				// removed duplication
+				// if (featureStr.equals(previousValue)) {
+				// continue;
+				// }
+				// previousValue = featureStr;
+				if (aFeatureDict.containsKey(featureStr)) {
+					featuresNumericList.add(aFeatureDict.get(featureStr));
+					// System.out.print(aFeatureDict.get(featureStr) + ":"
+					// + featureStr + "\t");
+				}
+
 			}
-			featuresNumeric[i++] = numericValue;
 
 		}
+		// System.out.println();
 
+		Collections.sort(featuresNumericList);
+
+		int[] featuresNumeric = new int[featuresNumericList.size()];
+		int i = 0;
+		for (int value : featuresNumericList) {
+			featuresNumeric[i++] = value;
+		}
 		instance.setFeaturesNumeric(featuresNumeric);
 
 		return instance;

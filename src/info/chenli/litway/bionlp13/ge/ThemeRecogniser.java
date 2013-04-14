@@ -28,7 +28,7 @@ public class ThemeRecogniser extends PerceptronClassifier {
 
 			ThemeInstances trainingInstances = new ThemeInstances();
 			trainingInstances
-					.setTaeDescriptor("/desc/TrainingSetAnnotator.xml");
+					.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
 			List<Instance> instances = trainingInstances
 					.getInstances(trainingSet);
 
@@ -40,7 +40,7 @@ public class ThemeRecogniser extends PerceptronClassifier {
 			System.out.println(accuracy(instances));
 
 			ThemeInstances testInstances = new ThemeInstances();
-			testInstances.setTaeDescriptor("/desc/TrainingSetAnnotator.xml");
+			testInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
 			instances = testInstances.getInstances(new File("./data/test/"));
 
 			System.out.println(accuracy(dict.instancesToNumeric(instances)));

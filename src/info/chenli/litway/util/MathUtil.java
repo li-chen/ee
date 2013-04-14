@@ -159,6 +159,12 @@ public class MathUtil {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @param vector
+	 * @param sparseVector
+	 * @return
+	 */
 	public static List<Integer> subtract(List<Integer> vector,
 			int[] sparseVector) {
 
@@ -173,5 +179,4 @@ public class MathUtil {
 
 		return result;
 	}
-
 }

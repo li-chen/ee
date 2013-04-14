@@ -8,9 +8,10 @@ import info.chenli.litway.corpora.Token;
 import info.chenli.litway.searn.StructuredInstance;
 import info.chenli.litway.util.DependencyExtractor;
 import info.chenli.litway.util.FileUtil;
+import info.chenli.litway.util.Permutations;
 import info.chenli.litway.util.StanfordDependencyReader;
-import info.chenli.litway.util.StanfordDependencyReader.Pair;
 import info.chenli.litway.util.UimaUtil;
+import info.chenli.litway.util.StanfordDependencyReader.Pair;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -26,31 +26,23 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.uimafit.util.JCasUtil;
 
-public class ThemeInstances extends AbstractInstances {
+public class BindingInstances extends AbstractInstances {
 
-	private final static Logger logger = Logger.getLogger(ThemeInstances.class
-			.getName());
+	public BindingInstances() {
 
-	public ThemeInstances() {
-		super("themes", new int[] { Protein.type, Event.type });
-
+		super("Binding", new int[] { Event.type });
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected List<String> getLabelsString() {
 
-		ArrayList<String> themeTypes = new ArrayList<String>();
-
-		themeTypes.add("Theme");
-		themeTypes.add("Non_theme");
-
-		return themeTypes;
-
+		return null;
 	}
 
 	@Override
 	protected List<StructuredInstance> getStructuredInstances(JCas jcas,
-			FSIterator<Annotation> tokenIter) {
+			FSIterator<Annotation> annoIter) {
 
 		List<StructuredInstance> results = new LinkedList<StructuredInstance>();
 
@@ -66,8 +58,8 @@ public class ThemeInstances extends AbstractInstances {
 		while (sentenceIter.hasNext()) {
 
 			StructuredInstance si = new StructuredInstance();
-			List<Instance> themeCandidates = new LinkedList<Instance>();
-			si.setNodes(themeCandidates);
+			List<Instance> bindingEventCandidates = new LinkedList<Instance>();
+			si.setNodes(bindingEventCandidates);
 
 			Sentence sentence = (Sentence) sentenceIter.next();
 			Set<Pair> pairsOfSentence = pairsOfArticle.get(sentence.getId());
@@ -83,33 +75,11 @@ public class ThemeInstances extends AbstractInstances {
 
 			for (Event event : events) {
 
-				for (int i = 0; i < event.getThemes().size(); i++) {
+				if (event.getTrigger().getEventType()
+						.equals(String.valueOf(EventType.Binding))) {
 
-					// check protein themes
-					for (Protein protein : proteins) {
-
-						boolean isTheme = event.getThemes(i).equals(
-								protein.getId());
-
-						themeCandidates.add(themeToInstance(jcas, protein,
-								event.getTrigger(), pairsOfSentence,
-								dependencyExtractor, isTheme));
-					}
-
-					// check event themes
-					for (Event themeEvent : events) {
-
-						if (event != themeEvent) {
-
-							boolean isTheme = event.getThemes(i).equals(
-									themeEvent.getId());
-
-							themeCandidates.add(themeToInstance(jcas,
-									themeEvent.getTrigger(),
-									event.getTrigger(), pairsOfSentence,
-									dependencyExtractor, isTheme));
-						}
-					}
+					bindingEventCandidates.addAll(bindingEventToInstance(jcas,
+							event, proteins, dependencyExtractor));
 				}
 			}
 
@@ -119,11 +89,26 @@ public class ThemeInstances extends AbstractInstances {
 		return results;
 	}
 
-	public static void main(String[] args) {
+	private List<Instance> bindingEventToInstance(JCas jcas,
+			Event bindingEvent, List<Protein> sentenceProteins,
+			DependencyExtractor dependencyExtractor) {
 
-		TokenInstances ti = new TokenInstances();
-		ti.getInstances(new File(args[0]));
-		System.out.println(ti.getInstances());
+		List<Instance> result = new ArrayList<Instance>();
+
+		List<String> themes = new ArrayList<String>();
+		for (int i = 0; i < bindingEvent.getThemes().size(); i++) {
+			themes.add(bindingEvent.getThemes(i));
+		}
+
+		Permutations<String> themePerm = new Permutations<String>(themes);
+		while (themePerm.hasNext()) {
+			Instance instance = new Instance();
+			List<String[]> featureString = new ArrayList<String[]>();
+			instance.setFeaturesString(featureString);
+
+			// featureString.add(e)
+		}
+
+		return null;
 	}
-
 }

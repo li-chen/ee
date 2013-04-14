@@ -1,12 +1,15 @@
 package info.chenli.litway.bionlp13.ge;
 
 import info.chenli.classifier.Instance;
-import info.chenli.litway.StopWords;
 import info.chenli.litway.corpora.POS;
 import info.chenli.litway.corpora.Sentence;
 import info.chenli.litway.corpora.Token;
 import info.chenli.litway.corpora.Trigger;
 import info.chenli.litway.searn.StructuredInstance;
+import info.chenli.litway.util.FileUtil;
+import info.chenli.litway.util.StanfordDependencyReader;
+import info.chenli.litway.util.StanfordDependencyReader.Pair;
+import info.chenli.litway.util.UimaUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.uima.cas.FSIterator;
@@ -27,11 +31,9 @@ public class TokenInstances extends AbstractInstances {
 	private final static Logger logger = Logger.getLogger(TokenInstances.class
 			.getName());
 
-	public static final String aStopWord = "!AStopWord!";
-
 	public TokenInstances() {
 
-		super("tokens", Token.type);
+		super("tokens", new int[] { Token.type });
 
 	}
 
@@ -57,6 +59,9 @@ public class TokenInstances extends AbstractInstances {
 				.getAnnotationIndex(Sentence.type);
 
 		FSIterator<Annotation> sentenceIter = sentenceIndex.iterator();
+		Map<Integer, Set<Pair>> pairsOfArticle = StanfordDependencyReader
+				.getPairs(new File(FileUtil.removeFileNameExtension(
+						UimaUtil.getJCasFilePath(jcas)).concat(".sdepcc")));
 
 		// Currently, one sentence is considered as one structured instance.
 		while (sentenceIter.hasNext()) {
@@ -66,6 +71,7 @@ public class TokenInstances extends AbstractInstances {
 			si.setNodes(nodes);
 
 			Sentence sentence = (Sentence) sentenceIter.next();
+			Set<Pair> pairsOfSentence = pairsOfArticle.get(sentence.getId());
 
 			List<Trigger> triggers = JCasUtil.selectCovered(jcas,
 					Trigger.class, sentence);
@@ -92,7 +98,8 @@ public class TokenInstances extends AbstractInstances {
 					continue;
 				}
 
-				nodes.add(tokenToInstance(token, triggerTokens));
+				nodes.add(tokenToInstance(token, triggerTokens, tokens,
+						pairsOfSentence));
 			}
 
 			results.add(si);
@@ -110,48 +117,61 @@ public class TokenInstances extends AbstractInstances {
 	 * @return
 	 */
 	protected Instance tokenToInstance(Token token,
-			Map<Integer, String> triggerTokens) {
+			Map<Integer, String> triggerTokens, List<Token> tokens,
+			Set<Pair> pairsOfSentence) {
 
 		// only consider the tokens, which are words.
 		Instance instance = new Instance();
 
-		List<String> featureString = new ArrayList<String>();
+		List<String[]> featureString = new ArrayList<String[]>();
 		instance.setFeaturesString(featureString);
 
-		featureString.add(token.getCoveredText().toLowerCase());
+		featureString
+				.add(new String[] { token.getCoveredText().toLowerCase() });
 		String lemma = token.getLemma().toLowerCase();
-		featureString.add(lemma);
+		featureString.add(new String[] { lemma });
+		featureString.add(new String[] { token.getStem().toLowerCase() });
 		String pos = token.getPos();
-		featureString.add(pos);
-		featureString.add(token.getStem().toLowerCase());
-		featureString.add(lemma.concat("_").concat(pos));
-		String leftTokenText = null == token.getLeftToken() ? "" : token
-				.getLeftToken().getCoveredText().toLowerCase();// combine lemma
-																// with lemma
-		featureString.add(isWord(leftTokenText)
-				&& !StopWords.isAStopWordShortForNgram(leftTokenText) ? lemma
-				.concat("_").concat(leftTokenText) : aStopWord);
+		featureString.add(new String[] { lemma.concat("_").concat(pos) });
 
-		String rightTokenText = null == token.getRightToken() ? "" : token
-				.getRightToken().getCoveredText().toLowerCase();
-		featureString.add(isWord(rightTokenText)
-				&& StopWords.isAStopWordShortForNgram(leftTokenText) ? lemma
-				.concat("_").concat(rightTokenText) : aStopWord);
+		List<String> modifiers = new ArrayList<String>();
+		List<String> heads = new ArrayList<String>();
+		for (Pair pair : pairsOfSentence) {
+			if (pair.getRelation().equalsIgnoreCase("punct")) {
+				continue;
+			}
+			if (pair.getHead() == token.getId()) {
+				for (Token aToken : tokens) {
+					if (aToken.getId() == pair.getModifier()) {
+						modifiers.add(lemma.concat("_")
+								.concat(pair.getRelation()).concat("_")
+								.concat(aToken.getLemma().toLowerCase()));
+					}
+				}
+			} else if (pair.getModifier() == token.getId()) {
+				for (Token aToken : tokens) {
+					if (aToken.getId() == pair.getHead()) {
+						heads.add(lemma.concat("_-").concat(pair.getRelation())
+								.concat("_")
+								.concat(aToken.getLemma().toLowerCase()));
+					}
+				}
+			}
+		}
+		String[] modifiersFeature = new String[modifiers.size()];
+		modifiersFeature = modifiers.toArray(modifiersFeature);
+		String[] headsFeature = new String[heads.size()];
+		headsFeature = heads.toArray(headsFeature);
 
-		String dependentText = null == token.getDependent() ? "" : token
-				.getDependent().getCoveredText().toLowerCase();
-		featureString.add(isWord(dependentText)
-				&& !StopWords.isAStopWordShortForNgram(dependentText) ? lemma
-				.concat("_").concat(
-						token.getDependent().getLemma().toLowerCase())
-				: aStopWord);
-		String governorText = null == token.getGovernor() ? "" : token
-				.getGovernor().getCoveredText().toLowerCase();
-		featureString.add(isWord(governorText)
-				&& !StopWords.isAStopWordShortForNgram(governorText) ? lemma
-				.concat("_").concat(
-						token.getGovernor().getLemma().toLowerCase())
-				: aStopWord);
+		featureString.add(modifiersFeature);
+		featureString.add(headsFeature);
+
+		featureString
+				.add(new String[] { token.getSubLemma().equals("") ? aStopWord
+						: token.getSubLemma() });
+		featureString
+				.add(new String[] { token.getSubStem().equals("") ? aStopWord
+						: token.getSubStem() });
 
 		if (null != triggerTokens) {
 
@@ -162,23 +182,21 @@ public class TokenInstances extends AbstractInstances {
 		return instance;
 	}
 
-	private boolean isWord(String text) {
-
-		return text.matches("^[a-zA-Z].+");
-	}
-
 	public static void main(String[] args) {
 
 		TokenInstances ti = new TokenInstances();
-		ti.getInstances(new File(args[0]));
+		ti.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
+		List<Instance> instances = ti.getInstances(new File(args[0]));
 
-		// for (Instance instance : ti.getInstances()) {
-		// System.out.print(instance.getLabelString());
-		// for (String feature : instance.getFeaturesString()) {
-		// System.out.print("\t".concat(feature));
-		// }
-		// System.out.println();
-		// }
+		for (Instance instance : instances) {
+			System.out.print(instance.getLabelString());
+			for (String[] features : instance.getFeaturesString()) {
+				for (String feature : features) {
+					System.out.print("\t".concat(feature));
+				}
+			}
+			System.out.println();
+		}
 	}
 
 }

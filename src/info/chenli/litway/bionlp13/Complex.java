@@ -1,7 +1,7 @@
 
 
-/* First created by JCasGen Tue Mar 05 17:49:59 GMT+08:00 2013 */
-package info.chenli.litway.corpora;
+/* First created by JCasGen Wed Apr 10 17:53:25 BST 2013 */
+package info.chenli.litway.bionlp13;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
@@ -14,12 +14,12 @@ import org.apache.uima.jcas.tcas.Annotation;
  * Updated by JCasGen Thu Apr 11 16:40:07 BST 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
-public class Protein extends Annotation {
+public class Complex extends Annotation {
   /** @generated
    * @ordered 
    */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = JCasRegistry.register(Protein.class);
+  public final static int typeIndexID = JCasRegistry.register(Complex.class);
   /** @generated
    * @ordered 
    */
@@ -31,23 +31,23 @@ public class Protein extends Annotation {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected Protein() {/* intentionally empty block */}
+  protected Complex() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated */
-  public Protein(int addr, TOP_Type type) {
+  public Complex(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
   
   /** @generated */
-  public Protein(JCas jcas) {
+  public Complex(JCas jcas) {
     super(jcas);
     readObject();   
   } 
 
   /** @generated */  
-  public Protein(JCas jcas, int begin, int end) {
+  public Complex(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);
@@ -60,22 +60,24 @@ public class Protein extends Annotation {
   @generated modifiable */
   private void readObject() {/*default - does nothing empty block */}
      
+ 
+    
   //*--------------*
   //* Feature: id
 
   /** getter for id - gets 
    * @generated */
   public String getId() {
-    if (Protein_Type.featOkTst && ((Protein_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Protein");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((Protein_Type)jcasType).casFeatCode_id);}
+    if (Complex_Type.featOkTst && ((Complex_Type)jcasType).casFeat_id == null)
+      jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.bionlp13.Complex");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Complex_Type)jcasType).casFeatCode_id);}
     
   /** setter for id - sets  
    * @generated */
   public void setId(String v) {
-    if (Protein_Type.featOkTst && ((Protein_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Protein");
-    jcasType.ll_cas.ll_setStringValue(addr, ((Protein_Type)jcasType).casFeatCode_id, v);}    
+    if (Complex_Type.featOkTst && ((Complex_Type)jcasType).casFeat_id == null)
+      jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.bionlp13.Complex");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Complex_Type)jcasType).casFeatCode_id, v);}    
   }
 
     

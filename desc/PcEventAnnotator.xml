@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <primitive>false</primitive>
-  <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="EntityAnnotator">
-      <import name="desc.EntityAnnotator"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="BioNLPSyntacticAnnotator">
-      <import name="desc.BioNLPSyntacticAnnotator"/>
-    </delegateAnalysisEngine>
-  </delegateAnalysisEngineSpecifiers>
+  <primitive>true</primitive>
+  <annotatorImplementationName>info.chenli.litway.bionlp13.pc.EventAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Test Set Annotator</name>
+    <name>EntityAnnotator</name>
     <description/>
     <version>1.0</version>
     <vendor/>
-    <configurationParameters searchStrategy="language_fallback"/>
+    <configurationParameters/>
     <configurationParameterSettings/>
-    <flowConstraints>
-      <fixedFlow>
-        <node>BioNLPSyntacticAnnotator</node>
-        <node>EntityAnnotator</node>
-      </fixedFlow>
-    </flowConstraints>
+    <typeSystemDescription>
+      <imports>
+        <import name="desc.typeSystemDescriptor"/>
+      </imports>
+    </typeSystemDescription>
     <typePriorities/>
     <fsIndexCollection/>
     <capabilities>

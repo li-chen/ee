@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Apr 05 15:52:12 BST 2013
+ * Updated by JCasGen Thu Apr 11 16:40:07 BST 2013
  * @generated */
 public class Token_Type extends Annotation_Type {
   /** @generated */
@@ -99,6 +99,42 @@ public class Token_Type extends Annotation_Type {
   
  
   /** @generated */
+  final Feature casFeat_subLemma;
+  /** @generated */
+  final int     casFeatCode_subLemma;
+  /** @generated */ 
+  public String getSubLemma(int addr) {
+        if (featOkTst && casFeat_subLemma == null)
+      jcas.throwFeatMissing("subLemma", "info.chenli.litway.corpora.Token");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_subLemma);
+  }
+  /** @generated */    
+  public void setSubLemma(int addr, String v) {
+        if (featOkTst && casFeat_subLemma == null)
+      jcas.throwFeatMissing("subLemma", "info.chenli.litway.corpora.Token");
+    ll_cas.ll_setStringValue(addr, casFeatCode_subLemma, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_subStem;
+  /** @generated */
+  final int     casFeatCode_subStem;
+  /** @generated */ 
+  public String getSubStem(int addr) {
+        if (featOkTst && casFeat_subStem == null)
+      jcas.throwFeatMissing("subStem", "info.chenli.litway.corpora.Token");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_subStem);
+  }
+  /** @generated */    
+  public void setSubStem(int addr, String v) {
+        if (featOkTst && casFeat_subStem == null)
+      jcas.throwFeatMissing("subStem", "info.chenli.litway.corpora.Token");
+    ll_cas.ll_setStringValue(addr, casFeatCode_subStem, v);}
+    
+  
+ 
+  /** @generated */
   final Feature casFeat_leftToken;
   /** @generated */
   final int     casFeatCode_leftToken;
@@ -131,78 +167,6 @@ public class Token_Type extends Annotation_Type {
         if (featOkTst && casFeat_rightToken == null)
       jcas.throwFeatMissing("rightToken", "info.chenli.litway.corpora.Token");
     ll_cas.ll_setRefValue(addr, casFeatCode_rightToken, v);}
-    
-  
- 
-  /** @generated */
-  final Feature casFeat_governor;
-  /** @generated */
-  final int     casFeatCode_governor;
-  /** @generated */ 
-  public int getGovernor(int addr) {
-        if (featOkTst && casFeat_governor == null)
-      jcas.throwFeatMissing("governor", "info.chenli.litway.corpora.Token");
-    return ll_cas.ll_getRefValue(addr, casFeatCode_governor);
-  }
-  /** @generated */    
-  public void setGovernor(int addr, int v) {
-        if (featOkTst && casFeat_governor == null)
-      jcas.throwFeatMissing("governor", "info.chenli.litway.corpora.Token");
-    ll_cas.ll_setRefValue(addr, casFeatCode_governor, v);}
-    
-  
- 
-  /** @generated */
-  final Feature casFeat_dependentId;
-  /** @generated */
-  final int     casFeatCode_dependentId;
-  /** @generated */ 
-  public int getDependentId(int addr) {
-        if (featOkTst && casFeat_dependentId == null)
-      jcas.throwFeatMissing("dependentId", "info.chenli.litway.corpora.Token");
-    return ll_cas.ll_getIntValue(addr, casFeatCode_dependentId);
-  }
-  /** @generated */    
-  public void setDependentId(int addr, int v) {
-        if (featOkTst && casFeat_dependentId == null)
-      jcas.throwFeatMissing("dependentId", "info.chenli.litway.corpora.Token");
-    ll_cas.ll_setIntValue(addr, casFeatCode_dependentId, v);}
-    
-  
- 
-  /** @generated */
-  final Feature casFeat_dependent;
-  /** @generated */
-  final int     casFeatCode_dependent;
-  /** @generated */ 
-  public int getDependent(int addr) {
-        if (featOkTst && casFeat_dependent == null)
-      jcas.throwFeatMissing("dependent", "info.chenli.litway.corpora.Token");
-    return ll_cas.ll_getRefValue(addr, casFeatCode_dependent);
-  }
-  /** @generated */    
-  public void setDependent(int addr, int v) {
-        if (featOkTst && casFeat_dependent == null)
-      jcas.throwFeatMissing("dependent", "info.chenli.litway.corpora.Token");
-    ll_cas.ll_setRefValue(addr, casFeatCode_dependent, v);}
-    
-  
- 
-  /** @generated */
-  final Feature casFeat_relation;
-  /** @generated */
-  final int     casFeatCode_relation;
-  /** @generated */ 
-  public String getRelation(int addr) {
-        if (featOkTst && casFeat_relation == null)
-      jcas.throwFeatMissing("relation", "info.chenli.litway.corpora.Token");
-    return ll_cas.ll_getStringValue(addr, casFeatCode_relation);
-  }
-  /** @generated */    
-  public void setRelation(int addr, String v) {
-        if (featOkTst && casFeat_relation == null)
-      jcas.throwFeatMissing("relation", "info.chenli.litway.corpora.Token");
-    ll_cas.ll_setStringValue(addr, casFeatCode_relation, v);}
     
   
 
@@ -249,28 +213,20 @@ public class Token_Type extends Annotation_Type {
     casFeatCode_stem  = (null == casFeat_stem) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_stem).getCode();
 
  
+    casFeat_subLemma = jcas.getRequiredFeatureDE(casType, "subLemma", "uima.cas.String", featOkTst);
+    casFeatCode_subLemma  = (null == casFeat_subLemma) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_subLemma).getCode();
+
+ 
+    casFeat_subStem = jcas.getRequiredFeatureDE(casType, "subStem", "uima.cas.String", featOkTst);
+    casFeatCode_subStem  = (null == casFeat_subStem) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_subStem).getCode();
+
+ 
     casFeat_leftToken = jcas.getRequiredFeatureDE(casType, "leftToken", "info.chenli.litway.corpora.Token", featOkTst);
     casFeatCode_leftToken  = (null == casFeat_leftToken) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_leftToken).getCode();
 
  
     casFeat_rightToken = jcas.getRequiredFeatureDE(casType, "rightToken", "info.chenli.litway.corpora.Token", featOkTst);
     casFeatCode_rightToken  = (null == casFeat_rightToken) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_rightToken).getCode();
-
- 
-    casFeat_governor = jcas.getRequiredFeatureDE(casType, "governor", "info.chenli.litway.corpora.Token", featOkTst);
-    casFeatCode_governor  = (null == casFeat_governor) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_governor).getCode();
-
- 
-    casFeat_dependentId = jcas.getRequiredFeatureDE(casType, "dependentId", "uima.cas.Integer", featOkTst);
-    casFeatCode_dependentId  = (null == casFeat_dependentId) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_dependentId).getCode();
-
- 
-    casFeat_dependent = jcas.getRequiredFeatureDE(casType, "dependent", "info.chenli.litway.corpora.Token", featOkTst);
-    casFeatCode_dependent  = (null == casFeat_dependent) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_dependent).getCode();
-
- 
-    casFeat_relation = jcas.getRequiredFeatureDE(casType, "relation", "uima.cas.String", featOkTst);
-    casFeatCode_relation  = (null == casFeat_relation) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_relation).getCode();
 
   }
 }

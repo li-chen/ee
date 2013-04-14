@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Apr 05 15:52:12 BST 2013
+ * Updated by JCasGen Thu Apr 11 16:40:07 BST 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Token extends Annotation {
@@ -117,6 +117,42 @@ public class Token extends Annotation {
    
     
   //*--------------*
+  //* Feature: subLemma
+
+  /** getter for subLemma - gets 
+   * @generated */
+  public String getSubLemma() {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_subLemma == null)
+      jcasType.jcas.throwFeatMissing("subLemma", "info.chenli.litway.corpora.Token");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Token_Type)jcasType).casFeatCode_subLemma);}
+    
+  /** setter for subLemma - sets  
+   * @generated */
+  public void setSubLemma(String v) {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_subLemma == null)
+      jcasType.jcas.throwFeatMissing("subLemma", "info.chenli.litway.corpora.Token");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Token_Type)jcasType).casFeatCode_subLemma, v);}    
+   
+    
+  //*--------------*
+  //* Feature: subStem
+
+  /** getter for subStem - gets 
+   * @generated */
+  public String getSubStem() {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_subStem == null)
+      jcasType.jcas.throwFeatMissing("subStem", "info.chenli.litway.corpora.Token");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Token_Type)jcasType).casFeatCode_subStem);}
+    
+  /** setter for subStem - sets  
+   * @generated */
+  public void setSubStem(String v) {
+    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_subStem == null)
+      jcasType.jcas.throwFeatMissing("subStem", "info.chenli.litway.corpora.Token");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Token_Type)jcasType).casFeatCode_subStem, v);}    
+   
+    
+  //*--------------*
   //* Feature: leftToken
 
   /** getter for leftToken - gets 
@@ -150,79 +186,7 @@ public class Token extends Annotation {
     if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_rightToken == null)
       jcasType.jcas.throwFeatMissing("rightToken", "info.chenli.litway.corpora.Token");
     jcasType.ll_cas.ll_setRefValue(addr, ((Token_Type)jcasType).casFeatCode_rightToken, jcasType.ll_cas.ll_getFSRef(v));}    
-   
-    
-  //*--------------*
-  //* Feature: governor
-
-  /** getter for governor - gets 
-   * @generated */
-  public Token getGovernor() {
-    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_governor == null)
-      jcasType.jcas.throwFeatMissing("governor", "info.chenli.litway.corpora.Token");
-    return (Token)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_governor)));}
-    
-  /** setter for governor - sets  
-   * @generated */
-  public void setGovernor(Token v) {
-    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_governor == null)
-      jcasType.jcas.throwFeatMissing("governor", "info.chenli.litway.corpora.Token");
-    jcasType.ll_cas.ll_setRefValue(addr, ((Token_Type)jcasType).casFeatCode_governor, jcasType.ll_cas.ll_getFSRef(v));}    
-   
-    
-  //*--------------*
-  //* Feature: dependentId
-
-  /** getter for dependentId - gets 
-   * @generated */
-  public int getDependentId() {
-    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_dependentId == null)
-      jcasType.jcas.throwFeatMissing("dependentId", "info.chenli.litway.corpora.Token");
-    return jcasType.ll_cas.ll_getIntValue(addr, ((Token_Type)jcasType).casFeatCode_dependentId);}
-    
-  /** setter for dependentId - sets  
-   * @generated */
-  public void setDependentId(int v) {
-    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_dependentId == null)
-      jcasType.jcas.throwFeatMissing("dependentId", "info.chenli.litway.corpora.Token");
-    jcasType.ll_cas.ll_setIntValue(addr, ((Token_Type)jcasType).casFeatCode_dependentId, v);}    
-   
-    
-  //*--------------*
-  //* Feature: dependent
-
-  /** getter for dependent - gets 
-   * @generated */
-  public Token getDependent() {
-    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_dependent == null)
-      jcasType.jcas.throwFeatMissing("dependent", "info.chenli.litway.corpora.Token");
-    return (Token)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_dependent)));}
-    
-  /** setter for dependent - sets  
-   * @generated */
-  public void setDependent(Token v) {
-    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_dependent == null)
-      jcasType.jcas.throwFeatMissing("dependent", "info.chenli.litway.corpora.Token");
-    jcasType.ll_cas.ll_setRefValue(addr, ((Token_Type)jcasType).casFeatCode_dependent, jcasType.ll_cas.ll_getFSRef(v));}    
-   
-    
-  //*--------------*
-  //* Feature: relation
-
-  /** getter for relation - gets 
-   * @generated */
-  public String getRelation() {
-    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_relation == null)
-      jcasType.jcas.throwFeatMissing("relation", "info.chenli.litway.corpora.Token");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((Token_Type)jcasType).casFeatCode_relation);}
-    
-  /** setter for relation - sets  
-   * @generated */
-  public void setRelation(String v) {
-    if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_relation == null)
-      jcasType.jcas.throwFeatMissing("relation", "info.chenli.litway.corpora.Token");
-    jcasType.ll_cas.ll_setStringValue(addr, ((Token_Type)jcasType).casFeatCode_relation, v);}    
-                                            //*--------------*
+                                                        //*--------------*
   //* Feature: id
 
   /** getter for id - gets 

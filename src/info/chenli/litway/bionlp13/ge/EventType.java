@@ -1,6 +1,8 @@
 package info.chenli.litway.bionlp13.ge;
 
-public enum EventType {
+import info.chenli.litway.bionlp13.EventTypes;
+
+public enum EventType implements EventTypes {
 
 	Non_trigger, Gene_expression, Transcription, Protein_catabolism, Binding, Localization, Protein_modification, Phosphorylation, Ubiquitination, Acetylation, Deacetylation, Regulation, Positive_regulation, Negative_regulation;
 

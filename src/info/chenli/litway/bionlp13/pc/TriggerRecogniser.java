@@ -1,10 +1,9 @@
-package info.chenli.litway.bionlp13.ge;
+package info.chenli.litway.bionlp13.pc;
 
 import info.chenli.classifier.Accurary;
 import info.chenli.classifier.Fscore;
 import info.chenli.classifier.Instance;
 import info.chenli.classifier.InstanceDictionary;
-import info.chenli.classifier.LibLinearFacade;
 import info.chenli.classifier.PerceptronClassifier;
 import info.chenli.litway.corpora.POS;
 import info.chenli.litway.util.FileUtil;
@@ -26,7 +25,7 @@ import java.util.logging.Logger;
  * 
  * 
  */
-public class TriggerRecogniser extends LibLinearFacade {
+public class TriggerRecogniser extends PerceptronClassifier {
 
 	private final static Logger logger = Logger
 			.getLogger(TriggerRecogniser.class.getName());
@@ -75,7 +74,7 @@ public class TriggerRecogniser extends LibLinearFacade {
 		// collect all instances and fetch syntactical information
 		//
 		TokenInstances trainingInstances = new TokenInstances();
-		trainingInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
+		trainingInstances.setTaeDescriptor("/desc/PcTrainingSetAnnotator.xml");
 		List<Instance> instances = trainingInstances.getInstances(new File(
 				trainingDir));
 		logger.info(String.valueOf(instances.size()).concat(
@@ -86,7 +85,7 @@ public class TriggerRecogniser extends LibLinearFacade {
 		dict.saveDictionary(new File("./model/triggers.dict"));
 		logger.info("Save dictionary.");
 
-//		Collections.shuffle(instances);
+		Collections.shuffle(instances);
 		logger.info("Shuffle instances.");
 
 		Timer timer = new Timer();
@@ -97,7 +96,7 @@ public class TriggerRecogniser extends LibLinearFacade {
 		logger.info("Training takes ".concat(String.valueOf(timer
 				.getRunningTime())));
 
-		saveModel(new File("./model/triggers.liblinear.model"));
+		saveModel(new File("./model/triggers.perceptron.model"));
 
 	}
 
@@ -120,18 +119,13 @@ public class TriggerRecogniser extends LibLinearFacade {
 		// collect all instances and fetch syntactical information
 		//
 		TokenInstances trainingInstances = new TokenInstances();
-		trainingInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
+		trainingInstances.setTaeDescriptor("/desc/PcTrainingSetAnnotator.xml");
 		List<Instance> instances = trainingInstances
 				.getInstances(new File(dir));
 		logger.info(String.valueOf(instances.size()).concat(
 				" instances are collected."));
 
 		Collections.shuffle(instances);
-		trainingInstances.saveInstances(new File("./model/instances.csv"));
-		InstanceDictionary dictAll = new InstanceDictionary();
-		dictAll.creatNumericDictionary(instances);
-		trainingInstances.saveNumericInstances(new File("./model/instances.num.csv"));
-		trainingInstances.saveSvmLightInstances(new File("./model/instances.svm.csv"));
 		logger.info("Shuffle instances.");
 
 		//
@@ -160,15 +154,14 @@ public class TriggerRecogniser extends LibLinearFacade {
 			dict.saveDictionary(new File("./model/triggers." + i + ".dict"));
 			logger.info("Save dictionary.");
 
-//			Collections.shuffle(subTrainingInstances);
+			Collections.shuffle(subTrainingInstances);
 			Collections.shuffle(subTestingInstances);
 
 			Timer timer = new Timer();
 			timer.start();
 
 			TriggerRecogniser tr = new TriggerRecogniser();
-//			tr.train(subTrainingInstances, 50);
-			tr.train(subTrainingInstances);
+			tr.train(subTrainingInstances, 50);
 			timer.stop();
 			logger.info(String.valueOf(i).concat(" fold training takes ")
 					.concat(String.valueOf(timer.getRunningTime())));
@@ -193,7 +186,7 @@ public class TriggerRecogniser extends LibLinearFacade {
 		StringBuffer fp_nonTrigger_instances = new StringBuffer();
 		StringBuffer fp_trigger_instances = new StringBuffer();
 
-//		Collections.shuffle(instances);
+		Collections.shuffle(instances);
 		for (Instance instance : instances) {
 
 			instance = dict.instanceToNumeric(instance);
@@ -249,9 +242,8 @@ public class TriggerRecogniser extends LibLinearFacade {
 	public static void main(String[] args) {
 
 		TriggerRecogniser tr = new TriggerRecogniser();
-//		tr.crossValidate(args[0]);
+		tr.crossValidate(args[0]);
 //		tr.train(args[0], 500);
-		tr.train(args[0], 1);
 
 	}
 }

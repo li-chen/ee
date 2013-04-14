@@ -9,7 +9,7 @@ public class Instance {
 	private String id;
 	private int label = -1;
 	private String labelString;
-	private List<String> featuresString;
+	private List<String[]> featuresString;
 	private int[] featuresNumeric;
 
 	public String getId() {
@@ -44,11 +44,11 @@ public class Instance {
 		this.labelString = labelString;
 	}
 
-	public List<String> getFeaturesString() {
+	public List<String[]> getFeaturesString() {
 		return featuresString;
 	}
 
-	public void setFeaturesString(List<String> featuresString) {
+	public void setFeaturesString(List<String[]> featuresString) {
 		this.featuresString = featuresString;
 	}
 
@@ -61,10 +61,16 @@ public class Instance {
 					.concat(getLabelString()));
 		}
 
-		Iterator<String> featureStrIter = getFeaturesString().iterator();
-		for (int featureNumeric : getFeaturesNumeric()) {
-			sb.append("\t".concat(String.valueOf(featureNumeric).concat(":")
-					.concat(featureStrIter.next())));
+		Iterator<String[]> featureStrIter = getFeaturesString().iterator();
+//		int i = 0;
+		while (featureStrIter.hasNext()) {
+			String[] feature = featureStrIter.next();
+			for (String value : feature) {
+				sb.append("\t"
+//						.concat(String.valueOf(getFeaturesNumeric()[i])
+//						.concat(":")
+						.concat(value));
+			}
 		}
 
 		return sb.toString();
