@@ -1,16 +1,11 @@
 package info.chenli.litway.util;
 
-import info.chenli.litway.util.StanfordDependencyReader.Pair;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -103,12 +98,12 @@ public class StanfordDependencyReader {
 				String head = pairString.substring(0, pairString.indexOf(", "));
 				head = head.substring(head.lastIndexOf("-") + 1);
 				if (head.endsWith("'")) {
-					head = head.substring(0, head.length() - 1);
+					head = head.substring(0, head.indexOf("'"));
 				}
 				String modifier = pairString.substring(pairString
 						.lastIndexOf("-") + 1);
 				if (modifier.endsWith("'")) {
-					modifier = modifier.substring(0, modifier.length() - 1);
+					modifier = modifier.substring(0, modifier.indexOf("'"));
 				}
 
 				int headId = Integer.parseInt(head);

@@ -1,6 +1,7 @@
 package info.chenli.litway.bionlp13.ge;
 
 import info.chenli.classifier.Instance;
+import info.chenli.classifier.InstanceDictionary;
 import info.chenli.litway.corpora.Event;
 import info.chenli.litway.corpora.Protein;
 import info.chenli.litway.corpora.Sentence;
@@ -32,7 +33,7 @@ public class ThemeInstances extends AbstractInstances {
 			.getName());
 
 	public ThemeInstances() {
-		super("themes", new int[] { Protein.type, Event.type });
+		super(new int[] { Protein.type, Event.type });
 
 	}
 
@@ -91,8 +92,8 @@ public class ThemeInstances extends AbstractInstances {
 						boolean isTheme = event.getThemes(i).equals(
 								protein.getId());
 
-						themeCandidates.add(themeToInstance(jcas, protein,
-								event.getTrigger(), pairsOfSentence,
+						themeCandidates.add(themeToInstance(jcas, sentence,
+								protein, event.getTrigger(), pairsOfSentence,
 								dependencyExtractor, isTheme));
 					}
 
@@ -104,7 +105,7 @@ public class ThemeInstances extends AbstractInstances {
 							boolean isTheme = event.getThemes(i).equals(
 									themeEvent.getId());
 
-							themeCandidates.add(themeToInstance(jcas,
+							themeCandidates.add(themeToInstance(jcas, sentence,
 									themeEvent.getTrigger(),
 									event.getTrigger(), pairsOfSentence,
 									dependencyExtractor, isTheme));
@@ -121,9 +122,34 @@ public class ThemeInstances extends AbstractInstances {
 
 	public static void main(String[] args) {
 
-		TokenInstances ti = new TokenInstances();
-		ti.getInstances(new File(args[0]));
-		System.out.println(ti.getInstances());
-	}
+		ThemeInstances ti = new ThemeInstances();
+		ti.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
 
+		List<Instance> instances = ti.getInstances(new File(args[0]));
+
+		InstanceDictionary dict = new InstanceDictionary();
+		dict.creatNumericDictionary(instances);
+		String classifierName = "liblinear";
+
+		ti.saveInstances(new File("./model/instances.theme.txt"));
+		ti.saveSvmLightInstances(new File(
+				"./model/instances.theme.svm.no_dum.txt"));
+
+		if (args.length == 2 && args[1].equals("dev")) {
+			dict.saveDictionary(new File("./model/themes.".concat(
+					classifierName).concat(".dict")));
+
+			ThemeInstances testInstances = new ThemeInstances();
+			testInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
+			List<Instance> tInstances = testInstances.getInstances(new File(
+					"./data/development/"));
+
+			tInstances = dict.instancesToNumeric(tInstances);
+
+			testInstances.saveInstances(new File("./model/instances.theme.dev.txt"));
+			testInstances.saveSvmLightInstances(new File(
+					"./model/instances.theme.svm.dev.no_dum.txt"));
+		}
+
+	}
 }

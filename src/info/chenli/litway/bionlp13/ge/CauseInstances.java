@@ -1,6 +1,7 @@
 package info.chenli.litway.bionlp13.ge;
 
 import info.chenli.classifier.Instance;
+import info.chenli.classifier.InstanceDictionary;
 import info.chenli.litway.corpora.Event;
 import info.chenli.litway.corpora.Protein;
 import info.chenli.litway.corpora.Sentence;
@@ -33,7 +34,7 @@ public class CauseInstances extends AbstractInstances {
 
 	public CauseInstances() {
 
-		super("causes", new int[] { Protein.type });
+		super(new int[] { Protein.type });
 
 	}
 
@@ -84,29 +85,53 @@ public class CauseInstances extends AbstractInstances {
 
 			for (Event event : events) {
 
-				// an event may not have an cause.
-				if (null == event.getCause() || event.getCause().equals("")) {
+				String themeId = event.getThemes(0);
 
-					continue;
+				// find the theme token
+				Token themeToken = null;
+				if (themeId.startsWith("T")) {
+					themeToken = getProteinToken(jcas, proteins, themeId);
+				} else if (themeId.startsWith("E")) {
+					for (int i = 0; i < events.size(); i++) {
+						Event anEvent = events.get(i);
+						if (anEvent.getId().equals(themeId)) {
+							themeToken = getTriggerToken(jcas,
+									event.getTrigger());
+							break;
+						}
+					}
+
 				}
 
-				// check protein themes
+				if (null == themeToken) {
+
+					// There are cross sentence themes, which are not considered
+					// at the moment.
+					// throw new
+					// RuntimeException("An event must have a theme.");
+				}
+
+				// check protein causes
 				for (Protein protein : proteins) {
 
-					boolean isCause = event.getCause().equals(protein.getId());
+					boolean isCause = event.getCause() == null ? false : event
+							.getCause().equals(protein.getId());
 
-					causeCandidates.add(causeToInstance(jcas, protein, event,
-							dependencyExtractor, isCause));
+					causeCandidates.add(causeToInstance(jcas, sentence,
+							protein, event.getTrigger(), pairsOfSentence,
+							dependencyExtractor, isCause, themeToken));
 				}
 
-				// check event themes
+				// check event causes
 				for (Event causeEvent : events) {
 
-					boolean isCause = event.getCause().equals(
-							causeEvent.getId());
-					causeCandidates.add(causeToInstance(jcas,
-							causeEvent.getTrigger(), event,
-							dependencyExtractor, isCause));
+					boolean isCause = event.getCause() == null ? false : event
+							.getCause().equals(causeEvent.getId());
+
+					causeCandidates.add(causeToInstance(jcas, sentence,
+							causeEvent.getTrigger(), event.getTrigger(),
+							pairsOfSentence, dependencyExtractor, isCause,
+							themeToken));
 				}
 			}
 
@@ -118,9 +143,34 @@ public class CauseInstances extends AbstractInstances {
 
 	public static void main(String[] args) {
 
-		TokenInstances ti = new TokenInstances();
-		ti.getInstances(new File(args[0]));
-		System.out.println(ti.getInstances());
+		CauseInstances ci = new CauseInstances();
+		ci.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
+
+		List<Instance> instances = ci.getInstances(new File(args[0]));
+
+		InstanceDictionary dict = new InstanceDictionary();
+		dict.creatNumericDictionary(instances);
+		String classifierName = "liblinear";
+
+		ci.saveInstances(new File("./model/instances.cause.txt"));
+		ci.saveSvmLightInstances(new File(
+				"./model/instances.cause.svm.no_dum.txt"));
+
+		if (args.length == 2 && args[1].equals("dev")) {
+			dict.saveDictionary(new File("./model/causes.".concat(
+					classifierName).concat(".dict")));
+
+			CauseInstances testInstances = new CauseInstances();
+			testInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
+			List<Instance> tInstances = testInstances.getInstances(new File(
+					"./data/development/"));
+
+			tInstances = dict.instancesToNumeric(tInstances);
+
+			testInstances.saveInstances(new File("./model/instances.cause.dev.txt"));
+			testInstances.saveSvmLightInstances(new File(
+					"./model/instances.cause.svm.dev.no_dum.txt"));
+		}
 	}
 
 }

@@ -73,43 +73,11 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 							|| tokenisedFileChar == System.getProperty(
 									"line.separator").charAt(0)) {
 
-						Token token = new Token(jcas, tokenBegin, offset);
-						ConnlxReader.Token connlxToken = tokenItor.next();
-						String pos = connlxToken.getPos();
-						token.setId(connlxToken.getId());
-						token.setPos(pos);
-						token.setLemma(BioLemmatizerUtil.lemmatizeWord(
-								token.getCoveredText(), pos));
-						Stemmer stemmer1 = new Stemmer();
-						stemmer1.add(token.getCoveredText().toCharArray(),
-								token.getCoveredText().length());
-						stemmer1.stem();
-						token.setStem(stemmer1.toString());
-						String subWord = "", subLemma = "", subStem = "";
-						if (token.getCoveredText().indexOf("-") > -1) {
-							subWord = token.getCoveredText()
-									.substring(
-											token.getCoveredText().lastIndexOf(
-													"-") + 1);
-							subLemma = BioLemmatizerUtil.lemmatizeWord(subWord,
-									pos);
-							Stemmer stemmer2 = new Stemmer();
-							stemmer2.add(subWord.toCharArray(),
-									subWord.length());
-							stemmer2.stem();
-							subStem = stemmer2.toString();
-						}
-						token.setSubLemma(subLemma);
-						token.setSubStem(subStem);
-						token.setLeftToken(leftToken);
-						if (null != leftToken) {
-							leftToken.setRightToken(token);
-						}
-						leftToken = token;
-						token.addToIndexes();
+						Token token = fetchToken(jcas, tokenBegin, offset,
+								tokenItor, leftToken);
 
 						// put tokens in same sentence into a map.
-						tokensOfSentence.put(connlxToken.getId(), token);
+						tokensOfSentence.put(token.getId(), token);
 
 						tokenBegin = offset;
 						if (originalTextChar == ' '
@@ -131,10 +99,8 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 					if (sentencisedFileChar == System.getProperty(
 							"line.separator").charAt(0)) {
 
-						Sentence sentence = new Sentence(jcas, sentenceBegin,
-								offset);
-						sentence.setId(sentenceId++);
-						sentence.addToIndexes();
+						fetchSentence(jcas, sentenceBegin, offset, sentenceId);
+						sentenceId++;
 
 						tokensOfSentence = new TreeMap<Integer, Token>();
 
@@ -153,11 +119,10 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 				offset++;
 			}
 
-			// the last sentence is missed due to reaching the end of the file.
-			Sentence sentence = new Sentence(jcas, sentenceBegin,
-					offset);
-			sentence.setId(sentenceId++);
-			sentence.addToIndexes();
+			if (tokenItor.hasNext()) {
+				fetchToken(jcas, tokenBegin, offset, tokenItor, leftToken);
+			}
+			fetchSentence(jcas, sentenceBegin, offset, sentenceId);
 
 			sentencisedFileStream.close();
 			tokenisedFileStream.close();
@@ -168,6 +133,54 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 
 			throw new RuntimeException(e);
 		}
+	}
+
+	private Token fetchToken(JCas jcas, int tokenBegin, int offset,
+			Iterator<ConnlxReader.Token> tokenItor, Token leftToken) {
+		// the last token is missed due to reaching the end of the file.
+		Token token = new Token(jcas, tokenBegin, offset);
+		ConnlxReader.Token connlxToken = tokenItor.next();
+		String pos = connlxToken.getPos();
+		token.setId(connlxToken.getId());
+		token.setPos(pos);
+
+		token.setLemma(BioLemmatizerUtil.lemmatizeWord(token.getCoveredText(),
+				pos));
+		Stemmer stemmer1 = new Stemmer();
+		stemmer1.add(token.getCoveredText().toCharArray(), token
+				.getCoveredText().length());
+		stemmer1.stem();
+		token.setStem(stemmer1.toString());
+		String subWord = null, subLemma = null, subStem = null;
+		if (token.getCoveredText().indexOf("-") > -1) {
+			subWord = token.getCoveredText().substring(
+					token.getCoveredText().lastIndexOf("-") + 1);
+			subLemma = BioLemmatizerUtil.lemmatizeWord(subWord, pos);
+			Stemmer stemmer2 = new Stemmer();
+			stemmer2.add(subWord.toCharArray(), subWord.length());
+			stemmer2.stem();
+			subStem = stemmer2.toString();
+		}
+		token.setSubLemma(subLemma);
+		token.setSubStem(subStem);
+		token.setLeftToken(leftToken);
+		if (null != leftToken) {
+			leftToken.setRightToken(token);
+		}
+		leftToken = token;
+		token.addToIndexes();
+
+		return token;
+
+	}
+
+	private void fetchSentence(JCas jcas, int sentenceBegin, int offset,
+			int sentenceId) {
+		// the last sentence is missed due to reaching the end of the file.
+		Sentence sentence = new Sentence(jcas, sentenceBegin, offset);
+		sentence.setId(sentenceId);
+		sentence.addToIndexes();
+
 	}
 
 }

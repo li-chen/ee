@@ -29,6 +29,11 @@ public abstract class AbstractClassifier {
 
 	public abstract void train(List<Instance> trainingInstances);
 
+	public int predict(Instance instance) {
+
+		return predict(instance.getFeaturesNumeric());
+	}
+
 	/**
 	 * Classify the instance and assign a label the instance.
 	 * 
@@ -220,7 +225,7 @@ public abstract class AbstractClassifier {
 			instances.add(instance);
 		}
 
-//		Collections.shuffle(instances);
+		// Collections.shuffle(instances);
 		InstanceDictionary dict = new InstanceDictionary();
 		dict.creatNumericDictionary(instances);
 		dict.saveDictionary(new File("./model/test.dict"));
@@ -233,8 +238,8 @@ public abstract class AbstractClassifier {
 		}
 
 		classifier.train(instances, 15);
-//		System.out.println(classifier.accuracy(instances));
-//		System.out.println(classifier.modelToString());
+		// System.out.println(classifier.accuracy(instances));
+		// System.out.println(classifier.modelToString());
 
 		// restaurants sample training data.
 

@@ -5,15 +5,12 @@ import info.chenli.litway.StopWords;
 import info.chenli.litway.bionlp13.ge.POSPrioritizer;
 import info.chenli.litway.corpora.Event;
 import info.chenli.litway.corpora.POS;
-import info.chenli.litway.corpora.Prefix;
-import info.chenli.litway.corpora.Suffix;
 import info.chenli.litway.corpora.Token;
 import info.chenli.litway.corpora.Trigger;
 import info.chenli.litway.searn.StructuredInstance;
 import info.chenli.litway.util.DependencyExtractor;
 import info.chenli.litway.util.FileFilterImpl;
 import info.chenli.litway.util.FileUtil;
-import info.chenli.litway.util.UimaUtil;
 
 import java.io.File;
 import java.io.IOException;

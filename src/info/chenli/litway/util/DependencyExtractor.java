@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
-import org.jgrapht.alg.CycleDetector;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -19,7 +19,9 @@ import org.jgrapht.graph.DefaultEdge;
  **/
 public class DependencyExtractor {
 
-	private CycleDetector<String, DefaultEdge> cycleDetector;
+	private final static Logger logger = Logger
+			.getLogger(DependencyExtractor.class.getName());
+
 	private DefaultDirectedGraph<Integer, DefaultEdge> network = new DefaultDirectedGraph<Integer, DefaultEdge>(
 			DefaultEdge.class);
 	private DefaultDirectedGraph<Integer, DefaultEdge> reversedNetwork = new DefaultDirectedGraph<Integer, DefaultEdge>(
@@ -45,16 +47,26 @@ public class DependencyExtractor {
 			if (!tokenMap.containsKey(token.getId())) {
 				tokenMap.put(token.getId(), token);
 			} else {
-				throw new RuntimeException("Duplicated token error.");
+				logger.warning("Duplicated token error.");
 			}
 		}
 
 		// Add dependencies as edges.
 		for (Token token : tokens) {
 			for (Pair pair : pairsOfSentence) {
+				if (pair.getRelation().equalsIgnoreCase("punct")
+						|| pair.getRelation().equalsIgnoreCase("root")) {
+					continue;
+				}
 				if (token.getId() == pair.getHead()) {
-					network.addEdge(token.getId(), pair.getModifier());
-					reversedNetwork.addEdge(pair.getModifier(), token.getId());
+					try {
+						network.addEdge(token.getId(), pair.getModifier());
+						reversedNetwork.addEdge(pair.getModifier(),
+								token.getId());
+
+					} catch (IllegalArgumentException e) {
+						logger.severe("The token couldn't be found.");
+					}
 				}
 			}
 		}
@@ -93,7 +105,8 @@ public class DependencyExtractor {
 
 		if (!tokenMap.get(startToken.getId()).equals(startToken)
 				|| !tokenMap.get(endToken.getId()).equals(endToken)) {
-			throw new RuntimeException("Tokens are not from the same sentence.");
+			return null;
+//			throw new RuntimeException("Tokens are not from the same sentence.");
 		}
 
 		String dependencyPath = null;
@@ -117,9 +130,13 @@ public class DependencyExtractor {
 								relation = "subjpass";
 							}
 						}
-						dependencyPath = dependencyPath.concat("_")
-								.concat(reversedNetwork ? "-" : "")
-								.concat(relation).concat("_");
+						if (null == dependencyPath) {
+							dependencyPath = relation;
+						} else {
+							dependencyPath = dependencyPath.concat("_")
+									.concat(reversedNetwork ? "-" : "")
+									.concat(relation);
+						}
 					}
 				}
 			}

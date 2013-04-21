@@ -3,19 +3,22 @@ package info.chenli.litway.bionlp13.ge;
 import info.chenli.classifier.Instance;
 import info.chenli.classifier.InstanceDictionary;
 import info.chenli.litway.corpora.Event;
+import info.chenli.litway.corpora.POS;
 import info.chenli.litway.corpora.Protein;
 import info.chenli.litway.corpora.Sentence;
 import info.chenli.litway.corpora.Token;
 import info.chenli.litway.corpora.Trigger;
+import info.chenli.litway.util.Combinations;
 import info.chenli.litway.util.DependencyExtractor;
 import info.chenli.litway.util.FileFilterImpl;
 import info.chenli.litway.util.FileUtil;
 import info.chenli.litway.util.StanfordDependencyReader;
-import info.chenli.litway.util.UimaUtil;
 import info.chenli.litway.util.StanfordDependencyReader.Pair;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -34,6 +37,8 @@ public class EventExtractor extends TokenInstances {
 
 	private final static Logger logger = Logger.getLogger(EventExtractor.class
 			.getName());
+
+	private String classifierName = "liblinear";
 
 	public void train(File dir) {
 
@@ -85,7 +90,7 @@ public class EventExtractor extends TokenInstances {
 		Map<Integer, List<Trigger>> triggers = new TreeMap<Integer, List<Trigger>>();
 		Map<Integer, List<Event>> events = new TreeMap<Integer, List<Event>>();
 		// Initialize the file
-		JCas jcas = this.processSingleFile(file, new int[] { Token.type });
+		JCas jcas = this.processSingleFile(file);
 		int proteinNum = jcas.getAnnotationIndex(Protein.type).size();
 		Map<Integer, Set<Pair>> pairsOfArticle = StanfordDependencyReader
 				.getPairs(new File(FileUtil.removeFileNameExtension(
@@ -96,22 +101,27 @@ public class EventExtractor extends TokenInstances {
 
 		// trigger
 		TriggerRecogniser triggerRecogniser = new TriggerRecogniser();
-		triggerRecogniser.loadModel(new File(
-				"./model/triggers.perceptron.model"));
+		triggerRecogniser.loadModel(new File("./model/triggers.".concat(
+				classifierName).concat(".model")));
 		InstanceDictionary triggerDict = new InstanceDictionary();
-		triggerDict.loadDictionary(new File("./model/triggers.dict"));
+		triggerDict.loadDictionary(new File("./model/triggers.".concat(
+				classifierName).concat(".dict")));
 
 		// theme
 		ThemeRecogniser themeRecogniser = new ThemeRecogniser();
-		themeRecogniser.loadModel(new File("./model/themes.perceptron.model"));
+		themeRecogniser.loadModel(new File("./model/themes.".concat(
+				classifierName).concat(".model")));
 		InstanceDictionary themeDict = new InstanceDictionary();
-		themeDict.loadDictionary(new File("./model/themes.dict"));
+		themeDict.loadDictionary(new File("./model/themes.".concat(
+				classifierName).concat(".dict")));
 
 		// cause
 		CauseRecogniser causeRecogniser = new CauseRecogniser();
-		causeRecogniser.loadModel(new File("./model/causes.perceptron.model"));
+		causeRecogniser.loadModel(new File("./model/causes.".concat(
+				classifierName).concat(".model")));
 		InstanceDictionary causeDict = new InstanceDictionary();
-		causeDict.loadDictionary(new File("./model/causes.dict"));
+		causeDict.loadDictionary(new File("./model/causes.".concat(
+				classifierName).concat(".dict")));
 
 		// Initialize the iterator and counter
 		FSIterator<Annotation> sentenceIter = jcas.getAnnotationIndex(
@@ -142,17 +152,29 @@ public class EventExtractor extends TokenInstances {
 				triggers.put(sentence.getId(), new ArrayList<Trigger>());
 			}
 
-			for (Token token : tokens) {
+			triggerDetectionLoop: for (Token token : tokens) {
 
-				Instance tokenInstance = tokenToInstance(token, null, tokens, pairsOfSentence);
+				if (!POS.isPos(token.getPos())) {
+					continue triggerDetectionLoop;
+				}
+				for (Protein protein : sentenceProteins) {
+					if ((token.getBegin() >= protein.getBegin() && token
+							.getBegin() <= protein.getEnd())
+							|| (token.getEnd() >= protein.getBegin() && token
+									.getEnd() <= protein.getEnd())) {
+						continue triggerDetectionLoop;
+					}
+				}
+				Instance tokenInstance = tokenToInstance(jcas, token, null,
+						tokens, sentenceProteins, pairsOfSentence,
+						dependencyExtractor);
 				// set the token filter here
 				// if (!TriggerRecogniser.isConsidered(tokenInstance
 				// .getFeaturesString().get(2))) {
 				// continue;
 				// }
-				int prediction = triggerRecogniser.predict(
-						triggerDict.instanceToNumeric(tokenInstance),
-						triggerDict);
+				int prediction = triggerRecogniser.predict(triggerDict
+						.instanceToNumeric(tokenInstance));
 
 				if (prediction != triggerDict.getLabelNumeric(String
 						.valueOf(EventType.Non_trigger))) {
@@ -182,7 +204,8 @@ public class EventExtractor extends TokenInstances {
 					for (Protein protein : sentenceProteins) {
 
 						Instance proteinInstance = themeToInstance(jcas,
-								protein, trigger, pairsOfSentence, dependencyExtractor, false);
+								sentence, protein, trigger, pairsOfSentence,
+								dependencyExtractor, false);
 						double prediction = themeRecogniser.predict(themeDict
 								.instanceToNumeric(proteinInstance)
 								.getFeaturesNumeric());
@@ -209,7 +232,8 @@ public class EventExtractor extends TokenInstances {
 					for (Protein protein : sentenceProteins) {
 
 						Instance proteinInstance = themeToInstance(jcas,
-								protein, trigger, pairsOfSentence, dependencyExtractor, false);
+								sentence, protein, trigger, pairsOfSentence,
+								dependencyExtractor, false);
 						double prediction = themeRecogniser.predict(themeDict
 								.instanceToNumeric(proteinInstance)
 								.getFeaturesNumeric());
@@ -219,12 +243,12 @@ public class EventExtractor extends TokenInstances {
 						}
 
 					}
-					if (themes.size() > 0) {
-						// Binding with several themes could be several events
-						// or only one. E.g. binding, A, B could be
-						// "BINDING Theme:A Theme:B" or "BINDING: Theme:A" and
-						// "BINDING: Theme:B"
-						// TODO
+					if (themes.size() > 1) {
+						Combinations combs = new Combinations(themes);
+
+						// Instance bindingInstance =
+						// bindingEventToInstance(jcas, sentence, bindingEvent,
+						// themes, dependencyExtractor);
 					}
 
 					if (themes.size() > 0) {
@@ -251,7 +275,8 @@ public class EventExtractor extends TokenInstances {
 
 						Instance proteinInstance = themeDict
 								.instanceToNumeric(themeToInstance(jcas,
-										protein, trigger, pairsOfSentence, dependencyExtractor,
+										sentence, protein, trigger,
+										pairsOfSentence, dependencyExtractor,
 										false));
 
 						double prediction = themeRecogniser
@@ -285,8 +310,8 @@ public class EventExtractor extends TokenInstances {
 						}
 
 						Instance triggerTokenInstance = themeToInstance(jcas,
-								getTriggerToken(jcas, themeEvent.getTrigger()),
-								trigger, pairsOfSentence, dependencyExtractor, false);
+								sentence, themeEvent.getTrigger(), trigger,
+								pairsOfSentence, dependencyExtractor, false);
 
 						double prediction = themeRecogniser.predict(themeDict
 								.instanceToNumeric(triggerTokenInstance)
@@ -321,8 +346,16 @@ public class EventExtractor extends TokenInstances {
 				// protein
 				for (Protein protein : sentenceProteins) {
 
-					Instance proteinInstance = causeToInstance(jcas, protein,
-							event, dependencyExtractor, false);
+					Instance proteinInstance = causeToInstance(
+							jcas,
+							sentence,
+							protein,
+							event.getTrigger(),
+							pairsOfSentence,
+							dependencyExtractor,
+							false,
+							getProteinToken(jcas, sentenceProteins,
+									event.getThemes(0)));
 					double prediction = causeRecogniser.predict(causeDict
 							.instanceToNumeric(proteinInstance)
 							.getFeaturesNumeric());
@@ -346,9 +379,10 @@ public class EventExtractor extends TokenInstances {
 						continue;
 					}
 
-					Instance triggerTokenInstance = tokenToInstance(
-							getTriggerToken(jcas, causeEvent.getTrigger()),
-							null, tokens, pairsOfSentence);
+					Instance triggerTokenInstance = causeToInstance(jcas,
+							sentence, event.getTrigger(), event.getTrigger(),
+							pairsOfSentence, dependencyExtractor, false,
+							getTriggerToken(jcas, causeEvent.getTrigger()));
 					double prediction = causeRecogniser.predict(causeDict
 							.instanceToNumeric(triggerTokenInstance)
 							.getFeaturesNumeric());
@@ -409,5 +443,22 @@ public class EventExtractor extends TokenInstances {
 		File inputFile = new File(args[0]);
 		ee.extract(inputFile);
 
+		// if (args.length == 2 && args[1].equals("cross")) {
+		// File[] files = inputFile.listFiles(new FileFilter() {
+		//
+		// @Override
+		// public boolean accept(File pathname) {
+		// if (pathname.getName().startsWith("PMC-")
+		// && pathname.getName().endsWith(".txt")) {
+		// return true;
+		// }
+		// return false;
+		// }
+		// });
+		// List<File> fileList = Arrays.asList(files);
+		//
+		// int fold = 10;
+		// for () {}
+		// }
 	}
 }

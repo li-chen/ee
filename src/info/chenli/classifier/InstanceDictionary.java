@@ -1,6 +1,5 @@
 package info.chenli.classifier;
 
-import info.chenli.litway.bionlp13.ge.TokenInstances;
 import info.chenli.litway.util.FileUtil;
 
 import java.io.BufferedReader;
@@ -22,10 +21,6 @@ public class InstanceDictionary {
 
 	private List<String> labelDict = new ArrayList<String>();
 	private List<Map<String, Integer>> featureStringNumericDict = new ArrayList<Map<String, Integer>>();
-
-	public List<String> getLabelDict() {
-		return labelDict;
-	}
 
 	public List<Map<String, Integer>> getFeaturesDict() {
 		return featureStringNumericDict;
@@ -51,16 +46,18 @@ public class InstanceDictionary {
 		//
 		// features
 		//
-		int i = 0, index = 0;
+		int i = 0, index = 1;
 		for (Map<String, Integer> aFeatureMap : featureStringNumericDict) {
 
 			for (Instance instance : instances) {
 				String[] featureStringValues = instance.getFeaturesString()
 						.get(i);
 				for (String featureStringValue : featureStringValues) {
-					if (!aFeatureMap.containsKey(featureStringValue)
-							&& !featureStringValue
-									.equals(TokenInstances.aStopWord)) {
+					if (null != featureStringValue
+							&& !aFeatureMap.containsKey(featureStringValue)
+//							&& !featureStringValue
+//									.equals(TokenInstances.aStopWord)
+									) {
 						aFeatureMap.put(featureStringValue, index++);
 					}
 				}
@@ -174,22 +171,19 @@ public class InstanceDictionary {
 			Map<String, Integer> aFeatureDict = featuresDictIter.next();
 			String[] featureStrings = featureStrIter.next();
 
-			// String previousValue = "";
+			List<String> previousValues = new ArrayList<String>();
 			for (String featureStr : featureStrings) {
 
-				// removed duplication
-				// if (featureStr.equals(previousValue)) {
-				// continue;
-				// }
-				// previousValue = featureStr;
-				if (aFeatureDict.containsKey(featureStr)) {
+				if (null != featureStr && aFeatureDict.containsKey(featureStr)) {
+					// removed duplication
+					if (previousValues.contains(featureStr)) {
+						continue;
+					}
 					featuresNumericList.add(aFeatureDict.get(featureStr));
-					// System.out.print(aFeatureDict.get(featureStr) + ":"
-					// + featureStr + "\t");
+
+					previousValues.add(featureStr);
 				}
-
 			}
-
 		}
 		// System.out.println();
 

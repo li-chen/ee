@@ -34,10 +34,10 @@ public class LibLinearFacade extends AbstractClassifier {
 		int featureNum = 0;
 
 		for (Instance instance : instances) {
-			int lastFeatureIndex = instance.getFeaturesNumeric()[instance
-					.getFeaturesNumeric().length - 1];
-			if (lastFeatureIndex + 1 > featureNum) {
-				featureNum = lastFeatureIndex + 1;
+			for (int index : instance.getFeaturesNumeric()) {
+				if (index > featureNum) {
+					featureNum = index;
+				}
 			}
 		}
 		problem.n = featureNum; // number of features
@@ -51,11 +51,11 @@ public class LibLinearFacade extends AbstractClassifier {
 			int previousIndex = 0;
 			List<Feature> featureNodes = new ArrayList<Feature>();
 			for (int index : instance.getFeaturesNumeric()) {
-				if (index + 1 > previousIndex) {
-					featureNodes.add(new FeatureNode(index + 1, 1));
-					// System.out.print("\t" + (index + 1));
+				if (index > previousIndex) {
+					featureNodes.add(new FeatureNode(index, 1));
+					// System.out.print("\t" + (index ));
 				}
-				previousIndex = index + 1;
+				previousIndex = index;
 			}
 			problem.x[i] = new FeatureNode[featureNodes.size()];
 			problem.x[i] = featureNodes.toArray(problem.x[i]);
@@ -84,17 +84,34 @@ public class LibLinearFacade extends AbstractClassifier {
 	@Override
 	public int predict(int[] featureSparseVector) {
 
+		if (featureSparseVector == null) {
+			throw new IllegalArgumentException(
+					"Empty sparse vector. This probably due to that the dictionary hasn't converted instances to numeric features yet.");
+		}
+
+		int n;
+		int nr_feature = this.model.getNrFeature();
+		if (this.model.getBias() >= 0) {
+			n = nr_feature + 1;
+		} else {
+			n = nr_feature;
+		}
+
 		List<Feature> featureNodes = new ArrayList<Feature>();
 		int previousIndex = 0;
 		for (int index : featureSparseVector) {
-			if (index + 1 > previousIndex) {
-				featureNodes.add(new FeatureNode(index + 1, 1));
+			if (index > previousIndex) {
+				featureNodes.add(new FeatureNode(index, 1));
 			}
-			previousIndex = index + 1;
+			previousIndex = index;
+		}
+		if (model.getBias() >= 0) {
+			Feature node = new FeatureNode(n, model.getBias());
+			featureNodes.add(node);
 		}
 		Feature[] instance = new FeatureNode[featureNodes.size()];
 		instance = featureNodes.toArray(instance);
-		return (int) Linear.predict(this.model, instance);
+		return (int) Math.round(Linear.predict(this.model, instance));
 
 	}
 

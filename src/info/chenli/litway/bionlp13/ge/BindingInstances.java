@@ -1,17 +1,20 @@
 package info.chenli.litway.bionlp13.ge;
 
 import info.chenli.classifier.Instance;
+import info.chenli.classifier.InstanceDictionary;
 import info.chenli.litway.corpora.Event;
+import info.chenli.litway.corpora.POS;
 import info.chenli.litway.corpora.Protein;
 import info.chenli.litway.corpora.Sentence;
 import info.chenli.litway.corpora.Token;
+import info.chenli.litway.corpora.Trigger;
 import info.chenli.litway.searn.StructuredInstance;
+import info.chenli.litway.util.Combinations;
 import info.chenli.litway.util.DependencyExtractor;
 import info.chenli.litway.util.FileUtil;
-import info.chenli.litway.util.Permutations;
 import info.chenli.litway.util.StanfordDependencyReader;
-import info.chenli.litway.util.UimaUtil;
 import info.chenli.litway.util.StanfordDependencyReader.Pair;
+import info.chenli.litway.util.UimaUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,7 +33,7 @@ public class BindingInstances extends AbstractInstances {
 
 	public BindingInstances() {
 
-		super("Binding", new int[] { Event.type });
+		super(new int[] { Event.type });
 		// TODO Auto-generated constructor stub
 	}
 
@@ -78,8 +81,12 @@ public class BindingInstances extends AbstractInstances {
 				if (event.getTrigger().getEventType()
 						.equals(String.valueOf(EventType.Binding))) {
 
-					bindingEventCandidates.addAll(bindingEventToInstance(jcas,
-							event, proteins, dependencyExtractor));
+					Combinations<Protein> combs = new Combinations<Protein>(
+							proteins);
+					for (List<Protein> themes : combs.getCombinations()) {
+						bindingEventCandidates.add(bindingEventToInstance(jcas,
+								sentence, event, themes, dependencyExtractor));
+					}
 				}
 			}
 
@@ -89,26 +96,35 @@ public class BindingInstances extends AbstractInstances {
 		return results;
 	}
 
-	private List<Instance> bindingEventToInstance(JCas jcas,
-			Event bindingEvent, List<Protein> sentenceProteins,
-			DependencyExtractor dependencyExtractor) {
+	public static void main(String[] args) {
 
-		List<Instance> result = new ArrayList<Instance>();
+		BindingInstances ti = new BindingInstances();
+		ti.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
 
-		List<String> themes = new ArrayList<String>();
-		for (int i = 0; i < bindingEvent.getThemes().size(); i++) {
-			themes.add(bindingEvent.getThemes(i));
+		List<Instance> instances = ti.getInstances(new File(args[0]));
+
+		InstanceDictionary dict = new InstanceDictionary();
+		dict.creatNumericDictionary(instances);
+		String classifierName = "liblinear";
+
+		ti.saveInstances(new File("./model/instances.binding.txt"));
+		ti.saveSvmLightInstances(new File(
+				"./model/instances.binding.svm.no_dum.txt"));
+
+		if (args.length == 2 && args[1].equals("dev")) {
+			dict.saveDictionary(new File("./model/binding.".concat(
+					classifierName).concat(".dict")));
+
+			BindingInstances testInstances = new BindingInstances();
+			testInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
+			instances = testInstances.getInstances(new File(
+					"./data/development/"));
+
+			instances = dict.instancesToNumeric(instances);
+
+			ti.saveInstances(new File("./model/instances.binding.dev.txt"));
+			testInstances.saveSvmLightInstances(new File(
+					"./model/instances.binding.svm.dev.no_dum.txt"));
 		}
-
-		Permutations<String> themePerm = new Permutations<String>(themes);
-		while (themePerm.hasNext()) {
-			Instance instance = new Instance();
-			List<String[]> featureString = new ArrayList<String[]>();
-			instance.setFeaturesString(featureString);
-
-			// featureString.add(e)
-		}
-
-		return null;
 	}
 }

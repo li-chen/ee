@@ -1,16 +1,15 @@
 package info.chenli.classifier;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class Instance {
 
 	// instance ID
 	private String id;
-	private int label = -1;
+	private int label;
 	private String labelString;
 	private List<String[]> featuresString;
-	private int[] featuresNumeric;
+	private int[] featuresNumeric = null;
 
 	public String getId() {
 		return this.id;
@@ -57,20 +56,14 @@ public class Instance {
 
 		StringBuffer sb = new StringBuffer();
 		if (null != getLabelString()) {
-			sb.append(String.valueOf(getLabel()).concat(":")
-					.concat(getLabelString()));
+			sb.append(String.valueOf(getLabel()));
 		}
 
-		Iterator<String[]> featureStrIter = getFeaturesString().iterator();
-//		int i = 0;
-		while (featureStrIter.hasNext()) {
-			String[] feature = featureStrIter.next();
-			for (String value : feature) {
-				sb.append("\t"
-//						.concat(String.valueOf(getFeaturesNumeric()[i])
-//						.concat(":")
-						.concat(value));
-			}
+		for (int value : getFeaturesNumeric()) {
+			sb.append(" "
+			// .concat(String.valueOf(getFeaturesNumeric()[i])
+			// .concat(":")
+					.concat(String.valueOf(value)).concat(":1"));
 		}
 
 		return sb.toString();
