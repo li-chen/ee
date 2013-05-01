@@ -59,10 +59,11 @@ public class CauseInstances extends AbstractInstances {
 		AnnotationIndex<Annotation> sentenceIndex = jcas
 				.getAnnotationIndex(Sentence.type);
 
+		String fileName = FileUtil.removeFileNameExtension(UimaUtil
+				.getJCasFilePath(jcas));
 		FSIterator<Annotation> sentenceIter = sentenceIndex.iterator();
 		Map<Integer, Set<Pair>> pairsOfArticle = StanfordDependencyReader
-				.getPairs(new File(FileUtil.removeFileNameExtension(
-						UimaUtil.getJCasFilePath(jcas)).concat(".sdepcc")));
+				.getPairs(new File(fileName.concat(".sdepcc")));
 
 		// Currently, one sentence is considered as one structured instance.
 		while (sentenceIter.hasNext()) {
@@ -85,30 +86,15 @@ public class CauseInstances extends AbstractInstances {
 
 			for (Event event : events) {
 
-				String themeId = event.getThemes(0);
-
 				// find the theme token
-				Token themeToken = null;
-				if (themeId.startsWith("T")) {
-					themeToken = getProteinToken(jcas, proteins, themeId);
-				} else if (themeId.startsWith("E")) {
-					for (int i = 0; i < events.size(); i++) {
-						Event anEvent = events.get(i);
-						if (anEvent.getId().equals(themeId)) {
-							themeToken = getTriggerToken(jcas,
-									event.getTrigger());
-							break;
-						}
-					}
-
-				}
+				Token themeToken = getThemeToken(jcas, event, sentence);
 
 				if (null == themeToken) {
 
 					// There are cross sentence themes, which are not considered
 					// at the moment.
-					// throw new
-					// RuntimeException("An event must have a theme.");
+					logger.warning(fileName.concat(": An event must have a theme. It may be caused by cross-sentence event."));
+					continue;
 				}
 
 				// check protein causes
@@ -151,14 +137,13 @@ public class CauseInstances extends AbstractInstances {
 		InstanceDictionary dict = new InstanceDictionary();
 		dict.creatNumericDictionary(instances);
 		String classifierName = "liblinear";
+		dict.saveDictionary(new File("./model/causes.".concat(classifierName)
+				.concat(".dict")));
 
 		ci.saveInstances(new File("./model/instances.cause.txt"));
-		ci.saveSvmLightInstances(new File(
-				"./model/instances.cause.svm.no_dum.txt"));
+		ci.saveSvmLightInstances(new File("./model/instances.cause.svm.txt"));
 
 		if (args.length == 2 && args[1].equals("dev")) {
-			dict.saveDictionary(new File("./model/causes.".concat(
-					classifierName).concat(".dict")));
 
 			CauseInstances testInstances = new CauseInstances();
 			testInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
@@ -167,9 +152,10 @@ public class CauseInstances extends AbstractInstances {
 
 			tInstances = dict.instancesToNumeric(tInstances);
 
-			testInstances.saveInstances(new File("./model/instances.cause.dev.txt"));
+			testInstances.saveInstances(new File(
+					"./model/instances.cause.dev.txt"));
 			testInstances.saveSvmLightInstances(new File(
-					"./model/instances.cause.svm.dev.no_dum.txt"));
+					"./model/instances.cause.svm.dev.txt"));
 		}
 	}
 

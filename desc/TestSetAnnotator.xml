@@ -3,11 +3,11 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="EntityAnnotator">
-      <import name="desc.EntityAnnotator"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="BioNLPSyntacticAnnotator">
       <import name="desc.BioNLPSyntacticAnnotator"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EntityAnnotator">
+      <import name="desc.EntityAnnotator"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -19,8 +19,8 @@
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
-        <node>BioNLPSyntacticAnnotator</node>
         <node>EntityAnnotator</node>
+        <node>BioNLPSyntacticAnnotator</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

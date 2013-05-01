@@ -13,7 +13,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Apr 11 16:40:07 BST 2013
+ * Updated by JCasGen Thu Apr 25 13:17:47 BST 2013
  * @generated */
 public class Sentence_Type extends Annotation_Type {
 	/** @generated */
@@ -63,6 +63,24 @@ public class Sentence_Type extends Annotation_Type {
     ll_cas.ll_setIntValue(addr, casFeatCode_id, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_dependencies;
+  /** @generated */
+  final int     casFeatCode_dependencies;
+  /** @generated */ 
+  public int getDependencies(int addr) {
+        if (featOkTst && casFeat_dependencies == null)
+      jcas.throwFeatMissing("dependencies", "info.chenli.litway.corpora.Sentence");
+    return ll_cas.ll_getRefValue(addr, casFeatCode_dependencies);
+  }
+  /** @generated */    
+  public void setDependencies(int addr, int v) {
+        if (featOkTst && casFeat_dependencies == null)
+      jcas.throwFeatMissing("dependencies", "info.chenli.litway.corpora.Sentence");
+    ll_cas.ll_setRefValue(addr, casFeatCode_dependencies, v);}
+    
+  
 
 
 
@@ -78,6 +96,10 @@ public class Sentence_Type extends Annotation_Type {
  
     casFeat_id = jcas.getRequiredFeatureDE(casType, "id", "uima.cas.Integer", featOkTst);
     casFeatCode_id  = (null == casFeat_id) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_id).getCode();
+
+ 
+    casFeat_dependencies = jcas.getRequiredFeatureDE(casType, "dependencies", "info.chenli.litway.corpora.Dependency", featOkTst);
+    casFeatCode_dependencies  = (null == casFeat_dependencies) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_dependencies).getCode();
 
   }
 }

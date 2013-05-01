@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Apr 11 16:40:07 BST 2013
+ * Updated by JCasGen Thu Apr 25 13:17:47 BST 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Token extends Annotation {
@@ -186,7 +186,7 @@ public class Token extends Annotation {
     if (Token_Type.featOkTst && ((Token_Type)jcasType).casFeat_rightToken == null)
       jcasType.jcas.throwFeatMissing("rightToken", "info.chenli.litway.corpora.Token");
     jcasType.ll_cas.ll_setRefValue(addr, ((Token_Type)jcasType).casFeatCode_rightToken, jcasType.ll_cas.ll_getFSRef(v));}    
-                                                        //*--------------*
+                                                          //*--------------*
   //* Feature: id
 
   /** getter for id - gets 

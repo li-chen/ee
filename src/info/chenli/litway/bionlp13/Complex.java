@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Apr 11 16:40:07 BST 2013
+ * Updated by JCasGen Thu Apr 25 13:17:47 BST 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Complex extends Annotation {

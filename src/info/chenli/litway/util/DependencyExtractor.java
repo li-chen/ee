@@ -1,5 +1,6 @@
 package info.chenli.litway.util;
 
+import info.chenli.litway.bionlp13.ge.Stage;
 import info.chenli.litway.corpora.Token;
 import info.chenli.litway.util.StanfordDependencyReader.Pair;
 
@@ -73,40 +74,46 @@ public class DependencyExtractor {
 
 	}
 
-	public String getSimplifiedShortestPath(Token startToken, Token endToken) {
+	public String getSimplifiedShortestPath(Token startToken, Token endToken,
+			Stage stage) {
 		return getDijkstraShortestPath(startToken, endToken, network, false,
-				true);
+				true, stage);
 	}
 
 	public String getSimplifiedReversedShortestPath(Token startToken,
-			Token endToken) {
+			Token endToken, Stage stage) {
 		return getDijkstraShortestPath(startToken, endToken, reversedNetwork,
-				true, true);
+				true, true, stage);
 	}
 
-	public String getShortestPath(Token startToken, Token endToken) {
+	public String getShortestPath(Token startToken, Token endToken, Stage stage) {
 		return getDijkstraShortestPath(startToken, endToken, network, false,
-				false);
+				false, stage);
 	}
 
-	public String getReversedShortestPath(Token startToken, Token endToken) {
+	public String getReversedShortestPath(Token startToken, Token endToken,
+			Stage stage) {
 		return getDijkstraShortestPath(startToken, endToken, reversedNetwork,
-				true, false);
+				true, false, stage);
 	}
 
-	public String getShortestPathText(Token startToken, Token endToken) {
+	public String getShortestPathText(Token startToken, Token endToken,
+			Stage stage) {
 		return getDijkstraShortestPath(startToken, endToken, reversedNetwork,
-				true, false);
+				true, false, stage);
 	}
 
 	private String getDijkstraShortestPath(Token startToken, Token endToken,
 			DefaultDirectedGraph<Integer, DefaultEdge> theNetwork,
-			boolean reversedNetwork, boolean simplified) {
+			boolean reversedNetwork, boolean simplified, Stage stage) {
 
-		if (!tokenMap.get(startToken.getId()).equals(startToken)
+		if (null == tokenMap || null == startToken
+				|| null == endToken // TODO check later
+				|| !tokenMap.get(startToken.getId()).equals(startToken)
 				|| !tokenMap.get(endToken.getId()).equals(endToken)) {
 			return null;
-//			throw new RuntimeException("Tokens are not from the same sentence.");
+			// throw new
+			// RuntimeException("Tokens are not from the same sentence.");
 		}
 
 		String dependencyPath = null;
@@ -128,6 +135,9 @@ public class DependencyExtractor {
 								relation = "subj";
 							} else if (relation.endsWith("subjpass")) {
 								relation = "subjpass";
+								// } else if (stage.equals(Stage.CAUSE)
+								// && relation.startsWith("prep")) {
+								// relation = "prep";
 							}
 						}
 						if (null == dependencyPath) {
@@ -139,6 +149,29 @@ public class DependencyExtractor {
 						}
 					}
 				}
+			}
+
+			if (stage.equals(Stage.THEME)) {
+				// create equal path for the tokens connected by "or"
+				if (null != dependencyPath
+						&& dependencyPath.indexOf("prep_of") > -1) {
+					if (dependencyPath.indexOf("conj_or_") > -1) {
+						dependencyPath = dependencyPath.replaceAll("conj_or_",
+								"");
+					} else if (dependencyPath.indexOf("_conj_or") > -1) {
+						dependencyPath = dependencyPath.replaceAll("_conj_or",
+								"");
+					}
+				}
+				// } else if (stage.equals(Stage.CAUSE)) {
+				// if (null != dependencyPath
+				// && dependencyPath.indexOf("dep") > -1) {
+				// if (dependencyPath.indexOf("dep_") > -1) {
+				// dependencyPath = dependencyPath.replaceAll("dep_", "");
+				// } else if (dependencyPath.indexOf("_dep") > -1) {
+				// dependencyPath = dependencyPath.replaceAll("_dep", "");
+				// }
+				// }
 			}
 		}
 

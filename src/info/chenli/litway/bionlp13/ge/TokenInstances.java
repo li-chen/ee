@@ -7,10 +7,12 @@ import info.chenli.litway.corpora.Sentence;
 import info.chenli.litway.corpora.Token;
 import info.chenli.litway.corpora.Trigger;
 import info.chenli.litway.searn.StructuredInstance;
+import info.chenli.litway.util.BioLemmatizerUtil;
 import info.chenli.litway.util.DependencyExtractor;
 import info.chenli.litway.util.FileUtil;
 import info.chenli.litway.util.StanfordDependencyReader;
 import info.chenli.litway.util.StanfordDependencyReader.Pair;
+import info.chenli.litway.util.Stemmer;
 import info.chenli.litway.util.UimaUtil;
 
 import java.io.File;
@@ -74,9 +76,6 @@ public class TokenInstances extends AbstractInstances {
 
 			Sentence sentence = (Sentence) sentenceIter.next();
 			Set<Pair> pairsOfSentence = pairsOfArticle.get(sentence.getId());
-			DependencyExtractor dependencyExtractor = new DependencyExtractor(
-					JCasUtil.selectCovered(jcas, Token.class, sentence),
-					pairsOfSentence);
 
 			List<Trigger> triggers = JCasUtil.selectCovered(jcas,
 					Trigger.class, sentence);
@@ -90,33 +89,52 @@ public class TokenInstances extends AbstractInstances {
 						trigger.getEventType());
 			}
 
-			List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class,
-					sentence);
+			// List<Token> originalTokens = JCasUtil.selectCovered(jcas,
+			// Token.class, sentence);
 			List<Protein> sentenceProteins = JCasUtil.selectCovered(jcas,
 					Protein.class, sentence);
 
-			tokenCollectingLoop: for (Token token : tokens) {
+			// // print proteins which are within a token
+			// for (Token token : originalTokens) {
+			//
+			// for (Protein protein : sentenceProteins) {
+			// if (token.getBegin() == protein.getBegin()
+			// && token.getEnd() == protein.getEnd()) {
+			// continue;
+			// }
+			// if (token.getBegin() <= protein.getBegin()
+			// && token.getEnd() >= protein.getEnd()) {
+			// System.out.println(token.getCoveredText().concat("\t")
+			// .concat(protein.getCoveredText()));
+			// }
+			// }
+			// }
+			//
+			// if (true) {
+			// continue;
+			// }
+			// postProcessSentenceTokens(jcas, originalTokens, sentenceProteins,
+			// pairsOfSentence);
+			List<Token> tokensOfSentence = JCasUtil.selectCovered(jcas,
+					Token.class, sentence);
+			DependencyExtractor dependencyExtractor = new DependencyExtractor(
+					JCasUtil.selectCovered(jcas, Token.class, sentence),
+					pairsOfSentence);
 
-				if (
-				// !isWord(token.getCoveredText().toLowerCase())
-				// ||
-				!POS.isPos(token.getPos())
-				// || StopWords.isAStopWordShort(token.getCoveredText()
-				// .toLowerCase())
-				) {
-					continue;
-				}
-				for (Protein protein : sentenceProteins) {
-					if ((token.getBegin() >= protein.getBegin() && token
-							.getBegin() <= protein.getEnd())
-							|| (token.getEnd() >= protein.getBegin() && token
-									.getEnd() <= protein.getEnd())) {
-						continue tokenCollectingLoop;
-					}
-				}
+			creatingInstanceLoop: for (Token token : tokensOfSentence) {
 
-				nodes.add(tokenToInstance(jcas, token, triggerTokens, tokens,
-						sentenceProteins, pairsOfSentence, dependencyExtractor));
+				// the tokens with protein have to be considered, as they may
+				// have trigger
+				// for (Protein protein : sentenceProteins) {
+				// if (token.getBegin() == protein.getBegin()
+				// && token.getEnd() == protein.getEnd()) {
+				// continue creatingInstanceLoop;
+				// }
+				// }
+
+				nodes.add(tokenToInstance(jcas, token, triggerTokens,
+						tokensOfSentence, sentenceProteins, pairsOfSentence,
+						dependencyExtractor));
 			}
 
 			results.add(si);
@@ -137,7 +155,7 @@ public class TokenInstances extends AbstractInstances {
 	 * @return
 	 */
 	protected Instance tokenToInstance(JCas jcas, Token token,
-			Map<Integer, String> triggerTokens, List<Token> tokens,
+			Map<Integer, String> triggerTokens, List<Token> tokensOfSentence,
 			List<Protein> sentenceProteins, Set<Pair> pairsOfSentence,
 			DependencyExtractor dependencyExtractor) {
 
@@ -170,29 +188,32 @@ public class TokenInstances extends AbstractInstances {
 				continue;
 			}
 			if (pair.getHead() == token.getId()) {
-				for (Token aToken : tokens) {
+				for (Token aToken : tokensOfSentence) {
 					if (aToken.getId() == pair.getModifier()) {
+						String tokenLemma = isProtein(aToken, sentenceProteins) ? "PROTEIN"
+								: aToken.getLemma().toLowerCase();
 						modifiers.add(lemma.concat("_")
 								.concat(pair.getRelation()).concat("_lemma_")
-								.concat(aToken.getLemma().toLowerCase()));
+								.concat(tokenLemma));
 						noLemmaModifiers.add(pair.getRelation()
-								.concat("_lemma_")
-								.concat(aToken.getLemma().toLowerCase()));
-						noDepModifiers.add(lemma.concat("_").concat("_lemma_")
-								.concat(aToken.getLemma().toLowerCase()));
-					}
-					if (pair.getRelation().equalsIgnoreCase("nsubj")) {
-						nsubjList.add("nsubj_lemma_".concat(aToken.getLemma()));
-					}
-					if (pair.getRelation().equalsIgnoreCase("dobj")) {
-						dobjList.add("dobj_lemma_".concat(aToken.getLemma()));
-					}
-					if (pair.getRelation().equalsIgnoreCase("iobj")) {
-						iobjList.add("iobj_lemma_".concat(aToken.getLemma()));
+								.concat("_lemma_").concat(tokenLemma));
+						noDepModifiers.add(lemma.concat("_lemma_").concat(
+								tokenLemma));
+
+						// if (pair.getRelation().equalsIgnoreCase("nsubj")) {
+						// nsubjList.add("nsubj_lemma_".concat(aToken
+						// .getLemma()));
+						// }
+						// if (pair.getRelation().equalsIgnoreCase("dobj")) {
+						// dobjList.add("dobj_lemma_".concat(aToken.getLemma()));
+						// }
+						// if (pair.getRelation().equalsIgnoreCase("iobj")) {
+						// iobjList.add("iobj_lemma_".concat(aToken.getLemma()));
+						// }
 					}
 				}
 			} else if (pair.getModifier() == token.getId()) {
-				for (Token aToken : tokens) {
+				for (Token aToken : tokensOfSentence) {
 					if (aToken.getId() == pair.getHead()) {
 						heads.add(lemma.concat("_-").concat(pair.getRelation())
 								.concat("_lemma_")
@@ -227,13 +248,13 @@ public class TokenInstances extends AbstractInstances {
 
 		featureString.add(modifiersFeature);
 		featureString.add(headsFeature);
-		featureString.add(noLemmaModifiersFeature);
-		featureString.add(noLemmaHeadsFeature);
-		featureString.add(noDepModifiersFeature);
-		featureString.add(noDepHeadsFeature);
-		featureString.add(nsubjFeature);
-		featureString.add(dobjFeature);
-		featureString.add(iobjFeature);
+		// featureString.add(noLemmaModifiersFeature);
+		// featureString.add(noLemmaHeadsFeature);
+		// featureString.add(noDepModifiersFeature);
+		// featureString.add(noDepHeadsFeature);
+		// featureString.add(nsubjFeature);
+		// featureString.add(dobjFeature);
+		// featureString.add(iobjFeature);
 
 		String subLemma = "sublemma_"
 				.concat(null == token.getSubLemma() ? token.getLemma()
@@ -249,82 +270,61 @@ public class TokenInstances extends AbstractInstances {
 		String leftTokenStr = token.getLeftToken() == null ? null : (POS
 				.isPos(token.getLeftToken().getPos()) ? "previousWord_"
 				.concat(token.getLeftToken().getLemma()) : null);
-		featureString.add(null == leftTokenStr ? new String[0]
-				: new String[] { leftTokenStr });
-		featureString.add(null == leftTokenStr ? new String[0]
-				: new String[] { lemma.concat("_").concat(leftTokenStr) });
+		// featureString.add(null == leftTokenStr ? new String[0]
+		// : new String[] { leftTokenStr });
+		// featureString.add(null == leftTokenStr ? new String[0]
+		// : new String[] { lemma.concat("_").concat(leftTokenStr) });
 		String posLeftTokenStr = token.getLeftToken() == null ? null : ((token
 				.getLeftToken().getPos().indexOf("NN") > -1
 				|| token.getLeftToken().getPos().indexOf("JJ") > -1 || token
 				.getLeftToken().getPos().indexOf("V") > -1) ? lemma
 				+ "_previousWord_".concat(token.getLeftToken().getLemma())
 				: null);
-		featureString.add(null == posLeftTokenStr ? new String[0]
-				: new String[] { posLeftTokenStr });
+		// featureString.add(null == posLeftTokenStr ? new String[0]
+		// : new String[] { posLeftTokenStr });
 		// after word
 		String rightTokenStr = token.getRightToken() == null ? null : (POS
 				.isPos(token.getRightToken().getPos()) ? "afterWord_"
 				.concat(token.getRightToken().getLemma()) : null);
-		featureString.add(null == rightTokenStr ? new String[0]
-				: new String[] { rightTokenStr });
-		featureString.add(null == rightTokenStr ? new String[0]
-				: new String[] { lemma.concat("_").concat(rightTokenStr) });
+		// featureString.add(null == rightTokenStr ? new String[0]
+		// : new String[] { rightTokenStr });
+		// featureString.add(null == rightTokenStr ? new String[0]
+		// : new String[] { lemma.concat("_").concat(rightTokenStr) });
 		String posRightTokenStr = token.getRightToken() == null ? null : (token
 				.getRightToken().getPos().indexOf("NN") > -1) ? lemma
 				+ "_afterWord_".concat(token.getLeftToken().getLemma()) : null;
-		featureString.add(null == posRightTokenStr ? new String[0]
-				: new String[] { posRightTokenStr });
+		// featureString.add(null == posRightTokenStr ? new String[0]
+		// : new String[] { posRightTokenStr });
 
 		// protein in the sentence
 		String[] proteins = new String[sentenceProteins.size()];
-		String[] proteinsDummy = new String[sentenceProteins.size()];
+		String[] proteinsDummy = sentenceProteins.size() > 0 ? new String[] { "PROTEIN" }
+				: new String[0];
 		String[] proteinsLemma = new String[sentenceProteins.size()];
 		String[] proteinsDep = new String[sentenceProteins.size()];
 
 		int i = 0;
 		for (Protein protein : sentenceProteins) {
 
-			// find the protein token
-			List<Token> proteinTokens = JCasUtil.selectCovered(jcas,
-					Token.class, protein);
-
-			// if protein is within a token
-			if (proteinTokens.size() == 0) {
-				FSIterator<Annotation> iter = jcas.getAnnotationIndex(
-						Token.type).iterator();
-				proteinTokens = new ArrayList<Token>();
-				while (iter.hasNext()) {
-					Token aToken = (Token) iter.next();
-					if (aToken.getBegin() <= protein.getBegin()
-							&& aToken.getEnd() >= protein.getEnd()) {
-						proteinTokens.add(aToken);
-						break;
-					}
-				}
-			}
-
-			if (proteinTokens.size() == 0) {
-				continue;
-			}
-			Token aProteinToken = proteinTokens.get(proteinTokens.size() - 1);
+			Token aProteinToken = getProteinToken(jcas, protein);
 
 			proteins[i] = "protein_"
 					+ protein.getCoveredText().toLowerCase()
 							.replaceAll(" ", "_");
-			proteinsDummy[i] = "PROTEIN";
 			proteinsLemma[i] = lemma.concat("_").concat(
 					protein.getCoveredText().toLowerCase());
+
 			proteinsDep[i] = dependencyExtractor.getShortestPath(token,
-					aProteinToken);
+					aProteinToken, Stage.TRIGGER);
 
 			if (null == proteinsDep[i]) {
 				proteinsDep[i] = dependencyExtractor.getReversedShortestPath(
-						token, aProteinToken);
+						token, aProteinToken, Stage.TRIGGER);
 			}
 		}
-		featureString.add(proteins);
+		// featureString.add(proteins);
 		featureString.add(proteinsDummy);
-		featureString.add(proteinsLemma);
+		// featureString.add(proteinsLemma);
 		boolean isDepNull = true;
 		for (String dep : proteinsDep) {
 			if (null != dep) {
@@ -332,9 +332,7 @@ public class TokenInstances extends AbstractInstances {
 				break;
 			}
 		}
-		featureString.add(isDepNull ? new String[0] : proteinsDep);
-
-		// featureString.add(new String[] { "DUMMYFEATURE" });
+		// featureString.add(isDepNull ? new String[0] : proteinsDep);
 
 		if (null != triggerTokens) {
 
@@ -345,6 +343,101 @@ public class TokenInstances extends AbstractInstances {
 		}
 
 		return instance;
+	}
+
+	// public void postProcessSentenceTokens(JCas jcas, List<Token> tokens,
+	// List<Protein> sentenceProteins, Set<Pair> pairsOfSentence) {
+	//
+	// int i = tokens.size() + 1;
+	//
+	// tokenCollectingLoop: for (Token token : tokens) {
+	//
+	// if (!POS.isPos(token.getPos())) {
+	// token.removeFromIndexes();
+	// continue;
+	// }
+	//
+	// for (Protein protein : sentenceProteins) {
+	// // token is a protein
+	// if (protein.getBegin() == token.getBegin()
+	// && protein.getEnd() == token.getEnd()) {
+	// continue tokenCollectingLoop;
+	// }
+	// // token is within a protein
+	// if ((token.getBegin() >= protein.getBegin() && token.getBegin() < protein
+	// .getEnd())
+	// || (token.getBegin() > protein.getBegin() && token
+	// .getBegin() <= protein.getEnd())) {
+	// continue tokenCollectingLoop;
+	// }
+	// // protein is within a token (tricky part)
+	// if ((token.getBegin() <= protein.getBegin() && token.getEnd() > protein
+	// .getEnd())
+	// || (token.getBegin() < protein.getBegin() && token
+	// .getEnd() >= protein.getEnd())) {
+	// Token proteinToken = createNewToken(jcas,
+	// protein.getBegin(), protein.getEnd(), protein
+	// .getCoveredText().toLowerCase(),
+	// String.valueOf(POS.NN));
+	// if (protein.getBegin() != token.getBegin()) {
+	// Token leftToken = createNewToken(
+	// jcas,
+	// token.getBegin(),
+	// protein.getBegin(),
+	// token.getCoveredText()
+	// .substring(
+	// 0,
+	// protein.getBegin()
+	// - token.getBegin())
+	// .toLowerCase(), String.valueOf(POS.NN));
+	// leftToken.setId(i++);
+	// leftToken.setLeftToken(token.getLeftToken());
+	// leftToken.setRightToken(proteinToken);
+	// proteinToken.setLeftToken(leftToken);
+	// } else {
+	// proteinToken.setLeftToken(token.getLeftToken());
+	// }
+	//
+	// if (protein.getEnd() != token.getEnd()) {
+	// Token rightToken = createNewToken(
+	// jcas,
+	// protein.getEnd(),
+	// token.getEnd(),
+	// token.getCoveredText()
+	// .substring(
+	// 0,
+	// token.getEnd()
+	// - protein.getEnd())
+	// .toLowerCase(), String.valueOf(POS.NN));
+	//
+	// // use the original id of the token for the last token
+	// rightToken.setId(token.getId());
+	// proteinToken.setId(i++);
+	// rightToken.setLeftToken(proteinToken);
+	// proteinToken.setRightToken(rightToken);
+	// rightToken.setRightToken(token.getRightToken());
+	//
+	// } else {
+	// proteinToken.setRightToken(token.getRightToken());
+	// proteinToken.setId(token.getId());
+	// }
+	// token.removeFromIndexes();
+	// continue tokenCollectingLoop;
+	// }
+	// }
+	// }
+	// }
+
+	private boolean isProtein(Token token, List<Protein> proteinsOfSentence) {
+		for (Protein protein : proteinsOfSentence) {
+			if ((token.getBegin() >= protein.getBegin() && token.getEnd() <= protein
+					.getEnd())
+					|| (protein.getBegin() >= token.getBegin() && protein
+							.getEnd() <= token.getEnd())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static void main(String[] args) {

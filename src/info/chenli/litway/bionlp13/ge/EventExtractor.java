@@ -16,12 +16,9 @@ import info.chenli.litway.util.StanfordDependencyReader;
 import info.chenli.litway.util.StanfordDependencyReader.Pair;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -123,6 +120,14 @@ public class EventExtractor extends TokenInstances {
 		causeDict.loadDictionary(new File("./model/causes.".concat(
 				classifierName).concat(".dict")));
 
+		// binding
+		BindingRecogniser bindingRecogniser = new BindingRecogniser();
+		bindingRecogniser.loadModel(new File("./model/bindings.".concat(
+				classifierName).concat(".model")));
+		InstanceDictionary bindingDict = new InstanceDictionary();
+		bindingDict.loadDictionary(new File("./model/bindings.".concat(
+				classifierName).concat(".dict")));
+
 		// Initialize the iterator and counter
 		FSIterator<Annotation> sentenceIter = jcas.getAnnotationIndex(
 				Sentence.type).iterator();
@@ -134,7 +139,7 @@ public class EventExtractor extends TokenInstances {
 			Set<Pair> pairsOfSentence = pairsOfArticle.get(sentence.getId());
 
 			// The queue where newly generated events are put
-			Queue<Event> newEvents = new LinkedBlockingQueue<Event>();
+			LinkedBlockingQueue<Event> newEvents = new LinkedBlockingQueue<Event>();
 
 			// protein
 			List<Protein> sentenceProteins = JCasUtil.selectCovered(jcas,
@@ -210,8 +215,33 @@ public class EventExtractor extends TokenInstances {
 								.instanceToNumeric(proteinInstance)
 								.getFeaturesNumeric());
 
+//						if (trigger.getEventType().equals(
+//								String.valueOf(EventType.Localization))
+//								&& protein.getCoveredText().toLowerCase()
+//										.indexOf("phosp") > -1) {
+//							System.out.println(proteinInstance.getLabel() + ":"
+//									+ proteinInstance.getLabelString() + "("
+//									+ trigger.getCoveredText() + ")" + "\t"
+//									+ protein.getBegin() + ":"
+//									+ protein.getEnd() + "("
+//									+ protein.getCoveredText() + ")");
+//							for (String[] feature : proteinInstance
+//									.getFeaturesString()) {
+//								for (String value : feature) {
+//									System.out.print("\t" + value);
+//								}
+//							}
+//							System.out.println();
+//							System.out.print(prediction);
+//							for (int value : proteinInstance
+//									.getFeaturesNumeric()) {
+//								System.out.print("\t" + value);
+//							}
+//							System.out.println();
+//						}
+
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
-							// TODO can a protein be a theme of multi-event?
+
 							Event event = new Event(jcas);
 							event.setId(String.valueOf(eventIndex++));
 							event.setTrigger(trigger);
@@ -225,9 +255,7 @@ public class EventExtractor extends TokenInstances {
 
 				} else if (EventType.isBindingEvent(trigger.getEventType())) {
 
-					// Initialize event with 10 themes. It never exceed this
-					// number in the training data. (I know, it is not elegant!)
-					List<String> themes = new ArrayList<String>();
+					List<Protein> themes = new ArrayList<Protein>();
 
 					for (Protein protein : sentenceProteins) {
 
@@ -239,34 +267,84 @@ public class EventExtractor extends TokenInstances {
 								.getFeaturesNumeric());
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
-							themes.add(protein.getId());
+							themes.add(protein);
 						}
 
 					}
-					if (themes.size() > 1) {
-						Combinations combs = new Combinations(themes);
-
-						// Instance bindingInstance =
-						// bindingEventToInstance(jcas, sentence, bindingEvent,
-						// themes, dependencyExtractor);
-					}
-
 					if (themes.size() > 0) {
 
 						Event event = new Event(jcas);
 						event.setTrigger(trigger);
-						event.setId(String.valueOf(eventIndex++));
+						// event.setId(String.valueOf(eventIndex++));
 
-						StringArray eventThemes = new StringArray(jcas,
-								themes.size());
+						List<List<Protein>> predictedThemesComb = new ArrayList<List<Protein>>();
+						if (themes.size() > 1) {
 
-						for (String theme : themes) {
-							eventThemes.set(themes.indexOf(theme), theme);
+							Combinations<Protein> combs = new Combinations<Protein>(
+									themes);
+
+							for (List<Protein> candidateThemes : combs
+									.getCombinations()) {
+								Instance bindingInstance = bindingDict
+										.instanceToNumeric(bindingEventToInstance(
+												jcas, sentence, event,
+												candidateThemes,
+												dependencyExtractor));
+								if (bindingRecogniser.predict(bindingInstance) == bindingDict
+										.getLabelNumeric("Binding")) {
+									predictedThemesComb.add(candidateThemes);
+								}
+							}
+
+						} else
+						// when there is only one theme
+						{
+							List<Protein> candidateThemes = new ArrayList<Protein>();
+							candidateThemes.add(themes.get(0));
+							predictedThemesComb.add(candidateThemes);
 						}
-						event.setThemes(eventThemes);
 
-						events.get(sentence.getId()).add(event);
-						newEvents.add(event);
+						// clean the themes which are fully covered by another
+						List<List<Protein>> checkedThemesComb = new ArrayList<List<Protein>>();
+						checkingTheme: for (List<Protein> beingCheckedThemes : predictedThemesComb) {
+							if (checkedThemesComb.contains(beingCheckedThemes)) {
+								continue;
+							} else {
+
+								List<List<Protein>> copy = new ArrayList<List<Protein>>(
+										checkedThemesComb);
+								for (List<Protein> checkedThemes : copy) {
+
+									if (checkedThemes
+											.containsAll(beingCheckedThemes)) {
+										continue checkingTheme;
+									} else if (beingCheckedThemes
+											.containsAll(checkedThemes)) {
+										checkedThemesComb.remove(checkedThemes);
+									}
+								}
+								checkedThemesComb.add(beingCheckedThemes);
+							}
+						}
+
+						for (List<Protein> predictedThemes : checkedThemesComb) {
+
+							Event newBindingEvent = new Event(jcas);
+							newBindingEvent.setTrigger(trigger);
+							newBindingEvent.setId(String.valueOf(eventIndex++));
+
+							StringArray eventThemes = new StringArray(jcas,
+									predictedThemes.size());
+
+							for (Protein theme : predictedThemes) {
+								eventThemes.set(predictedThemes.indexOf(theme),
+										theme.getId());
+							}
+							newBindingEvent.setThemes(eventThemes);
+
+							events.get(sentence.getId()).add(newBindingEvent);
+							newEvents.add(newBindingEvent);
+						}
 					}
 
 				} else if (EventType.isComplexEvent(trigger.getEventType())) {
@@ -283,7 +361,7 @@ public class EventExtractor extends TokenInstances {
 								.predict(proteinInstance.getFeaturesNumeric());
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
-							// TODO can a protein be a theme of multi-event?
+
 							Event event = new Event(jcas);
 							event.setId(String.valueOf(eventIndex++));
 							event.setTrigger(trigger);
@@ -298,11 +376,17 @@ public class EventExtractor extends TokenInstances {
 			}
 
 			// 2. check all discovered events whether they can be themes
-			for (Trigger trigger : triggers.get(sentence.getId())) {
 
-				if (EventType.isRegulatoryEvent(trigger.getEventType())) {
+			for (Event themeEvent : newEvents) {
+				// System.out.println("(" +
+				// themeEvent.getTrigger().getEventType()
+				// + ":" + themeEvent.getTrigger().getCoveredText() + ")"
+				// + themeEvent.getTrigger().getBegin() + ":"
+				// + themeEvent.getTrigger().getEnd());
 
-					for (Event themeEvent : newEvents) {
+				for (Trigger trigger : triggers.get(sentence.getId())) {
+
+					if (EventType.isRegulatoryEvent(trigger.getEventType())) {
 
 						if (themeEvent.getTrigger().getBegin() == trigger
 								.getBegin()) {
@@ -326,7 +410,7 @@ public class EventExtractor extends TokenInstances {
 							themes.set(0, "E".concat(themeEvent.getId()));
 							event.setThemes(themes);
 							events.get(sentence.getId()).add(event);
-							// newEvents.add(event);
+							newEvents.add(event);
 						}
 
 					}
@@ -346,16 +430,10 @@ public class EventExtractor extends TokenInstances {
 				// protein
 				for (Protein protein : sentenceProteins) {
 
-					Instance proteinInstance = causeToInstance(
-							jcas,
-							sentence,
-							protein,
-							event.getTrigger(),
-							pairsOfSentence,
-							dependencyExtractor,
-							false,
-							getProteinToken(jcas, sentenceProteins,
-									event.getThemes(0)));
+					Instance proteinInstance = causeToInstance(jcas, sentence,
+							protein, event.getTrigger(), pairsOfSentence,
+							dependencyExtractor, false,
+							getThemeToken(jcas, event, sentence));
 					double prediction = causeRecogniser.predict(causeDict
 							.instanceToNumeric(proteinInstance)
 							.getFeaturesNumeric());
@@ -379,13 +457,42 @@ public class EventExtractor extends TokenInstances {
 						continue;
 					}
 
-					Instance triggerTokenInstance = causeToInstance(jcas,
-							sentence, event.getTrigger(), event.getTrigger(),
-							pairsOfSentence, dependencyExtractor, false,
-							getTriggerToken(jcas, causeEvent.getTrigger()));
+					Token themeToken = getThemeToken(jcas, event, sentence);
+					Instance causeEventInstance = causeToInstance(jcas,
+							sentence, causeEvent.getTrigger(),
+							event.getTrigger(), pairsOfSentence,
+							dependencyExtractor, false, themeToken);
 					double prediction = causeRecogniser.predict(causeDict
-							.instanceToNumeric(triggerTokenInstance)
+							.instanceToNumeric(causeEventInstance)
 							.getFeaturesNumeric());
+					// if (event
+					// .getTrigger()
+					// .getEventType()
+					// .equals(String
+					// .valueOf(EventType.Positive_regulation))
+					// && causeEvent.getTrigger().getCoveredText()
+					// .toLowerCase().indexOf("phosp") > -1) {
+					// System.out.println(causeEventInstance.getLabel() + ":"
+					// + causeEventInstance.getLabelString() + "("
+					// + event.getTrigger().getCoveredText() + ")"
+					// + "\t" + causeEvent.getTrigger().getBegin()
+					// + ":" + causeEvent.getTrigger().getEnd() + "("
+					// + causeEvent.getTrigger().getCoveredText()
+					// + ")");
+					// for (String[] feature : causeEventInstance
+					// .getFeaturesString()) {
+					// for (String value : feature) {
+					// System.out.print("\t" + value);
+					// }
+					// }
+					// System.out.println();
+					// System.out.print(prediction);
+					// for (int value : causeEventInstance
+					// .getFeaturesNumeric()) {
+					// System.out.print("\t" + value);
+					// }
+					// System.out.println();
+					// }
 
 					if (prediction == causeDict.getLabelNumeric(String
 							.valueOf("Cause"))) {

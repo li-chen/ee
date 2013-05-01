@@ -10,9 +10,12 @@ import info.chenli.litway.corpora.Protein;
 import info.chenli.litway.corpora.Sentence;
 import info.chenli.litway.corpora.Token;
 import info.chenli.litway.corpora.Trigger;
+import info.chenli.litway.util.BioLemmatizerUtil;
+import info.chenli.litway.util.DependencyExtractor;
 import info.chenli.litway.util.FileUtil;
 import info.chenli.litway.util.StanfordDependencyReader;
 import info.chenli.litway.util.StanfordDependencyReader.Pair;
+import info.chenli.litway.util.Stemmer;
 import info.chenli.litway.util.Timer;
 
 import java.io.File;
@@ -21,12 +24,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.uimafit.util.JCasUtil;
+
+import edu.ucdenver.ccp.nlp.biolemmatizer.BioLemmatizer;
 
 /**
  * Trigger POS statistics on training set: 1:CC, 1:CD, 2:DT, 8:IN, 290:JJ,
@@ -129,7 +135,7 @@ public class TriggerRecogniser extends LibLinearFacade {
 		// System.exit(0);
 
 		// Collections.shuffle(instances);
-		logger.info("Shuffle instances.");
+		// logger.info("Shuffle instances.");
 
 		Timer timer = new Timer();
 		timer.start();
@@ -144,77 +150,127 @@ public class TriggerRecogniser extends LibLinearFacade {
 
 	}
 
-	public List<Trigger> predict(File file, InstanceDictionary dict) {
+	public List<Trigger> predict(File file, InstanceDictionary dict,
+			boolean printConfusionMatrix) {
 
 		List<Trigger> triggers = new ArrayList<Trigger>();
 
 		TokenInstances instancesGetter = new TokenInstances();
 		instancesGetter.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
-		JCas jcas = instancesGetter.processSingleFile(file);
-		Map<Integer, Set<Pair>> pairsOfArticle = StanfordDependencyReader
-				.getPairs(new File(FileUtil.removeFileNameExtension(
-						file.getAbsolutePath()).concat(".sdepcc")));
-
-		FSIterator<Annotation> sentenceIter = jcas.getAnnotationIndex(
-				Sentence.type).iterator();
-		int proteinNum = jcas.getAnnotationIndex(Protein.type).size();
-		while (sentenceIter.hasNext()) {
-
-			Sentence sentence = (Sentence) sentenceIter.next();
-			List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class,
-					sentence);
-			List<Protein> sentenceProteins = JCasUtil.selectCovered(jcas,
-					Protein.class, sentence);
-			Set<Pair> pairsOfSentence = pairsOfArticle.get(sentence.getId());
-
-			tokenCollectingLoop: for (Token token : tokens) {
-
-				if (!POS.isPos(token.getPos())) {
-					continue;
-				}
-
-				for (Protein protein : sentenceProteins) {
-					if ((token.getBegin() >= protein.getBegin() && token
-							.getBegin() <= protein.getEnd())
-							|| (token.getEnd() >= protein.getBegin() && token
-									.getEnd() <= protein.getEnd())) {
-						continue tokenCollectingLoop;
-					}
-				}
-				Instance instance = instancesGetter.tokenToInstance(jcas, token,
-						null, tokens, sentenceProteins, pairsOfSentence, null);
-				instance = dict.instanceToNumeric(instance);
+		if (printConfusionMatrix) {
+			List<Instance> instances = dict.instancesToNumeric(instancesGetter
+					.getInstances(file));
+			Map<Integer, Map<Integer, Integer>> confusionMatrix = new TreeMap<Integer, Map<Integer, Integer>>();
+			for (Instance instance : instances) {
 				int prediction = instance.getFeaturesNumeric().length == 0 ? dict
 						.getLabelNumeric(String.valueOf(EventType.Non_trigger))
 						: this.predict(instance);
 
-				// if (token.getCoveredText().indexOf("phosph") > -1) {
-				// System.out.println(instance.getLabel() + ":"
-				// + instance.getLabelString());
-				// for (String[] feature : instance.getFeaturesString()) {
-				// for (String value : feature) {
-				// System.out.print("\t" + value);
-				// }
-				// }
-				// System.out.println();
-				// System.out.print(prediction);
-				// for (int value : instance.getFeaturesNumeric()) {
-				// System.out.print("\t" + value);
-				// }
-				// System.out.println();
-				// }
-				if (prediction != dict.getLabelNumeric(String
-						.valueOf(EventType.Non_trigger))) {
-					Trigger trigger = new Trigger(jcas, token.getBegin(),
-							token.getEnd());
-					trigger.setEventType(dict.getLabelString(prediction));
-					trigger.setId("T".concat(String.valueOf(++proteinNum)));
-					triggers.add(trigger);
+				// confusion matrix
+				if (!confusionMatrix.containsKey(instance.getLabel())) {
+					TreeMap<Integer, Integer> values = new TreeMap<Integer, Integer>();
+					values.put(prediction, 1);
+					confusionMatrix.put(instance.getLabel(), values);
+				} else {
+					Map<Integer, Integer> values = confusionMatrix.get(instance
+							.getLabel());
+					if (!values.containsKey(prediction)) {
+						values.put(prediction, 1);
+					} else {
+						int count = values.get(prediction) + 1;
+						values.put(prediction, count);
+					}
+				}
+			}
+			printConfusionMatrix(confusionMatrix, dict);
+		} else {
+
+			JCas jcas = instancesGetter.processSingleFile(file);
+			Map<Integer, Set<Pair>> pairsOfArticle = StanfordDependencyReader
+					.getPairs(new File(FileUtil.removeFileNameExtension(
+							file.getAbsolutePath()).concat(".sdepcc")));
+
+			FSIterator<Annotation> sentenceIter = jcas.getAnnotationIndex(
+					Sentence.type).iterator();
+			int proteinNum = jcas.getAnnotationIndex(Protein.type).size();
+			while (sentenceIter.hasNext()) {
+
+				Sentence sentence = (Sentence) sentenceIter.next();
+				// List<Token> originalTokens = JCasUtil.selectCovered(jcas,
+				// Token.class, sentence);
+				List<Protein> sentenceProteins = JCasUtil.selectCovered(jcas,
+						Protein.class, sentence);
+				Set<Pair> pairsOfSentence = pairsOfArticle
+						.get(sentence.getId());
+
+				// instancesGetter.postProcessSentenceTokens(jcas,
+				// originalTokens,
+				// sentenceProteins, pairsOfSentence);
+				List<Token> tokens = JCasUtil.selectCovered(jcas, Token.class,
+						sentence);
+				DependencyExtractor dependencyExtractor = new DependencyExtractor(
+						JCasUtil.selectCovered(jcas, Token.class, sentence),
+						pairsOfSentence);
+				for (Token token : tokens) {
+					Instance instance = instancesGetter.tokenToInstance(jcas,
+							token, null, tokens, sentenceProteins,
+							pairsOfSentence, dependencyExtractor);
+					instance = dict.instanceToNumeric(instance);
+					int prediction = instance.getFeaturesNumeric().length == 0 ? dict
+							.getLabelNumeric(String
+									.valueOf(EventType.Non_trigger)) : this
+							.predict(instance);
+
+					if (token.getCoveredText().toLowerCase().indexOf("import") > -1) {
+						System.out.println(instance.getLabel() + ":"
+								+ instance.getLabelString() + "\t"
+								+ token.getBegin() + ":" + token.getEnd());
+						for (String[] feature : instance.getFeaturesString()) {
+							for (String value : feature) {
+								System.out.print("\t" + value);
+							}
+						}
+						System.out.println();
+						System.out.print(prediction);
+						for (int value : instance.getFeaturesNumeric()) {
+							System.out.print("\t" + value);
+						}
+						System.out.println();
+					}
+					if (prediction != dict.getLabelNumeric(String
+							.valueOf(EventType.Non_trigger))) {
+						Trigger trigger = new Trigger(jcas, token.getBegin(),
+								token.getEnd());
+						trigger.setEventType(dict.getLabelString(prediction));
+						trigger.setId("T".concat(String.valueOf(++proteinNum)));
+						triggers.add(trigger);
+					}
 				}
 			}
 		}
-
 		return triggers;
+	}
+
+	private void printConfusionMatrix(
+			Map<Integer, Map<Integer, Integer>> confusionMatrix,
+			InstanceDictionary dict) {
+		for (EventType goldType : EventType.values()) {
+			System.out.print("\t".concat(String.valueOf(goldType)));
+		}
+		System.out.println();
+		for (EventType goldType : EventType.values()) {
+			System.out.print(String.valueOf(goldType));
+			Map<Integer, Integer> predictions = confusionMatrix.get(dict
+					.getLabelNumeric(String.valueOf(goldType)));
+			for (EventType predictedType : EventType.values()) {
+				System.out.print("\t");
+				if (null != predictions) {
+					System.out.print(String.valueOf(predictions.get(dict
+							.getLabelNumeric(String.valueOf(predictedType)))));
+				}
+			}
+			System.out.println();
+		}
 	}
 
 	public void crossValidate(String dir) {
@@ -353,8 +409,9 @@ public class TriggerRecogniser extends LibLinearFacade {
 
 	public static void main(String[] args) {
 
-		if (!args[0].equals("predict") && !args[0].equals("train")
-				&& !args[0].equals("test") && !args[0].equals("cross")) {
+		if (args.length == 0 || !args[0].equals("predict")
+				&& !args[0].equals("train") && !args[0].equals("test")
+				&& !args[0].equals("cross")) {
 			throw new IllegalArgumentException(
 					"The first argument has to be \"predict\" or \"train\". ");
 		}
@@ -371,9 +428,9 @@ public class TriggerRecogniser extends LibLinearFacade {
 			tr.train(args[1], 1);
 		} else if (args[0].equals("predict")) {
 
-			if (!file.isFile()) {
+			if (!file.isFile() && !file.isDirectory()) {
 				throw new IllegalArgumentException(
-						"The second argument has to be the file. ");
+						"The second argument has to be a file.");
 			}
 
 			tr.loadModel(new File("./model/triggers.".concat(tr.classifierName)
@@ -382,7 +439,7 @@ public class TriggerRecogniser extends LibLinearFacade {
 			dict.loadDictionary(new File("./model/triggers.".concat(
 					tr.classifierName).concat(".dict")));
 
-			List<Trigger> triggers = tr.predict(file, dict);
+			List<Trigger> triggers = tr.predict(file, dict, false);
 			for (Trigger trigger : triggers) {
 				System.out.println(trigger.getId().concat("\t")
 						.concat(trigger.getEventType()).concat(" ")

@@ -130,14 +130,13 @@ public class ThemeInstances extends AbstractInstances {
 		InstanceDictionary dict = new InstanceDictionary();
 		dict.creatNumericDictionary(instances);
 		String classifierName = "liblinear";
+		dict.saveDictionary(new File("./model/themes.".concat(classifierName)
+				.concat(".dict")));
 
 		ti.saveInstances(new File("./model/instances.theme.txt"));
-		ti.saveSvmLightInstances(new File(
-				"./model/instances.theme.svm.no_dum.txt"));
+		ti.saveSvmLightInstances(new File("./model/instances.theme.svm.txt"));
 
 		if (args.length == 2 && args[1].equals("dev")) {
-			dict.saveDictionary(new File("./model/themes.".concat(
-					classifierName).concat(".dict")));
 
 			ThemeInstances testInstances = new ThemeInstances();
 			testInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
@@ -146,9 +145,10 @@ public class ThemeInstances extends AbstractInstances {
 
 			tInstances = dict.instancesToNumeric(tInstances);
 
-			testInstances.saveInstances(new File("./model/instances.theme.dev.txt"));
+			testInstances.saveInstances(new File(
+					"./model/instances.theme.dev.txt"));
 			testInstances.saveSvmLightInstances(new File(
-					"./model/instances.theme.svm.dev.no_dum.txt"));
+					"./model/instances.theme.svm.dev.txt"));
 		}
 
 	}

@@ -14,7 +14,7 @@ import org.apache.uima.jcas.cas.StringArray;
 
 
 /** 
- * Updated by JCasGen Thu Apr 11 16:40:07 BST 2013
+ * Updated by JCasGen Thu Apr 25 13:17:47 BST 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Event extends Annotation {
@@ -131,7 +131,7 @@ public class Event extends Annotation {
     if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_product == null)
       jcasType.jcas.throwFeatMissing("product", "info.chenli.litway.corpora.Event");
     jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_product, v);}    
-                                  //*--------------*
+                                    //*--------------*
   //* Feature: id
 
   /** getter for id - gets 

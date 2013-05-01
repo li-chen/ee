@@ -23,7 +23,7 @@ public class StanfordDependencyReader {
 
 	public static final class Pair implements Comparable<Pair> {
 
-		private int head, modifier;
+		private int head, modifier; // token id
 		private String relation;
 
 		public int getHead() {

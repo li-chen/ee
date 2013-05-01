@@ -12,7 +12,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Apr 11 16:40:07 BST 2013
+ * Updated by JCasGen Thu Apr 25 13:17:47 BST 2013
  * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Sentence extends Annotation {
@@ -79,6 +79,24 @@ public class Sentence extends Annotation {
     if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_id == null)
       jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Sentence");
     jcasType.ll_cas.ll_setIntValue(addr, ((Sentence_Type)jcasType).casFeatCode_id, v);}    
+   
+    
+  //*--------------*
+  //* Feature: dependencies
+
+  /** getter for dependencies - gets 
+   * @generated */
+  public Dependency getDependencies() {
+    if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_dependencies == null)
+      jcasType.jcas.throwFeatMissing("dependencies", "info.chenli.litway.corpora.Sentence");
+    return (Dependency)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Sentence_Type)jcasType).casFeatCode_dependencies)));}
+    
+  /** setter for dependencies - sets  
+   * @generated */
+  public void setDependencies(Dependency v) {
+    if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_dependencies == null)
+      jcasType.jcas.throwFeatMissing("dependencies", "info.chenli.litway.corpora.Sentence");
+    jcasType.ll_cas.ll_setRefValue(addr, ((Sentence_Type)jcasType).casFeatCode_dependencies, jcasType.ll_cas.ll_getFSRef(v));}    
   }
 
     

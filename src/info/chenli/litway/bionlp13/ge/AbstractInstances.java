@@ -8,6 +8,7 @@ import info.chenli.litway.corpora.Sentence;
 import info.chenli.litway.corpora.Token;
 import info.chenli.litway.corpora.Trigger;
 import info.chenli.litway.searn.StructuredInstance;
+import info.chenli.litway.util.BioLemmatizerUtil;
 import info.chenli.litway.util.DependencyExtractor;
 import info.chenli.litway.util.FileFilterImpl;
 import info.chenli.litway.util.FileUtil;
@@ -350,8 +351,8 @@ public abstract class AbstractInstances {
 			Annotation anno, Trigger trigger, Set<Pair> pairsOfSentence,
 			DependencyExtractor dependencyExtractor, boolean isTruepositive) {
 		return themeCauseToInstance(jcas, sentence, anno, trigger,
-				pairsOfSentence, dependencyExtractor, isTruepositive, "Theme",
-				null);
+				pairsOfSentence, dependencyExtractor, isTruepositive,
+				Stage.THEME, null);
 	}
 
 	protected Instance causeToInstance(JCas jcas, Sentence sentence,
@@ -359,8 +360,8 @@ public abstract class AbstractInstances {
 			DependencyExtractor dependencyExtractor, boolean isTruepositive,
 			Token themeToken) {
 		return themeCauseToInstance(jcas, sentence, anno, trigger,
-				pairsOfSentence, dependencyExtractor, isTruepositive, "Cause",
-				themeToken);
+				pairsOfSentence, dependencyExtractor, isTruepositive,
+				Stage.CAUSE, themeToken);
 	}
 
 	/**
@@ -379,7 +380,7 @@ public abstract class AbstractInstances {
 	private Instance themeCauseToInstance(JCas jcas, Sentence sentence,
 			Annotation anno, Trigger trigger, Set<Pair> pairsOfSentence,
 			DependencyExtractor dependencyExtractor, boolean isTruepositive,
-			String themeOrCause, Token themeToken) {
+			Stage stage, Token themeToken) {
 
 		if (!(anno instanceof Trigger) && !(anno instanceof Protein)) {
 			throw new IllegalArgumentException(
@@ -404,12 +405,12 @@ public abstract class AbstractInstances {
 			}
 		}
 
-		Token token = null;
+		Token annoToken = null;
 		if (anno instanceof Protein)
 		// Take the last non-digital token if protein is
 		// multi-token.
 		{
-			token = annoTokens.get(annoTokens.size() - 1);
+			annoToken = annoTokens.get(annoTokens.size() - 1);
 			// for (Token aToken : annoTokens) {
 			//
 			// try {
@@ -421,7 +422,7 @@ public abstract class AbstractInstances {
 			//
 			// }
 		} else if (anno instanceof Trigger) {
-			token = getTriggerToken(jcas, (Trigger) anno);
+			annoToken = getTriggerToken(jcas, (Trigger) anno);
 		}
 
 		Instance instance = new Instance();
@@ -433,13 +434,16 @@ public abstract class AbstractInstances {
 
 		// parser : dependency path between trigger-argument
 		String dependencyPath = dependencyExtractor.getShortestPath(
-				triggerToken, token);
+				triggerToken, annoToken, stage);
 		String featurePath = dependencyPath;
 
 		if (null == dependencyPath) {
 			featurePath = dependencyExtractor.getReversedShortestPath(
-					triggerToken, token);
+					triggerToken, annoToken, stage);
 		}
+		boolean areSameTokens = (annoToken.getBegin() == triggerToken
+				.getBegin() && annoToken.getEnd() == triggerToken.getEnd());
+		featurePath = areSameTokens ? "SAMETOKEN" : featurePath;
 		featurePath = (null == featurePath ? null : "dep_".concat(featurePath));
 		featuresString.add(null == featurePath ? new String[0]
 				: new String[] { featurePath });
@@ -453,11 +457,14 @@ public abstract class AbstractInstances {
 		String simplifiedFeaturePath = null;
 		if (null != dependencyPath) {
 			simplifiedFeaturePath = dependencyExtractor
-					.getSimplifiedShortestPath(triggerToken, token);
+					.getSimplifiedShortestPath(triggerToken, annoToken, stage);
 		} else {
 			simplifiedFeaturePath = dependencyExtractor
-					.getSimplifiedReversedShortestPath(triggerToken, token);
+					.getSimplifiedReversedShortestPath(triggerToken, annoToken,
+							stage);
 		}
+		simplifiedFeaturePath = areSameTokens ? "SAMETOKEN"
+				: simplifiedFeaturePath;
 		simplifiedFeaturePath = (null == simplifiedFeaturePath ? null
 				: "dep_simple_".concat(simplifiedFeaturePath));
 		featuresString.add(null == simplifiedFeaturePath ? new String[0]
@@ -482,7 +489,7 @@ public abstract class AbstractInstances {
 						simplifiedFeaturePath) });
 
 		// trigger token & trigger type
-		String triggerText = "text_".concat(token.getCoveredText()
+		String triggerText = "text_".concat(trigger.getCoveredText()
 				.toLowerCase());
 		featuresString.add(null == featurePath ? new String[0]
 				: new String[] { triggerText.concat("_").concat(featurePath) });
@@ -497,8 +504,9 @@ public abstract class AbstractInstances {
 				: new String[] { eventType.concat("_").concat(
 						simplifiedFeaturePath) });
 
-		// trigger lemma
-		String triggerLemma = "triggerLemma_".concat(triggerToken.getLemma()
+		// trigger lemma (using the token's POS, which may be inaccurate)
+		String triggerLemma = "triggerLemma_".concat(BioLemmatizerUtil
+				.lemmatizeWord(trigger.getCoveredText(), triggerToken.getPos())
 				.toLowerCase());
 		featuresString
 				.add(null == featurePath ? new String[0]
@@ -506,9 +514,9 @@ public abstract class AbstractInstances {
 								featurePath) });
 
 		// trigger sublemma
-		String triggerSubLemma = (null == triggerToken.getSubLemma() ? triggerToken
-				.getLemma() : "triggerSubLemma_".concat(triggerToken
-				.getSubLemma().toLowerCase()));
+		String triggerSubLemma = (null == triggerToken.getSubLemma() ? triggerLemma
+				: "triggerSubLemma_".concat(triggerToken.getSubLemma()
+						.toLowerCase()));
 		featuresString.add(null == featurePath ? new String[0]
 				: new String[] { triggerSubLemma.concat("_")
 						.concat(featurePath) });
@@ -540,81 +548,110 @@ public abstract class AbstractInstances {
 			argType = "argType_".concat(((Trigger) anno).getEventType());
 		}
 		featuresString.add(null == featurePath ? new String[0]
-				: new String[] { triggerText.concat("_").concat(featurePath)
+				: new String[] { triggerLemma.concat("_").concat(featurePath)
 						.concat("_").concat(argType) });
+		featuresString.add(null == featurePath ? new String[0]
+				: new String[] { triggerSubLemma.concat("_")
+						.concat(featurePath).concat("_").concat(argType) });
 		featuresString.add(null == featurePath ? new String[0]
 				: new String[] { triggerClassString.concat("_")
 						.concat(featurePath).concat("_").concat(argType) });
 
 		// text string from trigger to theme/cause: compensate when parsing
 		// fails
-		List<Token> tokensBetween = JCasUtil.selectCovered(jcas, Token.class,
-				sentence);
-		List<Protein> proteinsBetween = JCasUtil.selectCovered(jcas,
-				Protein.class, sentence);
-		int start = Math.min(token.getBegin(), triggerToken.getBegin());
-		int end = Math.max(token.getEnd(), triggerToken.getEnd());
-		boolean reversed = (start != triggerToken.getBegin());
+		String textBetween = "", textAbsBetween = "", textShortBetween = "";
 
-		List<String> tokensTextBetween = new ArrayList<String>();
-		List<String> tokensAbsTextBetween = new ArrayList<String>();
+		if (!areSameTokens) {
+			List<Token> tokensBetween = JCasUtil.selectCovered(jcas,
+					Token.class, sentence);
+			List<Protein> proteinsBetween = JCasUtil.selectCovered(jcas,
+					Protein.class, sentence);
+			int start = Math.min(annoToken.getBegin(), triggerToken.getBegin());
+			int end = Math.max(annoToken.getEnd(), triggerToken.getEnd());
+			boolean reversed = (start != triggerToken.getBegin());
 
-		tokensLoop: for (Token aToken : tokensBetween) {
+			List<String> tokensTextBetween = new ArrayList<String>();
+			List<String> tokensAbsTextBetween = new ArrayList<String>();
 
-			if (aToken.getBegin() < start || !POS.isPos(aToken.getPos())) {
-				continue tokensLoop;
-			} else if (aToken.getEnd() >= end) {
-				break tokensLoop;
-			}
+			tokensLoop: for (Token aToken : tokensBetween) {
 
-			// if it is a protein
-			for (Protein aProtein : proteinsBetween) {
-				if (aToken.getBegin() == aProtein.getBegin()) {
-					tokensTextBetween.add("PROTEIN");
-					tokensAbsTextBetween.add("PROTEIN");
+				if (aToken.getBegin() < start || !POS.isPos(aToken.getPos())) {
 					continue tokensLoop;
-				} else if (aToken.getBegin() > aProtein.getBegin()
-						&& aToken.getEnd() <= aProtein.getEnd()) {
+				} else if (aToken.getEnd() >= end) {
+					break tokensLoop;
+				}
+
+				// if it is a protein
+				for (Protein aProtein : proteinsBetween) {
+					if (aToken.getBegin() == aProtein.getBegin()) {
+						tokensTextBetween.add("PROTEIN");
+						tokensAbsTextBetween.add("PROTEIN");
+						continue tokensLoop;
+					} else if (aToken.getBegin() > aProtein.getBegin()
+							&& aToken.getEnd() <= aProtein.getEnd()) {
+						continue tokensLoop;
+					}
+				}
+				if (aToken.getBegin() == trigger.getBegin()) {
+					tokensAbsTextBetween.add(trigger.getEventType());
+					continue tokensLoop;
+				} else if (aToken.getBegin() > trigger.getBegin()
+						&& aToken.getEnd() <= trigger.getEnd()) {
 					continue tokensLoop;
 				}
-			}
-			if (aToken.getBegin() == trigger.getBegin()) {
-				tokensAbsTextBetween.add(trigger.getEventType());
-				continue tokensLoop;
-			} else if (aToken.getBegin() > trigger.getBegin()
-					&& aToken.getEnd() <= trigger.getEnd()) {
-				continue tokensLoop;
+
+				tokensTextBetween.add(aToken.getLemma().toLowerCase());
+				tokensAbsTextBetween.add(aToken.getLemma().toLowerCase());
+
 			}
 
-			tokensTextBetween.add(aToken.getLemma().toLowerCase());
-			tokensAbsTextBetween.add(aToken.getLemma().toLowerCase());
-
+			for (String aText : tokensTextBetween) {
+				if (reversed) {
+					textBetween = aText.concat(textBetween.equals("") ? ""
+							: "_".concat(textBetween));
+				} else {
+					textBetween = textBetween.equals("") ? aText : textBetween
+							.concat("_").concat(aText);
+				}
+			}
+			for (String aText : tokensAbsTextBetween) {
+				if (reversed) {
+					textAbsBetween = aText
+							.concat(textAbsBetween.equals("") ? "" : "_"
+									.concat(textAbsBetween));
+				} else {
+					textAbsBetween = textAbsBetween.equals("") ? aText
+							: textAbsBetween.concat("_").concat(aText);
+				}
+			}
+			// concatenate text between trigger and theme/cause with the
+			// previous
+			// features.
+			textBetween = textBetween.equals("") ? null : "textString_".concat(
+					reversed ? "reversed_" : "").concat(textBetween);
+			textAbsBetween = textAbsBetween.equals("") ? null
+					: "textStringAbs_".concat(reversed ? "reversed_" : "")
+							.concat(textAbsBetween);
+			for (int i = 1; i < tokensAbsTextBetween.size() - 1; i++) {
+				if (reversed) {
+					textShortBetween = tokensAbsTextBetween.get(i).concat(
+							textShortBetween.equals("") ? "" : "_"
+									.concat(textShortBetween));
+				} else {
+					textShortBetween = textShortBetween.equals("") ? tokensAbsTextBetween
+							.get(i) : textShortBetween.concat("_").concat(
+							tokensAbsTextBetween.get(i));
+				}
+			}
+			textShortBetween = textShortBetween.equals("") ? null
+					: "textStringShort_".concat(reversed ? "reversed_" : "")
+							.concat(textShortBetween);
+		} else {
+			textBetween = "SAMETOKEN";
+			textAbsBetween = "SAMETOKEN";
+			textShortBetween = "SAMETOKEN";
 		}
 
-		String textBetween = "", textAbsBetween = "";
-		for (String aText : tokensTextBetween) {
-			if (reversed) {
-				textBetween = aText.concat(textBetween.equals("") ? "" : "_"
-						.concat(textBetween));
-			} else {
-				textBetween = textBetween.equals("") ? aText : textBetween
-						.concat("_").concat(aText);
-			}
-		}
-		for (String aText : tokensAbsTextBetween) {
-			if (reversed) {
-				textAbsBetween = aText.concat(textAbsBetween.equals("") ? ""
-						: "_".concat(textAbsBetween));
-			} else {
-				textAbsBetween = textAbsBetween.equals("") ? aText
-						: textAbsBetween.concat("_").concat(aText);
-			}
-		}
-
-		// concatenate text between trigger and theme/cause with the previous
-		// features.
-		textBetween = textBetween.equals("") ? null : "textString_".concat(
-				reversed ? "reversed_" : "").concat(textBetween);
 		featuresString.add(null == textBetween ? new String[0]
 				: new String[] { textBetween });
 		featuresString.add(null == textBetween ? new String[0]
@@ -623,8 +660,6 @@ public abstract class AbstractInstances {
 				.add(null != textBetween && null != dependencyPath ? new String[] { dependencyPath
 						.concat("_").concat(textBetween) } : new String[0]);
 
-		textAbsBetween = textAbsBetween.equals("") ? null : "textStringAbs_"
-				.concat(reversed ? "reversed_" : "").concat(textAbsBetween);
 		featuresString.add(null == textAbsBetween ? new String[0]
 				: new String[] { textAbsBetween });
 		featuresString
@@ -632,21 +667,6 @@ public abstract class AbstractInstances {
 						: new String[] { triggerText.concat("_").concat(
 								textAbsBetween) });
 
-		String textShortBetween = "";
-		for (int i = 1; i < tokensAbsTextBetween.size() - 1; i++) {
-			if (reversed) {
-				textShortBetween = tokensAbsTextBetween.get(i).concat(
-						textShortBetween.equals("") ? "" : "_"
-								.concat(textShortBetween));
-			} else {
-				textShortBetween = textShortBetween.equals("") ? tokensAbsTextBetween
-						.get(i) : textShortBetween.concat("_").concat(
-						tokensAbsTextBetween.get(i));
-			}
-		}
-		textShortBetween = textShortBetween.equals("") ? null
-				: "textStringShort_".concat(reversed ? "reversed_" : "")
-						.concat(textShortBetween);
 		featuresString.add(null == textShortBetween ? new String[0]
 				: new String[] { textShortBetween });
 		featuresString.add(null == textShortBetween ? new String[0]
@@ -656,14 +676,14 @@ public abstract class AbstractInstances {
 				.add(null != textShortBetween && null != dependencyPath ? new String[] { dependencyPath
 						.concat("_").concat(textShortBetween) } : new String[0]);
 
-		if (themeOrCause.equals("Cause")) {
+		if (stage.equals(Stage.CAUSE)) {
 			String pathToTheme = null;
 			if (null != themeToken) {
-				pathToTheme = dependencyExtractor.getShortestPath(token,
-						themeToken);
+				pathToTheme = dependencyExtractor.getShortestPath(annoToken,
+						themeToken, stage);
 				if (null == pathToTheme) {
 					pathToTheme = dependencyExtractor.getReversedShortestPath(
-							token, themeToken);
+							annoToken, themeToken, stage);
 				}
 			}
 			featuresString
@@ -671,57 +691,26 @@ public abstract class AbstractInstances {
 							: new String[0]);
 		}
 
+		String label;
+		switch (stage) {
+		case THEME:
+			label = "Theme";
+			break;
+		case CAUSE:
+			label = "Cause";
+			break;
+		default:
+			label = null;
+		}
 		if (isTruepositive) {
 
-			instance.setLabelString(themeOrCause);
+			instance.setLabelString(label);
 
 		} else {
-			instance.setLabelString("Non_".concat(themeOrCause.toLowerCase()));
+			instance.setLabelString("Non_".concat(label.toLowerCase()));
 		}
 
 		return instance;
-	}
-
-	protected Token getProteinToken(JCas jcas, List<Protein> proteins,
-			String themeId) {
-
-		Token themeToken = null;
-
-		for (Protein protein : proteins) {
-			if (protein.getId().equals(themeId)) {
-
-				List<Token> annoTokens = JCasUtil.selectCovered(jcas,
-						Token.class, protein);
-
-				// if protein/trigger is within a token
-				if (annoTokens.size() == 0) {
-					FSIterator<Annotation> iter = jcas.getAnnotationIndex(
-							Token.type).iterator();
-					annoTokens = new ArrayList<Token>();
-					while (iter.hasNext()) {
-						Token token = (Token) iter.next();
-						if (token.getBegin() <= protein.getBegin()
-								&& token.getEnd() >= protein.getEnd()) {
-							annoTokens.add(token);
-							break;
-						}
-					}
-				}
-
-				themeToken = annoTokens.get(annoTokens.size() - 1);
-				// for (Token aToken : annoTokens) {
-				//
-				// try {
-				// Double.parseDouble(aToken.getLemma());
-				// break;
-				// } catch (NumberFormatException e) {
-				// themeToken = aToken;
-				// }
-				//
-				// }
-			}
-		}
-		return themeToken;
 	}
 
 	protected Instance bindingEventToInstance(JCas jcas, Sentence sentence,
@@ -729,7 +718,8 @@ public abstract class AbstractInstances {
 			DependencyExtractor dependencyExtractor) {
 
 		boolean truepositive = true;
-		if (themes.size() == bindingEvent.getThemes().size()) {
+		if (null != bindingEvent.getThemes()
+				&& themes.size() == bindingEvent.getThemes().size()) {
 			themeSearchingLoop: for (Protein protein : themes) {
 				boolean foundTheProtein = false;
 				for (int i = 0; i < bindingEvent.getThemes().size(); i++) {
@@ -822,12 +812,12 @@ public abstract class AbstractInstances {
 				.size()];
 		for (Token aThemeToken : themeTokens) {
 			String dependencyPath = dependencyExtractor.getShortestPath(
-					triggerToken, aThemeToken);
+					triggerToken, aThemeToken, Stage.BINDING);
 			String featurePath = dependencyPath;
 
 			if (null == dependencyPath) {
 				featurePath = dependencyExtractor.getReversedShortestPath(
-						triggerToken, aThemeToken);
+						triggerToken, aThemeToken, Stage.BINDING);
 			}
 			featurePath = (null == featurePath ? null : "dep_"
 					.concat(featurePath));
@@ -842,11 +832,11 @@ public abstract class AbstractInstances {
 			// anything ending in subjpass --> subjpass
 			if (null != dependencyPath) {
 				simplifiedFeaturePath = dependencyExtractor
-						.getSimplifiedShortestPath(triggerToken, aThemeToken);
+						.getSimplifiedShortestPath(triggerToken, aThemeToken, Stage.BINDING);
 			} else {
 				simplifiedFeaturePath = dependencyExtractor
 						.getSimplifiedReversedShortestPath(triggerToken,
-								aThemeToken);
+								aThemeToken, Stage.BINDING);
 			}
 			simplifiedFeaturePath = (null == simplifiedFeaturePath ? null
 					: "dep_simple_".concat(simplifiedFeaturePath));
@@ -1019,6 +1009,65 @@ public abstract class AbstractInstances {
 	protected boolean isWord(String text) {
 
 		return text.matches("^[a-zA-Z].+");
+	}
+
+	/**
+	 * Only Binding may have more than one theme, but it doesn't have cause.
+	 * Therefore, there is only one returned theme token.
+	 * 
+	 * @param event
+	 * @return
+	 */
+	protected Token getThemeToken(JCas jcas, Event event, Sentence sentence) {
+
+		String themeId = event.getThemes(0);
+
+		for (Protein protein : JCasUtil.selectCovered(jcas, Protein.class,
+				sentence)) {
+			if (themeId.equals(protein.getId())) {
+				return getProteinToken(jcas, protein);
+			}
+		}
+		for (Event anEvent : JCasUtil
+				.selectCovered(jcas, Event.class, sentence)) {
+			// an event can't be the theme of itself
+			if (event.getBegin() == anEvent.getBegin()
+					&& event.getEnd() == anEvent.getEnd()) {
+				continue;
+			}
+			if (themeId.equals(anEvent.getId())) {
+				return getTriggerToken(jcas, anEvent.getTrigger());
+			}
+		}
+		return null;
+	}
+
+	protected Token getProteinToken(JCas jcas, Protein protein) {
+		// find the protein token
+		List<Token> proteinTokens = JCasUtil.selectCovered(jcas, Token.class,
+				protein);
+
+		// if protein is within a token
+		if (proteinTokens.size() == 0) {
+			FSIterator<Annotation> iter = jcas.getAnnotationIndex(Token.type)
+					.iterator();
+			proteinTokens = new ArrayList<Token>();
+			while (iter.hasNext()) {
+				Token aToken = (Token) iter.next();
+				if (aToken.getBegin() <= protein.getBegin()
+						&& aToken.getEnd() >= protein.getEnd()) {
+					proteinTokens.add(aToken);
+					break;
+				}
+			}
+		}
+
+		if (proteinTokens.size() == 0) {
+			logger.warning("No token found for protein.");
+			return null;
+		}
+
+		return proteinTokens.get(proteinTokens.size() - 1);
 	}
 
 }
