@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:documentation>
+      * Filename   : config.xsd
+      * Description: XML Schema for BioNLP
+      * Author(s)  : Chen Li
+      * Revision   : $Id: config.xsd 8275 2013-10-16 16:28:25Z $
+      * $HeadURL: https://github.com/li-chen/ee $
+      * 
+      * Copyright 2013 Chen Li
+      * 
+      * This software is licensed according to the terms described in the file
+      * named "LICENSE.txt" included with this distribution and available
+      * online at https://github.com/li-chen/ee/LICENSE.txt
+    </xs:documentation>
+  </xs:annotation>
+  <xs:element name="network">
+    <xs:complexType>
+      <xs:sequence>
+	<xs:element name="entities">
+	  <xs:element name="entity" type="xs:string" minOccurs="1" />
+	</xs:element>
+	<xs:element name="events">
+	  <xs:element name="event">
+	    <xs:complexType>
+	      <xs:sequence>
+		<xs:element name="type" type="xs:string" />
+		<xs:element name="arguments">
+		  <xs:complexType>
+		    <xs:sequence>
+		      <xs:element name="themes">
+			<xs:attribute name="multi" type="xs:boolean" default="false" />
+			<xs:element name="theme" type="xs:string" />
+		      </xs:element>
+		      <xs:element name="causes">
+			<xs:attribute name="multi" type="xs:boolean" default="false" />
+			<xs:element name="cause" type="xs:string" />
+		      </xs:element>
+		      <xs:element name="products">
+			<xs:attribute name="multi" type="xs:boolean" default="false" />
+			<xs:element name="product" type="xs:string" />
+		      </xs:element>
+		    </xs:sequence>
+		  </xs:complexType>
+		</xs:element>
+	      </xs:sequence>
+	    </xs:complexType>
+	  </xs:element>
+	</xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
