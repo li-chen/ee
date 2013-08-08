@@ -2,6 +2,7 @@ package info.chenli.litway.exec;
 
 import info.chenli.classifier.Instance;
 import info.chenli.classifier.InstanceDictionary;
+import info.chenli.litway.corpora.Entity;
 import info.chenli.litway.corpora.Event;
 import info.chenli.litway.corpora.Protein;
 import info.chenli.litway.corpora.Sentence;
@@ -79,15 +80,15 @@ public class ArgumentInstances extends AbstractInstances {
 
 			List<Event> events = JCasUtil.selectCovered(jcas, Event.class,
 					sentence);
-			List<Protein> proteins = JCasUtil.selectCovered(jcas,
-					Protein.class, sentence);
+			List<Entity> proteins = JCasUtil.selectCovered(jcas,
+					Entity.class, sentence);
 
 			for (Event event : events) {
 
 				for (int i = 0; i < event.getArguments(argument).size(); i++) {
 
 					// check protein themes
-					for (Protein protein : proteins) {
+					for (Entity protein : proteins) {
 
 						boolean isTheme = event.getThemes(i).equals(
 								protein.getId());

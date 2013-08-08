@@ -13,8 +13,8 @@ import org.apache.uima.jcas.cas.IntegerList;
 
 
 /** 
- * Updated by JCasGen Thu Apr 25 13:17:47 BST 2013
- * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
+ * Updated by JCasGen Thu Aug 08 16:36:25 BST 2013
+ * XML source: /automount/isilon4_ifs-research/textmining/chenli/projects/bionlp/2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Dependency extends Annotation {
   /** @generated

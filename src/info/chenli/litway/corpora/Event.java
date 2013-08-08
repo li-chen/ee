@@ -7,15 +7,17 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 
 
+import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.cas.StringArray;
 
 
 /** 
- * Updated by JCasGen Thu Apr 25 13:17:47 BST 2013
- * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
+ * Updated by JCasGen Thu Aug 08 16:36:25 BST 2013
+ * XML source: /automount/isilon4_ifs-research/textmining/chenli/projects/bionlp/2013/eventExtractor/desc/typeSystemDescriptor.xml
  * @generated */
 public class Event extends Annotation {
   /** @generated
@@ -131,7 +133,41 @@ public class Event extends Annotation {
     if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_product == null)
       jcasType.jcas.throwFeatMissing("product", "info.chenli.litway.corpora.Event");
     jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_product, v);}    
-                                    //*--------------*
+   
+    
+  //*--------------*
+  //* Feature: Arguments
+
+  /** getter for Arguments - gets 
+   * @generated */
+  public FSArray getArguments() {
+    if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_arguments == null)
+      jcasType.jcas.throwFeatMissing("arguments", "info.chenli.litway.corpora.Event");
+    return (FSArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Event_Type)jcasType).casFeatCode_arguments)));}
+    
+  /** setter for Arguments - sets  
+   * @generated */
+  public void setArguments(FSArray v) {
+    if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_arguments == null)
+      jcasType.jcas.throwFeatMissing("arguments", "info.chenli.litway.corpora.Event");
+    jcasType.ll_cas.ll_setRefValue(addr, ((Event_Type)jcasType).casFeatCode_arguments, jcasType.ll_cas.ll_getFSRef(v));}    
+    
+  /** indexed getter for Arguments - gets an indexed value - 
+   * @generated */
+  public TOP getArguments(int i) {
+    if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_arguments == null)
+      jcasType.jcas.throwFeatMissing("arguments", "info.chenli.litway.corpora.Event");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Event_Type)jcasType).casFeatCode_arguments), i);
+    return (TOP)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Event_Type)jcasType).casFeatCode_arguments), i)));}
+
+  /** indexed setter for Arguments - sets an indexed value - 
+   * @generated */
+  public void setArguments(int i, TOP v) { 
+    if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_arguments == null)
+      jcasType.jcas.throwFeatMissing("arguments", "info.chenli.litway.corpora.Event");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Event_Type)jcasType).casFeatCode_arguments), i);
+    jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Event_Type)jcasType).casFeatCode_arguments), i, jcasType.ll_cas.ll_getFSRef(v));}
+                                                      //*--------------*
   //* Feature: id
 
   /** getter for id - gets 
