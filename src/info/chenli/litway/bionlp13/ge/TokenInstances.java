@@ -176,6 +176,8 @@ public class TokenInstances extends AbstractInstances {
 
 		List<String> modifiers = new ArrayList<String>();
 		List<String> heads = new ArrayList<String>();
+		List<String> simpleModifiers = new ArrayList<String>();
+		List<String> simpleHeads = new ArrayList<String>();
 		List<String> noLemmaModifiers = new ArrayList<String>();
 		List<String> noLemmaHeads = new ArrayList<String>();
 		List<String> noDepModifiers = new ArrayList<String>();
@@ -195,6 +197,9 @@ public class TokenInstances extends AbstractInstances {
 						modifiers.add(lemma.concat("_")
 								.concat(pair.getRelation()).concat("_lemma_")
 								.concat(tokenLemma));
+						simpleModifiers.add(lemma.concat("_")
+								.concat(pair.getSimpleRelation())
+								.concat("_lemma_").concat(tokenLemma));
 						noLemmaModifiers.add(pair.getRelation()
 								.concat("_lemma_").concat(tokenLemma));
 						noDepModifiers.add(lemma.concat("_lemma_").concat(
@@ -215,13 +220,17 @@ public class TokenInstances extends AbstractInstances {
 			} else if (pair.getModifier() == token.getId()) {
 				for (Token aToken : tokensOfSentence) {
 					if (aToken.getId() == pair.getHead()) {
+						String tokenLemma = isProtein(aToken, sentenceProteins) ? "PROTEIN"
+								: aToken.getLemma().toLowerCase();
 						heads.add(lemma.concat("_-").concat(pair.getRelation())
-								.concat("_lemma_")
-								.concat(aToken.getLemma().toLowerCase()));
+								.concat("_lemma_").concat(tokenLemma));
+						simpleHeads.add(lemma.concat("_-")
+								.concat(pair.getSimpleRelation())
+								.concat("_lemma_").concat(tokenLemma));
 						noLemmaHeads.add(pair.getRelation().concat("_lemma_")
-								.concat(aToken.getLemma().toLowerCase()));
-						noDepHeads.add(lemma.concat("_-").concat("_lemma_")
-								.concat(aToken.getLemma().toLowerCase()));
+								.concat(tokenLemma));
+						noDepHeads.add(lemma.concat("_-_lemma_").concat(
+								tokenLemma));
 					}
 				}
 			}
@@ -230,6 +239,11 @@ public class TokenInstances extends AbstractInstances {
 		modifiersFeature = modifiers.toArray(modifiersFeature);
 		String[] headsFeature = new String[heads.size()];
 		headsFeature = heads.toArray(headsFeature);
+		String[] simpleModifiersFeature = new String[simpleModifiers.size()];
+		simpleModifiersFeature = simpleModifiers
+				.toArray(simpleModifiersFeature);
+		String[] simpleHeadsFeature = new String[simpleHeads.size()];
+		simpleHeadsFeature = simpleHeads.toArray(simpleHeadsFeature);
 		String[] noLemmaModifiersFeature = new String[noLemmaModifiers.size()];
 		noLemmaModifiersFeature = noLemmaModifiers
 				.toArray(noLemmaModifiersFeature);
@@ -248,10 +262,12 @@ public class TokenInstances extends AbstractInstances {
 
 		featureString.add(modifiersFeature);
 		featureString.add(headsFeature);
+		// featureString.add(simpleModifiersFeature);
+		// featureString.add(simpleHeadsFeature);
 		// featureString.add(noLemmaModifiersFeature);
 		// featureString.add(noLemmaHeadsFeature);
-		// featureString.add(noDepModifiersFeature);
-		// featureString.add(noDepHeadsFeature);
+		featureString.add(noDepModifiersFeature);
+		featureString.add(noDepHeadsFeature);
 		// featureString.add(nsubjFeature);
 		// featureString.add(dobjFeature);
 		// featureString.add(iobjFeature);

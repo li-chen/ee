@@ -53,7 +53,24 @@ public class Instance {
 
 	@Override
 	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		if (null != getLabelString()) {
+			sb.append(String.valueOf(getLabel()));
+		}
 
+		for (String[] values : getFeaturesString()) {
+			for (String value : values) {
+				sb.append(" "
+				// .concat(String.valueOf(getFeaturesNumeric()[i])
+				// .concat(":")
+						.concat(String.valueOf(value)));
+			}
+		}
+
+		return sb.toString();
+	}
+
+	public String toNumeric() {
 		StringBuffer sb = new StringBuffer();
 		if (null != getLabelString()) {
 			sb.append(String.valueOf(getLabel()));

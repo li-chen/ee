@@ -162,14 +162,14 @@ public class EventExtractor extends TokenInstances {
 				if (!POS.isPos(token.getPos())) {
 					continue triggerDetectionLoop;
 				}
-				for (Protein protein : sentenceProteins) {
-					if ((token.getBegin() >= protein.getBegin() && token
-							.getBegin() <= protein.getEnd())
-							|| (token.getEnd() >= protein.getBegin() && token
-									.getEnd() <= protein.getEnd())) {
-						continue triggerDetectionLoop;
-					}
-				}
+				// for (Protein protein : sentenceProteins) {
+				// if ((token.getBegin() >= protein.getBegin() && token
+				// .getBegin() <= protein.getEnd())
+				// || (token.getEnd() >= protein.getBegin() && token
+				// .getEnd() <= protein.getEnd())) {
+				// continue triggerDetectionLoop;
+				// }
+				// }
 				Instance tokenInstance = tokenToInstance(jcas, token, null,
 						tokens, sentenceProteins, pairsOfSentence,
 						dependencyExtractor);
@@ -178,8 +178,16 @@ public class EventExtractor extends TokenInstances {
 				// .getFeaturesString().get(2))) {
 				// continue;
 				// }
-				int prediction = triggerRecogniser.predict(triggerDict
-						.instanceToNumeric(tokenInstance));
+				EventType et = TriggerWord.getEventType(null == token
+						.getSubStem() ? token.getStem() : token.getSubStem());
+
+				int prediction = triggerDict
+						.getLabelNumeric(String.valueOf(et));
+
+				if (null == et) {
+					prediction = triggerRecogniser.predict(triggerDict
+							.instanceToNumeric(tokenInstance));
+				}
 
 				if (prediction != triggerDict.getLabelNumeric(String
 						.valueOf(EventType.Non_trigger))) {
@@ -215,30 +223,32 @@ public class EventExtractor extends TokenInstances {
 								.instanceToNumeric(proteinInstance)
 								.getFeaturesNumeric());
 
-//						if (trigger.getEventType().equals(
-//								String.valueOf(EventType.Localization))
-//								&& protein.getCoveredText().toLowerCase()
-//										.indexOf("phosp") > -1) {
-//							System.out.println(proteinInstance.getLabel() + ":"
-//									+ proteinInstance.getLabelString() + "("
-//									+ trigger.getCoveredText() + ")" + "\t"
-//									+ protein.getBegin() + ":"
-//									+ protein.getEnd() + "("
-//									+ protein.getCoveredText() + ")");
-//							for (String[] feature : proteinInstance
-//									.getFeaturesString()) {
-//								for (String value : feature) {
-//									System.out.print("\t" + value);
-//								}
-//							}
-//							System.out.println();
-//							System.out.print(prediction);
-//							for (int value : proteinInstance
-//									.getFeaturesNumeric()) {
-//								System.out.print("\t" + value);
-//							}
-//							System.out.println();
-//						}
+						// if (trigger.getEventType().equals(
+						// String.valueOf(EventType.Protein_catabolism))
+						// && protein.getCoveredText().toLowerCase()
+						// .indexOf("ikappabalpha") > -1) {
+						// System.out.println(proteinInstance.getLabel() + ":"
+						// + proteinInstance.getLabelString() + "\t"
+						// + trigger.getBegin() + ":"
+						// + trigger.getEnd() + "("
+						// + trigger.getCoveredText() + ")\t"
+						// + protein.getBegin() + ":"
+						// + protein.getEnd() + "("
+						// + protein.getCoveredText() + ")");
+						// for (String[] feature : proteinInstance
+						// .getFeaturesString()) {
+						// for (String value : feature) {
+						// System.out.print("\t" + value);
+						// }
+						// }
+						// System.out.println();
+						// System.out.print(prediction);
+						// for (int value : proteinInstance
+						// .getFeaturesNumeric()) {
+						// System.out.print("\t" + value);
+						// }
+						// System.out.println();
+						// }
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 
@@ -356,6 +366,12 @@ public class EventExtractor extends TokenInstances {
 										sentence, protein, trigger,
 										pairsOfSentence, dependencyExtractor,
 										false));
+						if (trigger.getEventType().equals(
+								String.valueOf(EventType.Positive_regulation))
+								&& trigger.getCoveredText().toLowerCase()
+										.indexOf("induce") > -1) {
+							System.out.println(proteinInstance);
+						}
 
 						double prediction = themeRecogniser
 								.predict(proteinInstance.getFeaturesNumeric());

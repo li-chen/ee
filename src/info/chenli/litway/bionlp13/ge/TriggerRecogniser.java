@@ -215,28 +215,39 @@ public class TriggerRecogniser extends LibLinearFacade {
 					Instance instance = instancesGetter.tokenToInstance(jcas,
 							token, null, tokens, sentenceProteins,
 							pairsOfSentence, dependencyExtractor);
-					instance = dict.instanceToNumeric(instance);
-					int prediction = instance.getFeaturesNumeric().length == 0 ? dict
-							.getLabelNumeric(String
-									.valueOf(EventType.Non_trigger)) : this
-							.predict(instance);
 
-					if (token.getCoveredText().toLowerCase().indexOf("import") > -1) {
-						System.out.println(instance.getLabel() + ":"
-								+ instance.getLabelString() + "\t"
-								+ token.getBegin() + ":" + token.getEnd());
-						for (String[] feature : instance.getFeaturesString()) {
-							for (String value : feature) {
-								System.out.print("\t" + value);
-							}
-						}
-						System.out.println();
-						System.out.print(prediction);
-						for (int value : instance.getFeaturesNumeric()) {
-							System.out.print("\t" + value);
-						}
-						System.out.println();
+					// constraints
+					EventType et = TriggerWord.getEventType(token.getStem());
+					int prediction = dict.getLabelNumeric(String.valueOf(et));
+
+					if (null == et) {
+						instance = dict.instanceToNumeric(instance);
+						prediction = instance.getFeaturesNumeric().length == 0 ? dict
+								.getLabelNumeric(String
+										.valueOf(EventType.Non_trigger)) : this
+								.predict(instance);
 					}
+
+//					if (token.getCoveredText().toLowerCase().indexOf("express") > -1
+//							|| token.getCoveredText().toLowerCase()
+//									.indexOf("secret") > -1
+//							|| token.getCoveredText().toLowerCase()
+//									.indexOf("produc") > -1) {
+//						System.out.println(instance.getLabel() + ":"
+//								+ instance.getLabelString() + "\t"
+//								+ token.getBegin() + ":" + token.getEnd());
+//						for (String[] feature : instance.getFeaturesString()) {
+//							for (String value : feature) {
+//								System.out.print("\t" + value);
+//							}
+//						}
+//						System.out.println();
+//						System.out.print(prediction);
+//						for (int value : instance.getFeaturesNumeric()) {
+//							System.out.print("\t" + value);
+//						}
+//						System.out.println();
+//					}
 					if (prediction != dict.getLabelNumeric(String
 							.valueOf(EventType.Non_trigger))) {
 						Trigger trigger = new Trigger(jcas, token.getBegin(),

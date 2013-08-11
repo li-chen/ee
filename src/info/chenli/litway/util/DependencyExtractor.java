@@ -128,17 +128,7 @@ public class DependencyExtractor {
 									.getModifier()) {
 						String relation = pair.getRelation();
 						if (simplified) {
-							if (relation.equals("nn")
-									|| relation.equals("amond")) {
-								relation = "nmod";
-							} else if (relation.endsWith("subj")) {
-								relation = "subj";
-							} else if (relation.endsWith("subjpass")) {
-								relation = "subjpass";
-								// } else if (stage.equals(Stage.CAUSE)
-								// && relation.startsWith("prep")) {
-								// relation = "prep";
-							}
+							relation = pair.getSimpleRelation();
 						}
 						if (null == dependencyPath) {
 							dependencyPath = relation;
@@ -151,7 +141,12 @@ public class DependencyExtractor {
 				}
 			}
 
-			if (stage.equals(Stage.THEME)) {
+			//
+			// Need to find a way to have constrainsts on the process level
+			// rather than dependency path extraction level, as it jeopardize
+			// the application flexibility
+			//
+			if (null != stage && stage.equals(Stage.THEME)) {
 				// create equal path for the tokens connected by "or"
 				if (null != dependencyPath
 						&& dependencyPath.indexOf("prep_of") > -1) {

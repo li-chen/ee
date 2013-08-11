@@ -175,9 +175,16 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 
 		// as many protein (1036 in bionlp development data) are within token.
 		// They will be separated as tokens
-//		postProcessSentence(jcas, sentence, pairsOfSentence);
+		// postProcessSentence(jcas, sentence, pairsOfSentence);
 	}
 
+	/**
+	 * Break hyphenated word into tokens.
+	 * 
+	 * @param jcas
+	 * @param sentence
+	 * @param pairsOfSentence
+	 */
 	private void postProcessSentence(JCas jcas, Sentence sentence,
 			Set<Pair> pairsOfSentence) {
 
