@@ -188,8 +188,8 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 	private void postProcessSentence(JCas jcas, Sentence sentence,
 			Set<Pair> pairsOfSentence) {
 
-		List<Protein> sentenceProteins = JCasUtil.selectCovered(jcas,
-				Protein.class, sentence);
+		List<Entity> sentenceProteins = JCasUtil.selectCovered(jcas,
+				Entity.class, sentence);
 
 		List<Token> originalTokens = JCasUtil.selectCovered(jcas, Token.class,
 				sentence);
@@ -200,9 +200,9 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 		// process the tokens which may contain protein and/or trigger.
 		for (Token token : originalTokens) {
 
-			List<Protein> containedProteins = new ArrayList<Protein>();
+			List<Entity> containedProteins = new ArrayList<Entity>();
 
-			for (Protein protein : sentenceProteins) {
+			for (Entity protein : sentenceProteins) {
 				// if the protein is the token
 				if (protein.getBegin() == token.getBegin()
 						&& protein.getEnd() == token.getEnd()) {
@@ -228,7 +228,7 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 
 			// collect all candidate new tokens
 			int tokenBegin = token.getBegin(), tokenEnd;
-			for (Protein protein : containedProteins) {
+			for (Entity protein : containedProteins) {
 				tokenEnd = protein.getBegin();
 				if (tokenBegin == tokenEnd) {
 					tokenEnd = protein.getEnd();
@@ -256,7 +256,7 @@ public class BioNLPSyntacticAnnotator extends JCasAnnotator_ImplBase {
 			}
 
 			System.out.print(token.getCoveredText() + "\t|");
-			for (Protein protein : containedProteins) {
+			for (Entity protein : containedProteins) {
 				System.out.print("\t" + protein.getCoveredText());
 			}
 			System.out.print("\t|");

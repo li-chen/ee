@@ -6,12 +6,17 @@
   <vendor/>
   <types>
     <typeDescription>
-      <name>info.chenli.litway.corpora.Protein</name>
+      <name>info.chenli.litway.corpora.Entity</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
           <name>id</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>entityType</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
@@ -69,6 +74,11 @@
           <name>product</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>arguments</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>

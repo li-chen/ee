@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Apr 25 13:17:47 BST 2013
+ * Updated by JCasGen Thu Aug 08 16:36:25 BST 2013
  * @generated */
 public class Event_Type extends Annotation_Type {
   /** @generated */
@@ -118,6 +118,43 @@ public class Event_Type extends Annotation_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_product, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_arguments;
+  /** @generated */
+  final int     casFeatCode_arguments;
+  /** @generated */ 
+  public int getArguments(int addr) {
+        if (featOkTst && casFeat_arguments == null)
+      jcas.throwFeatMissing("arguments", "info.chenli.litway.corpora.Event");
+    return ll_cas.ll_getRefValue(addr, casFeatCode_arguments);
+  }
+  /** @generated */    
+  public void setArguments(int addr, int v) {
+        if (featOkTst && casFeat_arguments == null)
+      jcas.throwFeatMissing("arguments", "info.chenli.litway.corpora.Event");
+    ll_cas.ll_setRefValue(addr, casFeatCode_arguments, v);}
+    
+   /** @generated */
+  public int getArguments(int addr, int i) {
+        if (featOkTst && casFeat_arguments == null)
+      jcas.throwFeatMissing("arguments", "info.chenli.litway.corpora.Event");
+    if (lowLevelTypeChecks)
+      return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_arguments), i, true);
+    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_arguments), i);
+  return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_arguments), i);
+  }
+   
+  /** @generated */ 
+  public void setArguments(int addr, int i, int v) {
+        if (featOkTst && casFeat_arguments == null)
+      jcas.throwFeatMissing("arguments", "info.chenli.litway.corpora.Event");
+    if (lowLevelTypeChecks)
+      ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_arguments), i, v, true);
+    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_arguments), i);
+    ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_arguments), i, v);
+  }
+ 
 
 
 
@@ -182,6 +219,10 @@ public class Event_Type extends Annotation_Type {
  
     casFeat_product = jcas.getRequiredFeatureDE(casType, "product", "uima.cas.String", featOkTst);
     casFeatCode_product  = (null == casFeat_product) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_product).getCode();
+
+ 
+    casFeat_arguments = jcas.getRequiredFeatureDE(casType, "arguments", "uima.cas.FSArray", featOkTst);
+    casFeatCode_arguments  = (null == casFeat_arguments) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_arguments).getCode();
 
   }
 }

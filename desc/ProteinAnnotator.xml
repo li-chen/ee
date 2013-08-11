@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>info.chenli.litway.corpora.ProteinAnnotator</annotatorImplementationName>
+  <annotatorImplementationName>info.chenli.litway.corpora.EntityAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>EntityAnnotator</name>
     <description/>
