@@ -50,26 +50,6 @@ public class StanfordDependencyReader {
 			this.relation = relation;
 		}
 
-		public String getSimpleRelation() {
-
-			String simpleRelation;
-
-			if (this.relation.equals("nn") || this.relation.equals("amond")) {
-				simpleRelation = "nmod";
-			} else if (this.relation.endsWith("subj")) {
-				simpleRelation = "subj";
-			} else if (this.relation.endsWith("subjpass")) {
-				simpleRelation = "subjpass";
-				// } else if (stage.equals(Stage.CAUSE)
-				// && relation.startsWith("prep")) {
-				// relation = "prep";
-			} else {
-				simpleRelation = this.relation;
-			}
-
-			return simpleRelation;
-		}
-
 		@Override
 		public int compareTo(Pair aPair) {
 			if (this.getHead() == aPair.getHead()
@@ -116,6 +96,9 @@ public class StanfordDependencyReader {
 				String pairString = line.substring(line.indexOf("(") + 1,
 						line.lastIndexOf(")"));
 				String head = pairString.substring(0, pairString.indexOf(", "));
+				if (!head.contains("-")) {
+					head = pairString.substring(0, pairString.lastIndexOf(", "));
+				}
 				head = head.substring(head.lastIndexOf("-") + 1);
 				if (head.endsWith("'")) {
 					head = head.substring(0, head.indexOf("'"));

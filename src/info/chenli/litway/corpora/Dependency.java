@@ -13,8 +13,8 @@ import org.apache.uima.jcas.cas.IntegerList;
 
 
 /** 
- * Updated by JCasGen Thu Aug 08 16:36:25 BST 2013
- * XML source: /automount/isilon4_ifs-research/textmining/chenli/projects/bionlp/2013/eventExtractor/desc/typeSystemDescriptor.xml
+ * Updated by JCasGen Fri Jan 30 10:19:46 CST 2015
+ * XML source: /media/songrq/soft/litway/workspace/LitWay/desc/typeSystemDescriptor.xml
  * @generated */
 public class Dependency extends Annotation {
   /** @generated
@@ -56,10 +56,13 @@ public class Dependency extends Annotation {
     readObject();
   }   
 
-  /** <!-- begin-user-doc -->
+  /** 
+   * <!-- begin-user-doc -->
     * Write your own initialization here
     * <!-- end-user-doc -->
-  @generated modifiable */
+  *
+   * @generated modifiable 
+   */
   private void readObject() {/*default - does nothing empty block */}
      
  
@@ -68,14 +71,18 @@ public class Dependency extends Annotation {
   //* Feature: sentenceId
 
   /** getter for sentenceId - gets 
-   * @generated */
+   * @generated
+   * @return value of the feature 
+   */
   public String getSentenceId() {
     if (Dependency_Type.featOkTst && ((Dependency_Type)jcasType).casFeat_sentenceId == null)
       jcasType.jcas.throwFeatMissing("sentenceId", "info.chenli.litway.corpora.Dependency");
     return jcasType.ll_cas.ll_getStringValue(addr, ((Dependency_Type)jcasType).casFeatCode_sentenceId);}
     
   /** setter for sentenceId - sets  
-   * @generated */
+   * @generated
+   * @param v value to set into the feature 
+   */
   public void setSentenceId(String v) {
     if (Dependency_Type.featOkTst && ((Dependency_Type)jcasType).casFeat_sentenceId == null)
       jcasType.jcas.throwFeatMissing("sentenceId", "info.chenli.litway.corpora.Dependency");
@@ -86,14 +93,18 @@ public class Dependency extends Annotation {
   //* Feature: heads
 
   /** getter for heads - gets 
-   * @generated */
+   * @generated
+   * @return value of the feature 
+   */
   public IntegerList getHeads() {
     if (Dependency_Type.featOkTst && ((Dependency_Type)jcasType).casFeat_heads == null)
       jcasType.jcas.throwFeatMissing("heads", "info.chenli.litway.corpora.Dependency");
     return (IntegerList)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Dependency_Type)jcasType).casFeatCode_heads)));}
     
   /** setter for heads - sets  
-   * @generated */
+   * @generated
+   * @param v value to set into the feature 
+   */
   public void setHeads(IntegerList v) {
     if (Dependency_Type.featOkTst && ((Dependency_Type)jcasType).casFeat_heads == null)
       jcasType.jcas.throwFeatMissing("heads", "info.chenli.litway.corpora.Dependency");
@@ -104,14 +115,18 @@ public class Dependency extends Annotation {
   //* Feature: relations
 
   /** getter for relations - gets 
-   * @generated */
+   * @generated
+   * @return value of the feature 
+   */
   public StringList getRelations() {
     if (Dependency_Type.featOkTst && ((Dependency_Type)jcasType).casFeat_relations == null)
       jcasType.jcas.throwFeatMissing("relations", "info.chenli.litway.corpora.Dependency");
     return (StringList)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Dependency_Type)jcasType).casFeatCode_relations)));}
     
   /** setter for relations - sets  
-   * @generated */
+   * @generated
+   * @param v value to set into the feature 
+   */
   public void setRelations(StringList v) {
     if (Dependency_Type.featOkTst && ((Dependency_Type)jcasType).casFeat_relations == null)
       jcasType.jcas.throwFeatMissing("relations", "info.chenli.litway.corpora.Dependency");
@@ -122,14 +137,18 @@ public class Dependency extends Annotation {
   //* Feature: modifiers
 
   /** getter for modifiers - gets 
-   * @generated */
+   * @generated
+   * @return value of the feature 
+   */
   public IntegerList getModifiers() {
     if (Dependency_Type.featOkTst && ((Dependency_Type)jcasType).casFeat_modifiers == null)
       jcasType.jcas.throwFeatMissing("modifiers", "info.chenli.litway.corpora.Dependency");
     return (IntegerList)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Dependency_Type)jcasType).casFeatCode_modifiers)));}
     
   /** setter for modifiers - sets  
-   * @generated */
+   * @generated
+   * @param v value to set into the feature 
+   */
   public void setModifiers(IntegerList v) {
     if (Dependency_Type.featOkTst && ((Dependency_Type)jcasType).casFeat_modifiers == null)
       jcasType.jcas.throwFeatMissing("modifiers", "info.chenli.litway.corpora.Dependency");

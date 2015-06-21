@@ -62,7 +62,8 @@ public class ThemeInstances extends AbstractInstances {
 		Map<Integer, Set<Pair>> pairsOfArticle = StanfordDependencyReader
 				.getPairs(new File(FileUtil.removeFileNameExtension(
 						UimaUtil.getJCasFilePath(jcas)).concat(".sdepcc")));
-
+		/*String s = FileUtil.removeFileNameExtension(
+				UimaUtil.getJCasFilePath(jcas));*/
 		// Currently, one sentence is considered as one structured instance.
 		while (sentenceIter.hasNext()) {
 
@@ -81,28 +82,39 @@ public class ThemeInstances extends AbstractInstances {
 					sentence);
 			List<Protein> proteins = JCasUtil.selectCovered(jcas,
 					Protein.class, sentence);
-
+			if (proteins.size() < 1) {
+				continue;
+			}
+			if (events.size() < 1) {
+				continue;
+			}
 			for (Event event : events) {
-
-				for (int i = 0; i < event.getThemes().size(); i++) {
-
-					// check protein themes
-					for (Protein protein : proteins) {
-
-						boolean isTheme = event.getThemes(i).equals(
-								protein.getId());
-
-						themeCandidates.add(themeToInstance(jcas, sentence,
-								protein, event.getTrigger(), pairsOfSentence,
-								dependencyExtractor, isTheme));
+				// check protein themes
+				for (Protein protein : proteins) {
+					boolean isTheme = false;
+					for (int i = 0; i < event.getThemes().size(); i++) {
+						isTheme = event.getThemes(i).equals(
+													protein.getId());
+						if (isTheme == true) {
+							break;
+						}
 					}
+					Instance instance = themeToInstance(jcas, sentence,
+							protein, event.getTrigger(), pairsOfSentence,
+							dependencyExtractor, isTheme);
+					
+					if ( instance != null) {
+						themeCandidates.add(instance);
+					}
+				}
 
-					// check event themes
+				// check event themes
+				if (EventType.isComplexEvent(event.getTrigger().getEventType())) {
 					for (Event themeEvent : events) {
 
 						if (event != themeEvent) {
 
-							boolean isTheme = event.getThemes(i).equals(
+							boolean isTheme = event.getThemes(0).equals(
 									themeEvent.getId());
 
 							themeCandidates.add(themeToInstance(jcas, sentence,

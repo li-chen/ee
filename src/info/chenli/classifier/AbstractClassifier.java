@@ -31,7 +31,7 @@ public abstract class AbstractClassifier {
 
 	public int predict(Instance instance) {
 
-		return predict(instance.getFeaturesNumeric());
+		return predict(instance.getFeaturesNumeric(), instance);
 	}
 
 	/**
@@ -40,7 +40,7 @@ public abstract class AbstractClassifier {
 	 * @param featureVector
 	 * @return The predicted label.
 	 */
-	public abstract int predict(int[] featureSparseVector);
+	public abstract int predict(int[] featureSparseVector, Instance instance);
 
 	public abstract String modelToString();
 

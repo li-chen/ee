@@ -5,12 +5,49 @@ import java.util.List;
 public class Instance {
 
 	// instance ID
+	public boolean isReference;
+	public int tokenId;
+	public int sentenceId;	
+	public String fileId;
 	private String id;
 	private int label;
 	private String labelString;
 	private List<String[]> featuresString;
 	private int[] featuresNumeric = null;
+	private double[] featuresNumericWord2vec = null;
+	
+	public boolean getIsReference() {
+		return this.isReference;
+	}
 
+	public void setIsReference(boolean isReference) {
+		this.isReference = isReference;
+	}
+	
+	public int getTokenId() {
+		return this.tokenId;
+	}
+
+	public void setTokenId(int tokenId) {
+		this.tokenId = tokenId;
+	}
+	
+	public int getSentenceId() {
+		return this.sentenceId;
+	}
+
+	public void setSentenceId(int sentenceId) {
+		this.sentenceId = sentenceId;
+	}
+	
+	public String getFileId() {
+		return this.fileId;
+	}
+
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
+	}
+	
 	public String getId() {
 		return this.id;
 	}
@@ -34,6 +71,14 @@ public class Instance {
 	public void setFeaturesNumeric(int[] featuresNumeric) {
 		this.featuresNumeric = featuresNumeric;
 	}
+	
+	public double[] getFeaturesNumericWord2vec() {
+		return featuresNumericWord2vec;
+	}
+
+	public void setFeaturesNumericWord2vec(double[] featuresNumericWord2vec) {
+		this.featuresNumericWord2vec = featuresNumericWord2vec;
+	}
 
 	public String getLabelString() {
 		return labelString;
@@ -53,24 +98,7 @@ public class Instance {
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		if (null != getLabelString()) {
-			sb.append(String.valueOf(getLabel()));
-		}
 
-		for (String[] values : getFeaturesString()) {
-			for (String value : values) {
-				sb.append(" "
-				// .concat(String.valueOf(getFeaturesNumeric()[i])
-				// .concat(":")
-						.concat(String.valueOf(value)));
-			}
-		}
-
-		return sb.toString();
-	}
-
-	public String toNumeric() {
 		StringBuffer sb = new StringBuffer();
 		if (null != getLabelString()) {
 			sb.append(String.valueOf(getLabel()));

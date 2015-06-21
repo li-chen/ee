@@ -10,3 +10,29 @@ src      - The source code.
 LISENSE  - The license of LitWay.
 README   - This file.
 
+
+
+How to run the program?
+
+1.build path -> add libraries -> ee,uima
+
+2.build.xml
+run as -> ant build... -> Refresh -> The entire workspace ->output is "./dist/litway-0.8.jar" -> build path -> add to build path
+
+3.train
+info.chenli.litway.bionlp13.ge
+(1)TriggerRecogniser.java 
+argument is train data absolute path 命令行参数是训练数据绝对路径
+(2)BindingRecogniser.java 
+argument is train data absolute path 命令行参数是训练数据绝对路径
+(3)ArgumentRecogniser.java 
+argument is train data absolute path 命令行参数是训练数据绝对路径
+
+ps:The word2vec file at "./word2vec/word2vec100"
+
+4.test
+info.chenli.litway.bionlp13.ge
+EventExtractorBind2.java argument is test data absolute path 命令行参数是测试数据绝对路径
+
+5.result path is "./result/"
+

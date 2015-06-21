@@ -102,10 +102,13 @@ public class CauseInstances extends AbstractInstances {
 
 					boolean isCause = event.getCause() == null ? false : event
 							.getCause().equals(protein.getId());
-
-					causeCandidates.add(causeToInstance(jcas, sentence,
+					Instance instance = causeToInstance(jcas, sentence,
 							protein, event.getTrigger(), pairsOfSentence,
-							dependencyExtractor, isCause, themeToken));
+							dependencyExtractor, isCause, themeToken);
+					
+					if ( instance != null) {
+						causeCandidates.add(instance);
+					}
 				}
 
 				// check event causes

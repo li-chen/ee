@@ -3,7 +3,6 @@ package info.chenli.litway.bionlp13.ge;
 import info.chenli.classifier.Instance;
 import info.chenli.classifier.InstanceDictionary;
 import info.chenli.litway.corpora.Event;
-import info.chenli.litway.corpora.POS;
 import info.chenli.litway.corpora.Protein;
 import info.chenli.litway.corpora.Sentence;
 import info.chenli.litway.corpora.Token;
@@ -92,6 +91,10 @@ public class EventExtractor extends TokenInstances {
 		Map<Integer, Set<Pair>> pairsOfArticle = StanfordDependencyReader
 				.getPairs(new File(FileUtil.removeFileNameExtension(
 						file.getAbsolutePath()).concat(".sdepcc")));
+		
+		File word2vecFile = new File("/home/songrq/word2vec/data/word2vec100");
+		Map<String,double[]> word2vec = ReadWord2vec.word2vec(word2vecFile); 
+
 		//
 		// Initialize the classifiers
 		//
@@ -136,15 +139,18 @@ public class EventExtractor extends TokenInstances {
 		while (sentenceIter.hasNext()) {
 
 			Sentence sentence = (Sentence) sentenceIter.next();
+			// protein
+			List<Protein> sentenceProteins = JCasUtil.selectCovered(jcas,
+					Protein.class, sentence);
+			if (sentenceProteins.size() <= 0) {
+				continue;
+			}
+			
 			Set<Pair> pairsOfSentence = pairsOfArticle.get(sentence.getId());
 
 			// The queue where newly generated events are put
 			LinkedBlockingQueue<Event> newEvents = new LinkedBlockingQueue<Event>();
-
-			// protein
-			List<Protein> sentenceProteins = JCasUtil.selectCovered(jcas,
-					Protein.class, sentence);
-
+	
 			//
 			// trigger detection
 			//
@@ -157,46 +163,40 @@ public class EventExtractor extends TokenInstances {
 				triggers.put(sentence.getId(), new ArrayList<Trigger>());
 			}
 
-			triggerDetectionLoop: for (Token token : tokens) {
+			for (Token token : tokens) {
 
-				if (!POS.isPos(token.getPos())) {
+				/*if (!POS.isPos(token.getPos())) {
 					continue triggerDetectionLoop;
 				}
-				// for (Protein protein : sentenceProteins) {
-				// if ((token.getBegin() >= protein.getBegin() && token
-				// .getBegin() <= protein.getEnd())
-				// || (token.getEnd() >= protein.getBegin() && token
-				// .getEnd() <= protein.getEnd())) {
-				// continue triggerDetectionLoop;
-				// }
-				// }
+				for (Protein protein : sentenceProteins) {
+					if ((token.getBegin() >= protein.getBegin() && token
+							.getBegin() <= protein.getEnd())
+							|| (token.getEnd() >= protein.getBegin() && token
+									.getEnd() <= protein.getEnd())) {
+						continue triggerDetectionLoop;
+					}
+				}*/
 				Instance tokenInstance = tokenToInstance(jcas, token, null,
 						tokens, sentenceProteins, pairsOfSentence,
-						dependencyExtractor);
+						dependencyExtractor, word2vec);
 				// set the token filter here
 				// if (!TriggerRecogniser.isConsidered(tokenInstance
 				// .getFeaturesString().get(2))) {
 				// continue;
 				// }
-				EventType et = TriggerWord.getEventType(null == token
-						.getSubStem() ? token.getStem() : token.getSubStem());
-
-				int prediction = triggerDict
-						.getLabelNumeric(String.valueOf(et));
-
-				if (null == et) {
-					prediction = triggerRecogniser.predict(triggerDict
+				if (tokenInstance != null) {
+					int prediction = triggerRecogniser.predict(triggerDict
 							.instanceToNumeric(tokenInstance));
-				}
-
-				if (prediction != triggerDict.getLabelNumeric(String
-						.valueOf(EventType.Non_trigger))) {
-
-					Trigger trigger = new Trigger(jcas, token.getBegin(),
-							token.getEnd());
-					trigger.setEventType(triggerDict.getLabelString(prediction));
-					trigger.setId("T".concat(String.valueOf(++proteinNum)));
-					triggers.get(sentence.getId()).add(trigger);
+	
+					if (prediction != triggerDict.getLabelNumeric(String
+							.valueOf(EventType.Non_trigger))) {
+	
+						Trigger trigger = new Trigger(jcas, token.getBegin(),
+								token.getEnd());
+						trigger.setEventType(triggerDict.getLabelString(prediction));
+						trigger.setId("T".concat(String.valueOf(++proteinNum)));
+						triggers.get(sentence.getId()).add(trigger);
+					}
 				}
 			}
 
@@ -205,7 +205,9 @@ public class EventExtractor extends TokenInstances {
 			//
 
 			// 1. iterate through all proteins
-
+			if (null == triggers.get(sentence.getId())) {
+				continue;
+			}
 			if (null == events.get(sentence.getId())) {
 				events.put(sentence.getId(), new ArrayList<Event>());
 			}
@@ -221,34 +223,32 @@ public class EventExtractor extends TokenInstances {
 								dependencyExtractor, false);
 						double prediction = themeRecogniser.predict(themeDict
 								.instanceToNumeric(proteinInstance)
-								.getFeaturesNumeric());
+								.getFeaturesNumeric(), proteinInstance);
 
-						// if (trigger.getEventType().equals(
-						// String.valueOf(EventType.Protein_catabolism))
-						// && protein.getCoveredText().toLowerCase()
-						// .indexOf("ikappabalpha") > -1) {
-						// System.out.println(proteinInstance.getLabel() + ":"
-						// + proteinInstance.getLabelString() + "\t"
-						// + trigger.getBegin() + ":"
-						// + trigger.getEnd() + "("
-						// + trigger.getCoveredText() + ")\t"
-						// + protein.getBegin() + ":"
-						// + protein.getEnd() + "("
-						// + protein.getCoveredText() + ")");
-						// for (String[] feature : proteinInstance
-						// .getFeaturesString()) {
-						// for (String value : feature) {
-						// System.out.print("\t" + value);
-						// }
-						// }
-						// System.out.println();
-						// System.out.print(prediction);
-						// for (int value : proteinInstance
-						// .getFeaturesNumeric()) {
-						// System.out.print("\t" + value);
-						// }
-						// System.out.println();
-						// }
+//						if (trigger.getEventType().equals(
+//								String.valueOf(EventType.Localization))
+//								&& protein.getCoveredText().toLowerCase()
+//										.indexOf("phosp") > -1) {
+//							System.out.println(proteinInstance.getLabel() + ":"
+//									+ proteinInstance.getLabelString() + "("
+//									+ trigger.getCoveredText() + ")" + "\t"
+//									+ protein.getBegin() + ":"
+//									+ protein.getEnd() + "("
+//									+ protein.getCoveredText() + ")");
+//							for (String[] feature : proteinInstance
+//									.getFeaturesString()) {
+//								for (String value : feature) {
+//									System.out.print("\t" + value);
+//								}
+//							}
+//							System.out.println();
+//							System.out.print(prediction);
+//							for (int value : proteinInstance
+//									.getFeaturesNumeric()) {
+//								System.out.print("\t" + value);
+//							}
+//							System.out.println();
+//						}
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 
@@ -274,7 +274,7 @@ public class EventExtractor extends TokenInstances {
 								dependencyExtractor, false);
 						double prediction = themeRecogniser.predict(themeDict
 								.instanceToNumeric(proteinInstance)
-								.getFeaturesNumeric());
+								.getFeaturesNumeric(), proteinInstance);
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 							themes.add(protein);
@@ -283,8 +283,6 @@ public class EventExtractor extends TokenInstances {
 					}
 					if (themes.size() > 0) {
 
-						Event event = new Event(jcas);
-						event.setTrigger(trigger);
 						// event.setId(String.valueOf(eventIndex++));
 
 						List<List<Protein>> predictedThemesComb = new ArrayList<List<Protein>>();
@@ -295,11 +293,14 @@ public class EventExtractor extends TokenInstances {
 
 							for (List<Protein> candidateThemes : combs
 									.getCombinations()) {
+								if (candidateThemes.size() > 3) {
+									continue;
+								}
 								Instance bindingInstance = bindingDict
 										.instanceToNumeric(bindingEventToInstance(
-												jcas, sentence, event,
+												jcas, sentence, trigger,
 												candidateThemes,
-												dependencyExtractor));
+												dependencyExtractor, false));
 								if (bindingRecogniser.predict(bindingInstance) == bindingDict
 										.getLabelNumeric("Binding")) {
 									predictedThemesComb.add(candidateThemes);
@@ -366,15 +367,9 @@ public class EventExtractor extends TokenInstances {
 										sentence, protein, trigger,
 										pairsOfSentence, dependencyExtractor,
 										false));
-						if (trigger.getEventType().equals(
-								String.valueOf(EventType.Positive_regulation))
-								&& trigger.getCoveredText().toLowerCase()
-										.indexOf("induce") > -1) {
-							System.out.println(proteinInstance);
-						}
 
 						double prediction = themeRecogniser
-								.predict(proteinInstance.getFeaturesNumeric());
+								.predict(proteinInstance.getFeaturesNumeric(), proteinInstance);
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 
@@ -415,7 +410,7 @@ public class EventExtractor extends TokenInstances {
 
 						double prediction = themeRecogniser.predict(themeDict
 								.instanceToNumeric(triggerTokenInstance)
-								.getFeaturesNumeric());
+								.getFeaturesNumeric(), triggerTokenInstance);
 
 						if (prediction == themeDict.getLabelNumeric("Theme")) {
 
@@ -452,7 +447,7 @@ public class EventExtractor extends TokenInstances {
 							getThemeToken(jcas, event, sentence));
 					double prediction = causeRecogniser.predict(causeDict
 							.instanceToNumeric(proteinInstance)
-							.getFeaturesNumeric());
+							.getFeaturesNumeric(), proteinInstance);
 
 					if (prediction == causeDict.getLabelNumeric(String
 							.valueOf("Cause"))) {
@@ -480,7 +475,7 @@ public class EventExtractor extends TokenInstances {
 							dependencyExtractor, false, themeToken);
 					double prediction = causeRecogniser.predict(causeDict
 							.instanceToNumeric(causeEventInstance)
-							.getFeaturesNumeric());
+							.getFeaturesNumeric(), causeEventInstance);
 					// if (event
 					// .getTrigger()
 					// .getEventType()

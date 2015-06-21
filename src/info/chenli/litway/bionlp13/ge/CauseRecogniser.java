@@ -34,7 +34,7 @@ public class CauseRecogniser extends LibLinearFacade {
 					.getInstances(trainingSet);
 
 			dict.creatNumericDictionary(instances);
-			dict.saveDictionary(new File("./model/causes.dict"));
+			dict.saveDictionary(new File("./model/causes.liblinear.dict"));
 
 			this.train(instances);
 

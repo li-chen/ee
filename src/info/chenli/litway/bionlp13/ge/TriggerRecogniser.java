@@ -14,13 +14,23 @@ import info.chenli.litway.util.BioLemmatizerUtil;
 import info.chenli.litway.util.DependencyExtractor;
 import info.chenli.litway.util.FileUtil;
 import info.chenli.litway.util.StanfordDependencyReader;
+import info.chenli.litway.util.UimaUtil;
 import info.chenli.litway.util.StanfordDependencyReader.Pair;
 import info.chenli.litway.util.Stemmer;
 import info.chenli.litway.util.Timer;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -100,43 +110,20 @@ public class TriggerRecogniser extends LibLinearFacade {
 				trainingDir));
 		logger.info(String.valueOf(instances.size()).concat(
 				" instances are collected."));
-
+		
 		InstanceDictionary dict = new InstanceDictionary();
 		dict.creatNumericDictionary(instances);
 		dict.saveDictionary(new File("./model/triggers.".concat(classifierName)
 				.concat(".dict")));
 		logger.info("Save dictionary.");
 
-		trainingInstances.saveInstances(new File(
+/*		trainingInstances.saveInstances(new File(
 				"./model/instances.trigger.txt"));
 		trainingInstances.saveNumericInstances(new File(
 				"./model/instances.trigger.num.txt"));
 		trainingInstances.saveSvmLightInstances(new File(
 				"./model/instances.trigger.svm.txt"));
-
-		// development instances
-		// TokenInstances devInstances = new TokenInstances();
-		// devInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
-		// List<Instance> devInstancesList = devInstances.getInstances(new File(
-		// "./data/development/"));
-		// logger.info(String.valueOf(devInstancesList.size()).concat(
-		// " instances are collected."));
-		//
-		// dict.instancesToNumeric(devInstancesList);
-		//
-		// devInstances.saveInstances(new File(
-		// "./model/instances.trigger.dev.txt"));
-		// devInstances.saveNumericInstances(new File(
-		// "./model/instances.trigger.num.dev.txt"));
-		// devInstances.saveSvmLightInstances(new File(
-		// "./model/instances.trigger.svm.dev.txt"));
-		//
-		// System.out.print("Finish collecting events.");
-		// System.exit(0);
-
-		// Collections.shuffle(instances);
-		// logger.info("Shuffle instances.");
-
+*/
 		Timer timer = new Timer();
 		timer.start();
 
@@ -149,7 +136,44 @@ public class TriggerRecogniser extends LibLinearFacade {
 				".model")));
 
 	}
+	
+	public void train2(String trainingDir, int round) {
+		//
+		// collect all instances and fetch syntactical information
+		//
+		TokenInstances trainingInstances = new TokenInstances();
+		trainingInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
+		List<Instance> instances = trainingInstances.getInstances(new File(
+				trainingDir));
+		logger.info(String.valueOf(instances.size()).concat(
+				" instances are collected."));
+		
+		InstanceDictionary dict = new InstanceDictionary();
+		dict.creatNumericDictionary(instances);
+		dict.saveDictionary(new File("./model/triggers.train.devel.".concat(classifierName)
+				.concat(".dict")));
+		logger.info("Save dictionary.");
 
+/*		trainingInstances.saveInstances(new File(
+				"./model/instances.trigger.txt"));
+		trainingInstances.saveNumericInstances(new File(
+				"./model/instances.trigger.num.txt"));
+		trainingInstances.saveSvmLightInstances(new File(
+				"./model/instances.trigger.svm.txt"));
+*/
+		Timer timer = new Timer();
+		timer.start();
+
+		train(instances, round);
+		timer.stop();
+		logger.info("Training takes ".concat(String.valueOf(timer
+				.getRunningTime())));
+
+		saveModel(new File("./model/triggers.train.devel.".concat(classifierName).concat(
+				".model")));
+
+	}
+	
 	public List<Trigger> predict(File file, InstanceDictionary dict,
 			boolean printConfusionMatrix) {
 
@@ -186,9 +210,17 @@ public class TriggerRecogniser extends LibLinearFacade {
 		} else {
 
 			JCas jcas = instancesGetter.processSingleFile(file);
-			Map<Integer, Set<Pair>> pairsOfArticle = StanfordDependencyReader
-					.getPairs(new File(FileUtil.removeFileNameExtension(
-							file.getAbsolutePath()).concat(".sdepcc")));
+			Map<Integer, Set<Pair>> pairsOfArticle = new HashMap<Integer, Set<Pair>>();
+			if (new File(FileUtil.removeFileNameExtension(
+					UimaUtil.getJCasFilePath(jcas)).concat(".sdepcc")).exists()) {
+				pairsOfArticle = StanfordDependencyReader
+						.getPairs(new File(FileUtil.removeFileNameExtension(
+								UimaUtil.getJCasFilePath(jcas)).concat(".sdepcc")));
+			} else {
+				pairsOfArticle = StanfordDependencyReader
+						.getPairs(new File(FileUtil.removeFileNameExtension(
+								UimaUtil.getJCasFilePath(jcas)).concat(".sd")));
+			}
 
 			FSIterator<Annotation> sentenceIter = jcas.getAnnotationIndex(
 					Sentence.type).iterator();
@@ -211,43 +243,35 @@ public class TriggerRecogniser extends LibLinearFacade {
 				DependencyExtractor dependencyExtractor = new DependencyExtractor(
 						JCasUtil.selectCovered(jcas, Token.class, sentence),
 						pairsOfSentence);
+				File word2vecFile = new File("/home/songrq/word2vec/data/word2vec100");
+				Map<String,double[]> word2vec = ReadWord2vec.word2vec(word2vecFile); 
+
 				for (Token token : tokens) {
 					Instance instance = instancesGetter.tokenToInstance(jcas,
 							token, null, tokens, sentenceProteins,
-							pairsOfSentence, dependencyExtractor);
+							pairsOfSentence, dependencyExtractor, word2vec);
+					instance = dict.instanceToNumeric(instance);
+					int prediction = instance.getFeaturesNumeric().length == 0 ? dict
+							.getLabelNumeric(String
+									.valueOf(EventType.Non_trigger)) : this
+							.predict(instance);
 
-					// constraints
-					EventType et = TriggerWord.getEventType(token.getStem());
-					int prediction = dict.getLabelNumeric(String.valueOf(et));
-
-					if (null == et) {
-						instance = dict.instanceToNumeric(instance);
-						prediction = instance.getFeaturesNumeric().length == 0 ? dict
-								.getLabelNumeric(String
-										.valueOf(EventType.Non_trigger)) : this
-								.predict(instance);
+					if (token.getCoveredText().toLowerCase().indexOf("import") > -1) {
+						System.out.println(instance.getLabel() + ":"
+								+ instance.getLabelString() + "\t"
+								+ token.getBegin() + ":" + token.getEnd());
+						for (String[] feature : instance.getFeaturesString()) {
+							for (String value : feature) {
+								System.out.print("\t" + value);
+							}
+						}
+						System.out.println();
+						System.out.print(prediction);
+						for (int value : instance.getFeaturesNumeric()) {
+							System.out.print("\t" + value);
+						}
+						System.out.println();
 					}
-
-//					if (token.getCoveredText().toLowerCase().indexOf("express") > -1
-//							|| token.getCoveredText().toLowerCase()
-//									.indexOf("secret") > -1
-//							|| token.getCoveredText().toLowerCase()
-//									.indexOf("produc") > -1) {
-//						System.out.println(instance.getLabel() + ":"
-//								+ instance.getLabelString() + "\t"
-//								+ token.getBegin() + ":" + token.getEnd());
-//						for (String[] feature : instance.getFeaturesString()) {
-//							for (String value : feature) {
-//								System.out.print("\t" + value);
-//							}
-//						}
-//						System.out.println();
-//						System.out.print(prediction);
-//						for (int value : instance.getFeaturesNumeric()) {
-//							System.out.print("\t" + value);
-//						}
-//						System.out.println();
-//					}
 					if (prediction != dict.getLabelNumeric(String
 							.valueOf(EventType.Non_trigger))) {
 						Trigger trigger = new Trigger(jcas, token.getBegin(),
@@ -361,15 +385,12 @@ public class TriggerRecogniser extends LibLinearFacade {
 			int counter) {
 
 		int tp = 0, fp = 0, tn = 0, fn = 0, correct = 0, total = 0;
-		StringBuffer tp_instances = new StringBuffer();
+/*		StringBuffer tp_instances = new StringBuffer();
 		StringBuffer fp_nonTrigger_instances = new StringBuffer();
-		StringBuffer fp_trigger_instances = new StringBuffer();
-
+		StringBuffer fp_trigger_instances = new StringBuffer();*/
 		// Collections.shuffle(instances);
 		for (Instance instance : instances) {
-
 			instance = dict.instanceToNumeric(instance);
-
 			int prediction = this.predict(instance);
 			if (instance.getLabelString() == String
 					.valueOf(EventType.Non_trigger)) {
@@ -377,32 +398,47 @@ public class TriggerRecogniser extends LibLinearFacade {
 				if (prediction != instance.getLabel()) {
 					fp++;
 					total++;
-					fp_nonTrigger_instances.append(dict
-							.getLabelString(prediction).concat("\t")
-							.concat(instance.toString()).concat("\n"));
+					
+					/*fp_nonTrigger_instances.append(String.valueOf(instance.getSentenceId())
+							.concat("\t").concat(String.valueOf(instance.getTokenId()))
+							.concat("\t").concat(dict.getLabelString(prediction))
+							.concat("\t").concat(instance.getLabelString())
+							.concat("\t").concat(instance.getFeaturesString().get(0)[0])
+							.concat("\n"));*/
+				} else {
+					tn++;
 				}
 			} else {
 				if (prediction != instance.getLabel()) {
-					fp++;
+					//fp++;
 					fn++;
-					fp_trigger_instances.append(dict.getLabelString(prediction)
-							.concat("\t").concat(instance.toString())
-							.concat("\n"));
+					/*fp_trigger_instances.append(String.valueOf(instance.getSentenceId())
+							.concat("\t").concat(String.valueOf(instance.getTokenId()))
+							.concat("\t").concat(dict.getLabelString(prediction))
+							.concat("\t").concat(instance.getLabelString())
+							.concat("\t").concat(instance.getFeaturesString().get(0)[0])
+							//.concat("\t").concat(instance.getFeaturesString().get(1)[0])
+							.concat("\n"));*/
 				} else {
-					correct++;
+					correct++;//鎻愬彇鍑虹殑trigger鏈夊嚑涓纭殑
 					tp++;
-					tp_instances.append(dict.getLabelString(prediction)
-							.concat("\t").concat(instance.toString())
-							.concat("\n"));
+					/*tp_instances.append(String.valueOf(instance.getSentenceId())
+							.concat("\t").concat(String.valueOf(instance.getTokenId()))
+							.concat("\t").concat(dict.getLabelString(prediction))
+							.concat("\t").concat(instance.getLabelString())
+							.concat("\t").concat(instance.getFeaturesString().get(0)[0])
+							//.concat("\t").concat(instance.getFeaturesString().get(1)[0])
+							.concat("\n"));*/
 				}
+				
 				if (prediction != dict.getLabelNumeric(String
 						.valueOf(EventType.Non_trigger))) {
-					total++;
+					total++;//鎻愬彇鍑哄灏戜釜trigger
 				}
 			}
 		}
 
-		FileUtil.saveFile(fp_nonTrigger_instances.toString(), new File(
+/*		FileUtil.saveFile(fp_nonTrigger_instances.toString(), new File(
 				"./result/fp_nonTrigger".concat(String.valueOf(counter))
 						.concat(".txt")));
 		FileUtil.saveFile(fp_trigger_instances.toString(),
@@ -410,92 +446,110 @@ public class TriggerRecogniser extends LibLinearFacade {
 						.concat(".txt")));
 		FileUtil.saveFile(tp_instances.toString(), new File("./result/tp"
 				.concat(String.valueOf(counter)).concat(".txt")));
-
+*/
 		Fscore fscore = new Fscore(tp, fp, tn, fn);
 		System.out.println(fscore);
 		System.out.println(new Accurary(correct, total));
 
 		return fscore;
 	}
-
+	/**
+	 * train 閽堝train锛岃緭鍑簃odel锛宨nstance 
+	 * predict 閽堝test锛岃緭鍑簍rigger
+	 * test 閽堝development锛岃緭鍑篿nstance锛孉ccuracy
+	 * cross 閽堝train锛屼氦鍙夐獙璇�
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
-		if (args.length == 0 || !args[0].equals("predict")
-				&& !args[0].equals("train") && !args[0].equals("test")
-				&& !args[0].equals("cross")) {
-			throw new IllegalArgumentException(
-					"The first argument has to be \"predict\" or \"train\". ");
-		}
-
-		File file = new File(args[1]);
 
 		TriggerRecogniser tr = new TriggerRecogniser();
+		//tr.train("/media/songrq/soft/litway/数据/"
+		//			+ "BioNLP13/BioNLP-ST-2013_GE_train_data_yuanShuJu", 1);
+		tr.train2(args[0], 1);
 
-		if (args[0].equals("train")) {
-			if (!file.isDirectory()) {
-				throw new IllegalArgumentException(
-						"The second argument has to be the training directory. ");
-			}
-			tr.train(args[1], 1);
-		} else if (args[0].equals("predict")) {
+		
+		//tr.train2("/media/songrq/soft/litway/数据/"
+		//		+ "BioNLP13/BioNLP-ST-2013_GE_train_devel_data_yuanShuJu", 1);
+////////////////////////////////////////////////////////////////////////////////////////
+		
+		
+		/*tr.loadModel(new File("./model/triggers.".concat(tr.classifierName)
+				.concat(".model")));
 
-			if (!file.isFile() && !file.isDirectory()) {
-				throw new IllegalArgumentException(
-						"The second argument has to be a file.");
-			}
+		TokenInstances testInstances = new TokenInstances();
+		testInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
+		List<Instance> instances = testInstances.getInstances(new File("/media/songrq/soft/litway/数据/"
+						+ "BioNLP13/BioNLP-ST-2013_GE_devel_data_yuanShuJu"));
+		logger.info(String.valueOf(instances.size()).concat(
+				" instances are collected."));
+		
+		InstanceDictionary dict = new InstanceDictionary();
+		dict.loadDictionary(new File("./model/triggers.".concat(
+				tr.classifierName).concat(".dict")));
+		tr.test(instances, dict, 1);
+		dict.instancesToNumeric(instances);
 
-			tr.loadModel(new File("./model/triggers.".concat(tr.classifierName)
-					.concat(".model")));
-			InstanceDictionary dict = new InstanceDictionary();
-			dict.loadDictionary(new File("./model/triggers.".concat(
-					tr.classifierName).concat(".dict")));
+		//testInstances.saveInstances(new File(
+		//		"./model/instances.trigger.dev.txt"));
+		//testInstances.saveNumericInstances(new File(
+		//		"./model/instances.trigger.num.dev.txt"));
+		//testInstances.saveSvmLightInstances(new File(
+		//		"./model/instances.trigger.svm.dev.txt"));
 
-			List<Trigger> triggers = tr.predict(file, dict, false);
-			for (Trigger trigger : triggers) {
-				System.out.println(trigger.getId().concat("\t")
-						.concat(trigger.getEventType()).concat(" ")
-						.concat(String.valueOf(trigger.getBegin())).concat(" ")
-						.concat(String.valueOf(trigger.getEnd())).concat("\t")
-						.concat(trigger.getCoveredText()));
-			}
-
-		} else if (args[0].equals("test")) {
-
-			tr.loadModel(new File("./model/triggers.".concat(tr.classifierName)
-					.concat(".model")));
-
-			TokenInstances testInstances = new TokenInstances();
-			testInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
-			List<Instance> instances = testInstances.getInstances(new File(
-					"./data/development/"));
-			logger.info(String.valueOf(instances.size()).concat(
-					" instances are collected."));
-
-			InstanceDictionary dict = new InstanceDictionary();
-			dict.loadDictionary(new File("./model/triggers.".concat(
-					tr.classifierName).concat(".dict")));
-			dict.instancesToNumeric(instances);
-
-			testInstances.saveInstances(new File(
-					"./model/instances.trigger.dev.txt"));
-			testInstances.saveNumericInstances(new File(
-					"./model/instances.trigger.num.dev.txt"));
-			testInstances.saveSvmLightInstances(new File(
-					"./model/instances.trigger.svm.dev.txt"));
-
-			System.out.print("Finish collecting events.");
-
-			int total = 0, correct = 0;
-			for (Instance instance : instances) {
-				int prediction = tr.predict(instance);
-				if (prediction == instance.getLabel()) {
-					correct++;
+		System.out.print("Finish collecting events.");
+		
+		int total = 0, correct = 0, tp, tn = 0, n = 0, fn, fp;
+		float p, r, f;
+		int  total14[] = new int [14];
+		int  correct14[] = new int [14];
+		String ss[] = {"Non_trigger", "Gene_expression", "Transcription", "Protein_catabolism", "Localization", "Binding", "Protein_modification", "Phosphorylation", "Ubiquitination", "Acetylation", "Deacetylation", "Regulation", "Positive_regulation", "Negative_regulation"};
+		for (Instance instance : instances) {
+			for (int i=0; i<14; i++) {
+				if (instance.getLabelString().equalsIgnoreCase(ss[i])) {
+					total14[i]++;
 				}
-				total++;
 			}
-			System.out.println(new Accurary(correct, total));
-		} else if (args[0].equals("cross")) {
-			tr.crossValidate(args[1]);
+			int prediction = tr.predict(instance);
+			if (prediction == instance.getLabel()) {
+				for (int i=0; i<14; i++) {
+					if (instance.getLabelString().equalsIgnoreCase(ss[i])) {
+						correct14[i]++;
+					}
+				}
+				if (instance.getLabelString() == String
+						.valueOf(EventType.Non_trigger)){
+					tn++;
+				}
+				correct++;
+			}
+			
+			if (instance.getLabelString() == String
+					.valueOf(EventType.Non_trigger)){
+				n++;
+			}
+			total++;
 		}
+		
+		fp = n - tn;
+		tp = correct - tn;
+		fn = total - n - tp;
+		p = (float) tp / (tp + fp);
+		r = (float) tp / (tp + fn);
+		f = (float) 2 * p * r / (p + r);
+		
+		System.out.println(new Accurary(correct, total));
+		System.out.println("tp: " + tp + "   fp: " + fp + "   fn: " + fn);
+		System.out.println("p: " + p + "   r: " + r + "   f: " + f);
+		for (int i=0; i<14; i++) {
+			System.out.print(ss[i]);
+			System.out.print("\t\t");
+			System.out.print(total14[i]);
+			System.out.print("\t\t");
+			System.out.print(correct14[i]);
+			System.out.print("\t\t");
+			System.out.print((float)correct14[i]/total14[i]);
+			System.out.print("\n");
+		}*/
 	}
 }
