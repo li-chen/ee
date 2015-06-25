@@ -1,0 +1,45 @@
+T35	Regulation 21 30	modulates
+T36	Binding 35 42	binding
+T37	Positive_regulation 643 653	activation
+T38	Gene_expression 766 776	production
+T39	Positive_regulation 844 851	induced
+T40	Positive_regulation 909 916	induced
+T41	Positive_regulation 1053 1061	increase
+T42	Positive_regulation 1223 1230	induced
+T43	Binding 1243 1250	binding
+T44	Positive_regulation 1482 1490	elevated
+T45	Positive_regulation 1515 1522	induced
+T46	Binding 1527 1534	binding
+T47	Positive_regulation 1590 1598	increase
+T48	Regulation 1636 1645	modulated
+T49	Negative_regulation 1691 1700	reduction
+T50	Positive_regulation 1777 1784	induced
+T51	Negative_regulation 1878 1887	decreased
+T52	Positive_regulation 1899 1906	induced
+T53	Regulation 1913 1922	dependent
+T54	Gene_expression 1923 1933	production
+T55	Regulation 2227 2237	regulation
+T56	Regulation 2271 2280	modulated
+E1	Binding:T36 Theme:T1
+E2	Regulation:T35 Theme:E1
+E3	Positive_regulation:T37 Theme:T6
+E4	Positive_regulation:T37 Theme:T7
+E5	Gene_expression:T38 Theme:T9
+E6	Gene_expression:T38 Theme:T10
+E7	Gene_expression:T38 Theme:T11
+E8	Gene_expression:T38 Theme:T12
+E9	Positive_regulation:T39 Theme:E5
+E10	Positive_regulation:T39 Theme:E6
+E11	Positive_regulation:T39 Theme:E7
+E12	Positive_regulation:T39 Theme:E8
+E13	Positive_regulation:T41 Theme:T15
+E14	Positive_regulation:T41 Theme:T16
+E15	Binding:T46 Theme:T20 Theme2:T22
+E16	Binding:T46 Theme:T20 Theme2:T21
+E17	Positive_regulation:T47 Theme:T23
+E24	Negative_regulation:T49 Theme:T25
+E25	Negative_regulation:T49 Theme:T26
+E26	Gene_expression:T54 Theme:T32
+E28	Positive_regulation:T52 Theme:E26 Cause:T30
+E30	Negative_regulation:T51 Theme:E28
+E32	Regulation:T55 Theme:T34

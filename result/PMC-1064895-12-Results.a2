@@ -1,0 +1,7 @@
+T7	Gene_expression 6 16	production
+T8	Localization 323 332	secretion
+T9	Gene_expression 455 465	production
+T10	Positive_regulation 466 476	stimulated
+E1	Gene_expression:T7 Theme:T1
+E2	Localization:T8 Theme:T4
+E3	Gene_expression:T9 Theme:T5

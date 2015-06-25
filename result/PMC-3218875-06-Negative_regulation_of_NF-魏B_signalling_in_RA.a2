@@ -1,0 +1,33 @@
+T32	Binding 4 11	binding
+T33	Gene_expression 137 146	expressed
+T34	Regulation 359 367	proposed
+T35	Regulation 371 377	target
+T36	Gene_expression 457 467	expression
+T37	Positive_regulation 481 490	dependent
+T38	Regulation 571 581	regulation
+T39	Negative_regulation 652 661	deficient
+T40	Negative_regulation 673 682	deficient
+T41	Gene_expression 875 884	expressed
+T42	Gene_expression 910 917	express
+T43	Negative_regulation 948 955	lacking
+T44	Negative_regulation 1080 1089	deficient
+T45	Regulation 1124 1133	dependent
+T46	Transcription 1284 1290	levels
+T47	Gene_expression 1644 1654	expression
+E1	Binding:T32 Theme:T1
+E2	Gene_expression:T33 Theme:T8
+E3	Regulation:T35 Theme:T10
+E4	Regulation:T34 Theme:E3
+E5	Gene_expression:T36 Theme:T12
+E6	Gene_expression:T36 Theme:T13
+E7	Positive_regulation:T37 Theme:E5
+E8	Positive_regulation:T37 Theme:E6
+E9	Negative_regulation:T39 Theme:T15
+E10	Negative_regulation:T40 Theme:T16
+E11	Gene_expression:T41 Theme:T17
+E12	Gene_expression:T42 Theme:T17
+E13	Gene_expression:T42 Theme:T18
+E14	Negative_regulation:T44 Theme:T22
+E15	Transcription:T46 Theme:T26
+E16	Gene_expression:T47 Theme:T29
+E17	Gene_expression:T47 Theme:T30

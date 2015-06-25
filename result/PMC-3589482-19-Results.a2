@@ -1,0 +1,47 @@
+T20	Positive_regulation 11 19	Mediates
+T21	Positive_regulation 42 53	LPS-induced
+T22	Transcription 63 67	mRNA
+T23	Transcription 191 195	mRNA
+T24	Gene_expression 333 340	express
+T25	Gene_expression 379 386	express
+T26	Negative_regulation 429 436	absence
+T27	Negative_regulation 451 461	attenuated
+T28	Transcription 482 486	mRNA
+T29	Positive_regulation 503 513	stimulated
+T30	Positive_regulation 517 525	increase
+T31	Transcription 538 542	mRNA
+T32	Positive_regulation 591 605	LPS-stimulated
+T33	Transcription 615 619	mRNA
+T34	Positive_regulation 649 657	dampened
+T35	Gene_expression 821 831	expression
+T36	Negative_regulation 836 843	knocked
+T37	Positive_regulation 954 965	LPS-induced
+T38	Transcription 975 979	mRNA
+T39	Transcription 980 990	expression
+T40	Negative_regulation 1009 1018	decreased
+T41	Negative_regulation 1033 1042	deficient
+T42	Transcription 1175 1188	transcription
+E1	Transcription:T22 Theme:T2
+E3	Positive_regulation:T21 Theme:E1
+E4	Positive_regulation:T20 Theme:E3 Cause:T1
+E5	Transcription:T23 Theme:T4
+E6	Gene_expression:T24 Theme:T8
+E7	Gene_expression:T25 Theme:T9
+E8	Gene_expression:T25 Theme:T10
+E9	Gene_expression:T25 Theme:T11
+E10	Negative_regulation:T26 Theme:T10
+E11	Transcription:T28 Theme:T11
+E12	Negative_regulation:T27 Theme:E11
+E13	Transcription:T31 Theme:T12
+E14	Transcription:T33 Theme:T13
+E15	Positive_regulation:T30 Theme:E13
+E16	Positive_regulation:T32 Theme:E14
+E18	Positive_regulation:T29 Theme:E15
+E19	Positive_regulation:T34 Theme:E16
+E20	Gene_expression:T35 Theme:T15
+E21	Negative_regulation:T36 Theme:E20
+E22	Transcription:T38 Theme:T16
+E23	Transcription:T39 Theme:T16
+E24	Negative_regulation:T41 Theme:T17
+E27	Negative_regulation:T40 Theme:E24
+E31	Transcription:T42 Theme:T19

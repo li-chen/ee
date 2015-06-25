@@ -1,0 +1,52 @@
+T41	Phosphorylation 0 15	Phosphorylation
+T42	Phosphorylation 106 121	Phosphorylation
+T43	Regulation 158 166	modulate
+T44	Gene_expression 342 354	co-expressed
+T45	Negative_regulation 453 460	mutated
+T46	Gene_expression 555 568	Re-expression
+T47	Positive_regulation 624 634	stimulated
+T48	Gene_expression 669 679	expression
+T49	Positive_regulation 774 785	LPS-induced
+T50	Transcription 800 813	transcription
+T51	Gene_expression 815 825	Expression
+T52	Positive_regulation 924 932	increase
+T53	Phosphorylation 1029 1044	phosphorylation
+T54	Regulation 1280 1290	modulating
+T55	Regulation 1302 1311	dependent
+T56	Transcription 1326 1339	transcription
+T57	Regulation 1373 1383	regulating
+T58	Positive_regulation 1403 1412	inducible
+T59	Regulation 1434 1444	regulation
+T60	Positive_regulation 1571 1582	LPS-induced
+T61	Regulation 1677 1686	regulated
+T62	Gene_expression 1767 1779	significance
+T63	Gene_expression 1929 1939	expression
+T64	Gene_expression 2081 2091	expression
+T65	Positive_regulation 2110 2121	potentiated
+T66	Phosphorylation 2210 2225	phosphorylation
+E1	Phosphorylation:T41 Theme:T1
+E2	Phosphorylation:T42 Theme:T3
+E3	Gene_expression:T44 Theme:T6
+E4	Negative_regulation:T45 Theme:T7
+E5	Gene_expression:T46 Theme:T9
+E6	Gene_expression:T48 Theme:T11
+E7	Transcription:T50 Theme:T13
+E8	Positive_regulation:T47 Theme:E6 Cause:E5
+E9	Positive_regulation:T49 Theme:E7
+E10	Gene_expression:T51 Theme:T14
+E11	Gene_expression:T51 Theme:T15
+E12	Phosphorylation:T53 Theme:T19
+E13	Positive_regulation:T52 Theme:E11
+E14	Positive_regulation:T52 Theme:E10
+E15	Transcription:T56 Theme:T23
+E17	Regulation:T55 Theme:E15 Cause:T22
+E18	Regulation:T54 Theme:E17
+E19	Regulation:T57 Theme:T24
+E20	Regulation:T57 Theme:T26
+E21	Positive_regulation:T58 Theme:T26 Cause:T25
+E22	Regulation:T61 Theme:T30
+E23	Gene_expression:T62 Theme:T31
+E24	Gene_expression:T62 Theme:T32
+E25	Gene_expression:T63 Theme:T33
+E26	Gene_expression:T64 Theme:T37
+E27	Phosphorylation:T66 Theme:T39

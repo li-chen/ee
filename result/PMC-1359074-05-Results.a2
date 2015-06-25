@@ -1,0 +1,28 @@
+T15	Gene_expression 15 25	Expression
+T16	Negative_regulation 53 62	Deficient
+T17	Negative_regulation 80 86	Defect
+T18	Gene_expression 208 217	expressed
+T19	Gene_expression 321 331	expression
+T20	Gene_expression 414 424	expression
+T21	Transcription 523 534	transcripts
+T22	Gene_expression 625 634	expressed
+T23	Negative_regulation 735 742	ectopic
+T24	Transcription 752 756	mRNA
+T25	Gene_expression 838 848	expression
+T26	Positive_regulation 1015 1018	due
+T27	Gene_expression 1030 1040	expression
+T28	Negative_regulation 1168 1177	silencing
+T29	Negative_regulation 1196 1200	null
+E1	Gene_expression:T15 Theme:T1
+E2	Negative_regulation:T16 Theme:T2
+E3	Gene_expression:T18 Theme:T4
+E4	Gene_expression:T19 Theme:T5
+E5	Gene_expression:T20 Theme:T6
+E6	Transcription:T21 Theme:T7
+E7	Gene_expression:T22 Theme:T8
+E8	Transcription:T24 Theme:T9
+E9	Negative_regulation:T23 Theme:E8
+E10	Gene_expression:T25 Theme:T10
+E11	Gene_expression:T25 Theme:T11
+E12	Negative_regulation:T28 Theme:T13
+E13	Negative_regulation:T29 Theme:T14

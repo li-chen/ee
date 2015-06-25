@@ -1,0 +1,5 @@
+T16	Phosphorylation 892 907	phosphorylation
+T17	Phosphorylation 1676 1691	phosphorylation
+E1	Phosphorylation:T16 Theme:T7
+E2	Phosphorylation:T16 Theme:T8
+E3	Phosphorylation:T17 Theme:T13

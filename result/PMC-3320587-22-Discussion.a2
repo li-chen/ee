@@ -1,0 +1,70 @@
+T61	Binding 187 192	binds
+T62	Regulation 520 528	regulate
+T63	Positive_regulation 648 655	induces
+T64	Positive_regulation 662 671	dependent
+T65	Positive_regulation 672 684	upregulation
+T66	Binding 936 947	interaction
+T67	Positive_regulation 1002 1010	co-opted
+T68	Positive_regulation 1027 1034	induced
+T69	Positive_regulation 1895 1903	elevated
+T70	Positive_regulation 2179 2189	sufficient
+T71	Negative_regulation 2212 2216	loss
+T72	Binding 2226 2233	binding
+T73	Positive_regulation 3132 3141	increased
+T74	Binding 3148 3155	binding
+T75	Negative_regulation 3284 3294	disruption
+T76	Positive_regulation 3326 3334	enhanced
+T77	Binding 3335 3342	binding
+T78	Transcription 3976 3989	transcription
+T79	Positive_regulation 3990 3994	more
+T80	Negative_regulation 4240 4250	disruption
+T81	Binding 4260 4267	binding
+T82	Binding 4508 4519	recruitment
+T83	Transcription 4729 4742	transcription
+T84	Gene_expression 4787 4797	expression
+T85	Binding 4931 4940	associate
+T86	Negative_regulation 5038 5046	declines
+T87	Positive_regulation 5311 5319	elevated
+T88	Binding 5423 5428	binds
+T89	Positive_regulation 5471 5478	induces
+T90	Gene_expression 5485 5501	hyperacetylation
+T91	Positive_regulation 5648 5657	formation
+T92	Positive_regulation 5789 5797	inducing
+T93	Binding 5896 5907	interacting
+T94	Positive_regulation 5998 6006	required
+T95	Binding 6155 6166	interaction
+T96	Binding 6295 6306	recruitment
+T97	Binding 6412 6418	ligand
+T98	Positive_regulation 6428 6435	induces
+T99	Gene_expression 6447 6457	expression
+T100	Positive_regulation 6535 6542	depends
+T101	Positive_regulation 6658 6665	enhance
+E1	Binding:T61 Theme:T6 Theme2:T7
+E2	Positive_regulation:T65 Theme:T12
+E4	Positive_regulation:T64 Theme:E2 Cause:T11
+E5	Positive_regulation:T63 Theme:E4
+E6	Binding:T66 Theme:T13
+E7	Positive_regulation:T67 Theme:T14
+E8	Positive_regulation:T68 Theme:T14
+E9	Binding:T72 Theme:T20
+E10	Negative_regulation:T71 Theme:E9
+E11	Binding:T74 Theme:T34
+E12	Positive_regulation:T73 Theme:E11
+E13	Binding:T77 Theme:T36
+E14	Positive_regulation:T76 Theme:E13
+E15	Transcription:T78 Theme:T37
+E16	Positive_regulation:T79 Theme:E15
+E17	Binding:T81 Theme:T38
+E18	Binding:T82 Theme:T39
+E19	Negative_regulation:T80 Theme:E17
+E20	Gene_expression:T84 Theme:T41
+E21	Binding:T85 Theme:T42
+E22	Positive_regulation:T87 Theme:T45
+E23	Binding:T88 Theme:T46
+E24	Positive_regulation:T91 Theme:T49
+E25	Binding:T93 Theme:T50
+E26	Binding:T95 Theme:T52
+E27	Binding:T96 Theme:T53
+E28	Binding:T97 Theme:T54
+E29	Gene_expression:T99 Theme:T55
+E30	Positive_regulation:T98 Theme:E29

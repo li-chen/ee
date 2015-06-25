@@ -1,0 +1,62 @@
+T43	Positive_regulation 252 260	increase
+T44	Phosphorylation 268 283	phosphorylation
+T45	Positive_regulation 539 547	increase
+T46	Positive_regulation 868 876	increase
+T47	Negative_regulation 1639 1648	inhibitor
+T48	Negative_regulation 1879 1888	Knockdown
+T49	Regulation 2087 2096	regulates
+T50	Positive_regulation 2117 2127	activation
+T51	Negative_regulation 2346 2355	inhibitor
+T52	Negative_regulation 2382 2392	attenuated
+T53	Negative_regulation 2439 2444	block
+T54	Phosphorylation 2448 2463	phosphorylation
+T55	Negative_regulation 2493 2502	knockdown
+T56	Negative_regulation 2517 2527	attenuated
+T57	Positive_regulation 2901 2913	upregulation
+T58	Positive_regulation 3003 3012	induction
+T59	Positive_regulation 3073 3082	increased
+T60	Gene_expression 3083 3092	synthesis
+T61	Positive_regulation 3189 3199	contribute
+T62	Gene_expression 3212 3221	synthesis
+T63	Positive_regulation 3256 3264	increase
+T64	Positive_regulation 3335 3344	increased
+T65	Positive_regulation 3454 3463	induction
+T66	Positive_regulation 3543 3549	caused
+T67	Positive_regulation 3624 3636	upregulation
+T68	Positive_regulation 3677 3686	increased
+T69	Positive_regulation 3745 3755	activation
+T70	Positive_regulation 3811 3819	increase
+T71	Gene_expression 3842 3851	synthesis
+T72	Positive_regulation 3905 3915	contribute
+T73	Positive_regulation 3923 3935	upregulation
+T74	Negative_regulation 4016 4025	knockdown
+T75	Negative_regulation 4042 4049	reduced
+T76	Negative_regulation 4129 4139	inhibitors
+T77	Regulation 4147 4153	effect
+T78	Positive_regulation 4311 4318	mediate
+T79	Gene_expression 4362 4371	synthesis
+E2	Phosphorylation:T44 Theme:T1
+E3	Phosphorylation:T44 Theme:T3
+E4	Phosphorylation:T44 Theme:T4
+E5	Positive_regulation:T43 Theme:E4
+E6	Positive_regulation:T43 Theme:E2
+E7	Positive_regulation:T43 Theme:E3
+E8	Negative_regulation:T47 Theme:T16
+E9	Positive_regulation:T50 Theme:T18
+E10	Regulation:T49 Theme:E9 Cause:T19
+E11	Negative_regulation:T51 Theme:T20
+E12	Phosphorylation:T54 Theme:T21
+E13	Negative_regulation:T53 Theme:E12
+E14	Positive_regulation:T57 Theme:T26
+E15	Gene_expression:T60 Theme:T27
+E16	Positive_regulation:T59 Theme:E15
+E17	Gene_expression:T62 Theme:T28
+E18	Positive_regulation:T61 Theme:E17
+E19	Positive_regulation:T64 Theme:T32
+E20	Positive_regulation:T67 Theme:T35
+E21	Gene_expression:T71 Theme:T36
+E22	Positive_regulation:T70 Theme:E21
+E23	Positive_regulation:T73 Theme:T37
+E24	Positive_regulation:T72 Theme:E23
+E25	Negative_regulation:T76 Theme:T39
+E26	Gene_expression:T79 Theme:T42

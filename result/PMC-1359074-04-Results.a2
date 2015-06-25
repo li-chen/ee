@@ -1,0 +1,23 @@
+T37	Binding 45 50	Binds
+T38	Negative_regulation 87 94	repress
+T39	Regulation 206 215	affecting
+T40	Binding 888 897	associate
+T41	Binding 1157 1164	binding
+T42	Binding 1237 1242	binds
+T43	Gene_expression 1477 1484	express
+T44	Binding 1542 1547	binds
+T45	Positive_regulation 2070 2084	co-transfected
+T46	Negative_regulation 2411 2421	repression
+T47	Binding 2499 2504	binds
+T48	Binding 3023 3030	binding
+E1	Binding:T37 Theme:T1 Theme2:T2
+E2	Negative_regulation:T38 Theme:T4
+E3	Binding:T40 Theme:T11
+E4	Binding:T42 Theme:T17
+E5	Gene_expression:T43 Theme:T20
+E6	Gene_expression:T43 Theme:T21
+E7	Binding:T44 Theme:T22
+E8	Positive_regulation:T45 Theme:T24
+E9	Negative_regulation:T46 Theme:T26 Cause:T27
+E10	Binding:T47 Theme:T28 Theme2:T29
+E11	Binding:T48 Theme:T34 Theme2:T36

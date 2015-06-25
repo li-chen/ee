@@ -1,0 +1,23 @@
+T23	Gene_expression 229 239	expression
+T24	Negative_regulation 359 368	localized
+T25	Negative_regulation 464 473	localized
+T26	Gene_expression 575 590	Co-transfection
+T27	Positive_regulation 610 619	increases
+T28	Gene_expression 652 665	co-expression
+T29	Gene_expression 867 880	Co-expression
+T30	Regulation 938 944	affect
+E1	Gene_expression:T23 Theme:T2
+E2	Negative_regulation:T24 Theme:T3
+E3	Negative_regulation:T24 Theme:T4
+E4	Negative_regulation:T24 Theme:T5
+E5	Negative_regulation:T25 Theme:T6
+E6	Negative_regulation:T25 Theme:T7
+E7	Gene_expression:T26 Theme:T9
+E8	Gene_expression:T26 Theme:T10
+E9	Gene_expression:T28 Theme:T12
+E10	Gene_expression:T28 Theme:T13
+E11	Positive_regulation:T27 Theme:E8
+E12	Positive_regulation:T27 Theme:E7
+E13	Gene_expression:T29 Theme:T17
+E14	Gene_expression:T29 Theme:T18
+E15	Gene_expression:T29 Theme:T19

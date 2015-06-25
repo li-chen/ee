@@ -1,0 +1,5 @@
+T9	Gene_expression 42 51	synthesis
+T10	Positive_regulation 176 184	zVAD.fmk
+T11	Positive_regulation 296 303	induced
+T12	Negative_regulation 479 488	knockdown
+E1	Gene_expression:T9 Theme:T1

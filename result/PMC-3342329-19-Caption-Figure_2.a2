@@ -1,0 +1,10 @@
+T10	Binding 75 82	binding
+T11	Gene_expression 241 251	Expression
+T12	Phosphorylation 267 282	phosphorylation
+T13	Phosphorylation 333 348	phosphorylation
+T14	Negative_regulation 504 513	decreased
+E1	Gene_expression:T11 Theme:T4
+E2	Gene_expression:T11 Theme:T5
+E3	Phosphorylation:T12 Theme:T4
+E4	Phosphorylation:T12 Theme:T5
+E5	Negative_regulation:T14 Theme:T7

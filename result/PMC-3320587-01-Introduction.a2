@@ -1,0 +1,25 @@
+T21	Positive_regulation 485 493	response
+T22	Positive_regulation 657 667	Activation
+T23	Positive_regulation 731 736	leads
+T24	Regulation 773 782	expedited
+T25	Binding 1176 1186	Engagement
+T26	Binding 1206 1216	engagement
+T27	Positive_regulation 1499 1505	induce
+T28	Binding 1628 1637	associate
+T29	Positive_regulation 1664 1669	drive
+T30	Transcription 1674 1687	transcription
+T31	Binding 2420 2425	binds
+T32	Positive_regulation 2987 2997	activation
+T33	Binding 3147 3154	binding
+T34	Positive_regulation 3200 3211	MTb-induced
+T35	Positive_regulation 3312 3321	increases
+T36	Gene_expression 3333 3343	expression
+T37	Regulation 3374 3383	dependent
+T38	Gene_expression 3446 3456	expression
+E1	Binding:T25 Theme:T4
+E2	Binding:T26 Theme:T6
+E3	Binding:T31 Theme:T11 Theme2:T12
+E4	Gene_expression:T36 Theme:T17
+E5	Positive_regulation:T35 Theme:E4
+E6	Regulation:T37 Theme:E5 Cause:T18
+E7	Gene_expression:T38 Theme:T19

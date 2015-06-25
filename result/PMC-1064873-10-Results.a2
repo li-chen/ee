@@ -1,0 +1,39 @@
+T42	Negative_regulation 20 30	inhibition
+T43	Gene_expression 44 54	production
+T44	Negative_regulation 224 234	inhibiting
+T45	Phosphorylation 249 264	phosphorylation
+T46	Binding 269 276	binding
+T47	Gene_expression 616 626	production
+T48	Gene_expression 680 690	production
+T49	Positive_regulation 694 703	activated
+T50	Negative_regulation 735 744	inhibited
+T51	Gene_expression 826 833	produce
+T52	Positive_regulation 874 882	presence
+T53	Negative_regulation 934 944	inhibition
+T54	Gene_expression 1025 1035	production
+T55	Gene_expression 1071 1084	costimulation
+T56	Gene_expression 1358 1368	production
+T57	Gene_expression 1467 1477	production
+T58	Transcription 1755 1763	produced
+T59	Positive_regulation 1798 1806	presence
+T60	Gene_expression 1894 1904	production
+T61	Gene_expression 2042 2052	production
+T62	Negative_regulation 2168 2175	reduced
+E1	Gene_expression:T43 Theme:T2
+E2	Negative_regulation:T42 Theme:E1
+E3	Phosphorylation:T45 Theme:T6
+E4	Binding:T46 Theme:T6
+E7	Gene_expression:T47 Theme:T13
+E8	Gene_expression:T48 Theme:T14
+E9	Negative_regulation:T50 Theme:E8 Cause:T14
+E10	Gene_expression:T51 Theme:T18
+E11	Positive_regulation:T52 Theme:E10 Cause:T19
+E12	Gene_expression:T54 Theme:T21
+E13	Gene_expression:T55 Theme:T23
+E14	Gene_expression:T55 Theme:T24
+E15	Gene_expression:T56 Theme:T26
+E16	Gene_expression:T57 Theme:T29
+E17	Transcription:T58 Theme:T31
+E18	Positive_regulation:T59 Theme:E17 Cause:T32
+E19	Gene_expression:T60 Theme:T34
+E20	Gene_expression:T61 Theme:T38

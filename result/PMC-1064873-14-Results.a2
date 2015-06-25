@@ -1,0 +1,40 @@
+T35	Transcription 5 15	expression
+T36	Positive_regulation 54 61	induces
+T37	Negative_regulation 73 83	inhibitors
+T38	Regulation 140 149	mediators
+T39	Negative_regulation 331 338	inhibit
+T40	Positive_regulation 345 355	activation
+T41	Positive_regulation 356 363	induced
+T42	Positive_regulation 513 521	mediated
+T43	Positive_regulation 528 538	activation
+T44	Positive_regulation 584 592	mediated
+T45	Positive_regulation 599 609	activation
+T46	Positive_regulation 680 687	induced
+T47	Positive_regulation 694 704	activation
+T48	Transcription 755 759	mRNA
+T49	Transcription 968 979	transcripts
+T50	Transcription 1034 1044	expression
+T51	Gene_expression 1102 1112	expression
+T52	Positive_regulation 1231 1238	induced
+T53	Positive_regulation 1245 1255	activation
+T54	Negative_regulation 1307 1316	abundance
+E1	Transcription:T35 Theme:T1
+E2	Negative_regulation:T37 Theme:T4
+E3	Negative_regulation:T37 Theme:T5
+E4	Positive_regulation:T36 Theme:E2 Cause:T3
+E5	Positive_regulation:T36 Theme:E3 Cause:T3
+E6	Positive_regulation:T40 Theme:T7
+E7	Negative_regulation:T39 Theme:E6 Cause:T6
+E10	Positive_regulation:T43 Theme:T14
+E11	Positive_regulation:T45 Theme:T16
+E12	Positive_regulation:T42 Theme:E11 Cause:T13
+E13	Positive_regulation:T42 Theme:E10 Cause:T13
+E14	Positive_regulation:T44 Theme:E11 Cause:T15
+E15	Positive_regulation:T47 Theme:T18
+E16	Transcription:T48 Theme:T20
+E17	Positive_regulation:T46 Theme:E15 Cause:T17
+E18	Transcription:T49 Theme:T25
+E19	Transcription:T50 Theme:T27
+E20	Positive_regulation:T53 Theme:T32
+E21	Negative_regulation:T54 Theme:T33
+E22	Positive_regulation:T52 Theme:E20 Cause:T31

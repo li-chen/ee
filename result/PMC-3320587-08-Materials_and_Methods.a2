@@ -1,0 +1,6 @@
+T5	Transcription 122 132	transcript
+T6	Negative_regulation 778 782	down
+T7	Gene_expression 792 802	expression
+E1	Transcription:T5 Theme:T1
+E2	Gene_expression:T7 Theme:T4
+E3	Negative_regulation:T6 Theme:E2

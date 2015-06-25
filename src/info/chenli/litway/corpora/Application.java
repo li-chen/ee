@@ -114,7 +114,8 @@ public class Application {
 
 		// set the path of resource file
 		aCAS.createView("FilePath").setSofaDataURI(aFile.getAbsolutePath(), "text");
-
+		//System.out.println(aFile.getAbsolutePath());
+		
 		// process
 		aAE.process(aCAS);
 

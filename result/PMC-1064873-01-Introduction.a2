@@ -1,0 +1,57 @@
+T76	Negative_regulation 72 82	inhibiting
+T77	Binding 147 152	binds
+T78	Binding 338 349	interaction
+T79	Binding 465 475	associated
+T80	Phosphorylation 549 564	phosphorylation
+T81	Localization 779 790	translocate
+T82	Regulation 813 821	modulate
+T83	Gene_expression 865 878	indispensable
+T84	Negative_regulation 1004 1013	deficient
+T85	Positive_regulation 1041 1051	activation
+T86	Positive_regulation 1075 1083	mediated
+T87	Positive_regulation 1657 1667	activation
+T88	Positive_regulation 1668 1675	induced
+T89	Positive_regulation 2283 2287	rise
+T90	Gene_expression 2477 2485	produced
+T91	Gene_expression 2832 2840	produced
+T92	Gene_expression 2983 2993	expression
+T93	Regulation 3143 3152	modulated
+T94	Gene_expression 3382 3392	expression
+T95	Negative_regulation 3407 3416	decreased
+T96	Gene_expression 4382 4392	production
+T97	Negative_regulation 4708 4713	block
+T98	Binding 4718 4728	engagement
+T99	Binding 4751 4758	binding
+T100	Gene_expression 5097 5107	production
+T101	Positive_regulation 5184 5193	induction
+T102	Phosphorylation 5213 5228	phosphorylation
+T103	Gene_expression 5247 5257	expression
+E1	Binding:T77 Theme:T2
+E2	Binding:T78 Theme:T8
+E3	Binding:T79 Theme:T12
+E4	Binding:T79 Theme:T11
+E5	Phosphorylation:T80 Theme:T15
+E6	Phosphorylation:T80 Theme:T16
+E7	Localization:T81 Theme:T17
+E8	Localization:T81 Theme:T18
+E9	Gene_expression:T83 Theme:T19
+E10	Gene_expression:T83 Theme:T20
+E11	Gene_expression:T83 Theme:T21
+E12	Negative_regulation:T84 Theme:T22
+E13	Positive_regulation:T85 Theme:T23
+E14	Positive_regulation:T87 Theme:T29
+E15	Positive_regulation:T88 Theme:E14 Cause:T30
+E16	Gene_expression:T90 Theme:T35
+E17	Gene_expression:T90 Theme:T36
+E18	Gene_expression:T91 Theme:T37
+E19	Gene_expression:T94 Theme:T42
+E21	Negative_regulation:T95 Theme:E19
+E22	Binding:T98 Theme:T61
+E23	Binding:T99 Theme:T63
+E24	Negative_regulation:T97 Theme:E22 Cause:E23
+E25	Gene_expression:T100 Theme:T67
+E28	Phosphorylation:T102 Theme:T70
+E29	Phosphorylation:T102 Theme:T71
+E30	Gene_expression:T103 Theme:T67
+E31	Gene_expression:T103 Theme:T73
+E32	Gene_expression:T103 Theme:T74

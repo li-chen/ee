@@ -1,0 +1,57 @@
+T83	Positive_regulation 283 292	activated
+T84	Negative_regulation 307 316	elevation
+T85	Negative_regulation 398 407	decreased
+T86	Positive_regulation 529 538	increased
+T87	Transcription 539 549	expression
+T88	Positive_regulation 756 765	increased
+T89	Positive_regulation 876 885	elevation
+T90	Binding 1562 1569	binding
+T91	Negative_regulation 1612 1621	inhibited
+T92	Positive_regulation 1719 1727	enhanced
+T93	Negative_regulation 1750 1759	prevented
+T94	Negative_regulation 1813 1823	inhibition
+T95	Localization 1843 1856	translocation
+T96	Positive_regulation 2111 2119	critical
+T97	Positive_regulation 2662 2671	activated
+T98	Positive_regulation 2756 2767	contributes
+T99	Positive_regulation 3694 3702	elevated
+T100	Gene_expression 3703 3713	expression
+T101	Regulation 3737 3743	change
+T102	Negative_regulation 3982 3990	inhibits
+T103	Gene_expression 4005 4015	production
+T104	Positive_regulation 4123 4131	elevated
+T105	Negative_regulation 4694 4701	absence
+T106	Negative_regulation 4866 4874	reducing
+T107	Gene_expression 4880 4890	production
+T108	Negative_regulation 4946 4955	inhibitor
+T109	Positive_regulation 5040 5047	smaller
+T110	Positive_regulation 5936 5945	increased
+T111	Positive_regulation 6024 6033	increased
+T112	Negative_regulation 6300 6309	depletion
+T113	Negative_regulation 6353 6363	decreasing
+T114	Gene_expression 6369 6379	production
+T115	Positive_regulation 6420 6428	elevated
+T116	Negative_regulation 7003 7011	knockout
+T117	Positive_regulation 7178 7186	increase
+T118	Negative_regulation 7423 7433	inhibition
+T119	Negative_regulation 7707 7716	inhibited
+E1	Negative_regulation:T84 Theme:T4
+E2	Positive_regulation:T89 Theme:T8
+E5	Localization:T95 Theme:T12
+E6	Localization:T95 Theme:T13
+E7	Negative_regulation:T94 Theme:E6
+E8	Negative_regulation:T94 Theme:E5
+E9	Gene_expression:T100 Theme:T23
+E10	Positive_regulation:T99 Theme:E9
+E11	Gene_expression:T103 Theme:T27
+E14	Negative_regulation:T105 Theme:T56
+E15	Gene_expression:T107 Theme:T59
+E16	Negative_regulation:T108 Theme:T60
+E17	Negative_regulation:T106 Theme:E15
+E18	Positive_regulation:T110 Theme:T67
+E19	Gene_expression:T114 Theme:T70
+E20	Negative_regulation:T113 Theme:E19
+E21	Positive_regulation:T115 Theme:T71
+E22	Negative_regulation:T116 Theme:T73
+E23	Positive_regulation:T117 Theme:T75
+E24	Negative_regulation:T118 Theme:T79

@@ -1,0 +1,24 @@
+T17	Positive_regulation 15 36	factor-alpha-mediated
+T18	Phosphorylation 51 66	phosphorylation
+T19	Positive_regulation 125 132	induces
+T20	Negative_regulation 525 535	disruption
+T21	Positive_regulation 656 663	induced
+T22	Positive_regulation 833 844	Fluoro-Jade
+T23	Gene_expression 1045 1055	expression
+T24	Negative_regulation 1135 1141	Thr435
+T25	Phosphorylation 1142 1157	phosphorylation
+T26	Positive_regulation 1162 1171	increased
+T27	Negative_regulation 1260 1274	Neutralization
+T28	Negative_regulation 1336 1346	attenuated
+T29	Negative_regulation 1399 1409	inhibition
+T30	Phosphorylation 1424 1439	phosphorylation
+T31	Positive_regulation 1642 1650	mediated
+E1	Phosphorylation:T18 Theme:T2
+E2	Positive_regulation:T17 Theme:E1 Cause:T1
+E3	Gene_expression:T23 Theme:T8
+E4	Negative_regulation:T24 Theme:T9
+E5	Phosphorylation:T25 Theme:T9
+E6	Positive_regulation:T26 Theme:E5
+E7	Negative_regulation:T27 Theme:T10
+E8	Phosphorylation:T30 Theme:T13
+E9	Negative_regulation:T29 Theme:E8

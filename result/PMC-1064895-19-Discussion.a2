@@ -1,0 +1,91 @@
+T70	Gene_expression 756 766	production
+T71	Regulation 770 779	regulated
+T72	Positive_regulation 979 988	stimulate
+T73	Gene_expression 995 1005	production
+T74	Gene_expression 1049 1059	production
+T75	Negative_regulation 1067 1075	achieved
+T76	Positive_regulation 1249 1258	increased
+T77	Gene_expression 1265 1275	production
+T78	Positive_regulation 1385 1397	upregulation
+T79	Positive_regulation 1416 1419	due
+T80	Gene_expression 1499 1507	produced
+T81	Gene_expression 1624 1632	produced
+T82	Gene_expression 1745 1755	production
+T83	Positive_regulation 1774 1783	augmented
+T84	Positive_regulation 2292 2301	stimulate
+T85	Gene_expression 2308 2318	production
+T86	Regulation 2387 2395	regulate
+T87	Gene_expression 2402 2412	production
+T88	Gene_expression 2461 2471	production
+T89	Positive_regulation 2682 2690	ligation
+T90	Positive_regulation 2705 2714	increased
+T91	Gene_expression 2719 2729	production
+T92	Positive_regulation 2789 2798	augmented
+T93	Positive_regulation 2925 2934	increased
+T94	Regulation 2957 2963	affect
+T95	Gene_expression 2970 2980	production
+T96	Gene_expression 3064 3074	production
+T97	Positive_regulation 3352 3362	activation
+T98	Positive_regulation 3395 3404	increases
+T99	Positive_regulation 3411 3420	induction
+T100	Positive_regulation 3472 3481	induction
+T101	Gene_expression 3594 3604	production
+T102	Regulation 3751 3759	involved
+T103	Positive_regulation 3767 3776	induction
+T104	Positive_regulation 3826 3833	induced
+T105	Gene_expression 3840 3850	production
+T106	Gene_expression 3983 3993	production
+T107	Positive_regulation 4034 4050	anti-CD3-induced
+T108	Gene_expression 4057 4067	production
+T109	Negative_regulation 4072 4085	downregulated
+T110	Gene_expression 4688 4698	production
+T111	Regulation 4811 4819	response
+T112	Positive_regulation 4827 4837	activation
+T113	Phosphorylation 4912 4926	phosphorylated
+T114	Regulation 4975 4986	involvement
+T115	Positive_regulation 5002 5011	induction
+T116	Positive_regulation 5072 5081	activated
+T117	Positive_regulation 5221 5230	induction
+T118	Binding 5467 5478	association
+T119	Positive_regulation 5733 5745	upregulation
+E1	Gene_expression:T70 Theme:T7
+E2	Regulation:T71 Theme:E1
+E3	Gene_expression:T73 Theme:T9
+E4	Gene_expression:T74 Theme:T10
+E5	Positive_regulation:T72 Theme:E3
+E6	Negative_regulation:T75 Theme:E4
+E7	Gene_expression:T77 Theme:T14
+E8	Positive_regulation:T76 Theme:E7 Cause:T12
+E9	Positive_regulation:T78 Theme:T15
+E10	Positive_regulation:T79 Theme:E9
+E11	Gene_expression:T80 Theme:T16
+E12	Gene_expression:T82 Theme:T20
+E13	Positive_regulation:T83 Theme:E12
+E14	Gene_expression:T85 Theme:T25
+E15	Gene_expression:T87 Theme:T28
+E16	Positive_regulation:T84 Theme:E14
+E17	Regulation:T86 Theme:E15
+E18	Gene_expression:T88 Theme:T29
+E19	Gene_expression:T91 Theme:T33
+E22	Gene_expression:T95 Theme:T39
+E25	Gene_expression:T96 Theme:T41
+E26	Positive_regulation:T97 Theme:T44
+E27	Positive_regulation:T99 Theme:T45
+E28	Positive_regulation:T98 Theme:E27 Cause:E26
+E29	Gene_expression:T101 Theme:T47
+E30	Positive_regulation:T103 Theme:T48
+E31	Regulation:T102 Theme:E30
+E32	Gene_expression:T105 Theme:T50
+E33	Positive_regulation:T104 Theme:E32 Cause:T49
+E34	Gene_expression:T108 Theme:T51
+E35	Positive_regulation:T107 Theme:E34
+E37	Negative_regulation:T109 Theme:E35
+E38	Gene_expression:T110 Theme:T55
+E39	Positive_regulation:T112 Theme:T56
+E40	Regulation:T111 Theme:E39
+E41	Phosphorylation:T113 Theme:T57
+E42	Positive_regulation:T115 Theme:T58
+E43	Regulation:T114 Theme:E42
+E44	Positive_regulation:T117 Theme:T61
+E45	Binding:T118 Theme:T63
+E46	Positive_regulation:T119 Theme:T66

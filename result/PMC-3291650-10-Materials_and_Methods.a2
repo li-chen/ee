@@ -1,0 +1,4 @@
+T9	Gene_expression 104 114	expressing
+E1	Gene_expression:T9 Theme:T3
+E2	Gene_expression:T9 Theme:T4
+E3	Gene_expression:T9 Theme:T5

@@ -1,0 +1,29 @@
+T29	Positive_regulation 1602 1608	higher
+T30	Positive_regulation 1820 1828	increase
+T31	Gene_expression 1926 1936	orthologue
+T32	Gene_expression 2199 2205	levels
+T33	Binding 2290 2299	recruited
+T34	Binding 2524 2535	recruitment
+T35	Positive_regulation 2574 2581	evident
+T36	Gene_expression 2667 2677	expression
+T37	Positive_regulation 2804 2812	elevated
+T38	Gene_expression 3072 3082	expression
+T39	Gene_expression 3206 3216	expressing
+T40	Gene_expression 3558 3568	expression
+T41	Regulation 3598 3605	altered
+T42	Gene_expression 5214 5224	production
+T43	Positive_regulation 5357 5366	increased
+T44	Positive_regulation 5571 5580	increased
+T45	Gene_expression 5682 5692	production
+T46	Positive_regulation 5701 5710	increased
+T47	Positive_regulation 5720 5725	lower
+E1	Positive_regulation:T30 Theme:T4
+E2	Gene_expression:T31 Theme:T5
+E3	Gene_expression:T31 Theme:T6
+E4	Gene_expression:T32 Theme:T9
+E5	Gene_expression:T32 Theme:T10
+E6	Gene_expression:T36 Theme:T12
+E7	Gene_expression:T42 Theme:T24
+E8	Gene_expression:T45 Theme:T28
+E9	Positive_regulation:T46 Theme:E8
+E10	Positive_regulation:T47 Theme:E8

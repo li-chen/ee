@@ -96,6 +96,9 @@ public class StanfordDependencyReader {
 				String pairString = line.substring(line.indexOf("(") + 1,
 						line.lastIndexOf(")"));
 				String head = pairString.substring(0, pairString.indexOf(", "));
+				if (!head.contains("-")) {
+					head = pairString.substring(0, pairString.lastIndexOf(", "));
+				}
 				head = head.substring(head.lastIndexOf("-") + 1);
 				if (head.endsWith("'")) {
 					head = head.substring(0, head.indexOf("'"));

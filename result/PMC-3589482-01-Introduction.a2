@@ -1,0 +1,36 @@
+T27	Negative_regulation 882 891	inhibitor
+T28	Positive_regulation 1045 1055	activation
+T29	Positive_regulation 1095 1103	requires
+T30	Localization 1119 1127	secreted
+T31	Regulation 1466 1475	regulated
+T32	Regulation 1833 1844	responsible
+T33	Binding 2004 2011	binding
+T34	Binding 2070 2081	recruitment
+T35	Gene_expression 2429 2439	expression
+T36	Positive_regulation 2444 2455	upregulated
+T37	Positive_regulation 2504 2513	MAPK/CREB
+T38	Positive_regulation 2669 2677	response
+T39	Binding 2903 2907	bind
+T40	Positive_regulation 2970 2979	induction
+T41	Binding 3211 3216	bound
+T42	Negative_regulation 3246 3256	deficiency
+T43	Negative_regulation 3257 3266	abrogated
+T44	Gene_expression 3289 3299	expression
+T45	Gene_expression 3313 3322	induction
+T46	Regulation 3522 3532	regulation
+E1	Negative_regulation:T27 Theme:T3
+E2	Negative_regulation:T27 Theme:T4
+E3	Positive_regulation:T28 Theme:T5
+E4	Localization:T30 Theme:T6
+E5	Positive_regulation:T29 Theme:E4 Cause:T6
+E6	Regulation:T31 Theme:T9
+E7	Binding:T33 Theme:T12
+E8	Positive_regulation:T37 Theme:T14
+E9	Binding:T39 Theme:T18
+E10	Positive_regulation:T40 Theme:T19
+E11	Binding:T41 Theme:T21
+E12	Gene_expression:T44 Theme:T22
+E13	Gene_expression:T45 Theme:T23
+E14	Negative_regulation:T43 Theme:E12
+E15	Negative_regulation:T43 Theme:E13
+E16	Regulation:T46 Theme:T26

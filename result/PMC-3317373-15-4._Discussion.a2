@@ -1,0 +1,59 @@
+T41	Positive_regulation 51 58	induced
+T42	Binding 93 100	binding
+T43	Positive_regulation 114 128	overexpression
+T44	Positive_regulation 580 589	activated
+T45	Positive_regulation 594 601	induces
+T46	Transcription 602 615	transcription
+T47	Positive_regulation 795 802	induced
+T48	Binding 830 837	binding
+T49	Positive_regulation 848 862	overexpression
+T50	Positive_regulation 1144 1151	induces
+T51	Gene_expression 1152 1166	overexpression
+T52	Positive_regulation 1778 1786	Enhanced
+T53	Positive_regulation 2458 2472	overexpression
+T54	Positive_regulation 2542 2552	aggravated
+T55	Negative_regulation 2961 2968	inhibit
+T56	Phosphorylation 2981 2996	phosphorylation
+T57	Localization 3031 3044	translocation
+T58	Negative_regulation 3814 3823	repressed
+T59	Binding 3885 3896	interaction
+T60	Gene_expression 4492 4502	expression
+T61	Positive_regulation 5009 5020	upregulated
+T62	Gene_expression 5021 5031	expression
+T63	Negative_regulation 5155 5164	depletion
+T64	Positive_regulation 5173 5180	induced
+T65	Gene_expression 5217 5227	expression
+E1	Positive_regulation:T43 Theme:T1
+E2	Positive_regulation:T43 Theme:T2
+E3	Positive_regulation:T43 Theme:T3
+E4	Positive_regulation:T41 Theme:E3
+E5	Positive_regulation:T41 Theme:E2
+E6	Positive_regulation:T41 Theme:E1
+E7	Transcription:T46 Theme:T4
+E8	Positive_regulation:T45 Theme:E7
+E9	Positive_regulation:T49 Theme:T7
+E10	Positive_regulation:T47 Theme:E9
+E11	Gene_expression:T51 Theme:T11
+E12	Positive_regulation:T50 Theme:E11 Cause:T10
+E13	Positive_regulation:T53 Theme:T15
+E14	Positive_regulation:T53 Theme:T16
+E15	Positive_regulation:T53 Theme:T17
+E16	Positive_regulation:T54 Theme:E14
+E17	Positive_regulation:T54 Theme:E15
+E18	Positive_regulation:T54 Theme:E13
+E19	Localization:T57 Theme:T30
+E20	Negative_regulation:T55 Theme:E19
+E21	Gene_expression:T60 Theme:T32
+E22	Gene_expression:T60 Theme:T33
+E23	Gene_expression:T62 Theme:T35
+E24	Gene_expression:T62 Theme:T36
+E25	Gene_expression:T62 Theme:T37
+E26	Positive_regulation:T61 Theme:E23
+E27	Positive_regulation:T61 Theme:E25
+E28	Positive_regulation:T61 Theme:E24
+E29	Gene_expression:T65 Theme:T38
+E30	Gene_expression:T65 Theme:T39
+E31	Gene_expression:T65 Theme:T40
+E32	Positive_regulation:T64 Theme:E29
+E33	Positive_regulation:T64 Theme:E30
+E34	Positive_regulation:T64 Theme:E31

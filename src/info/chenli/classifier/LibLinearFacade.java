@@ -24,7 +24,7 @@ public class LibLinearFacade extends AbstractClassifier {
 	private final static Logger logger = Logger.getLogger(LibLinearFacade.class
 			.getName());
 
-	private Model model;
+	public Model model;
 
 	public void train(List<Instance> instances) {
 
@@ -40,6 +40,13 @@ public class LibLinearFacade extends AbstractClassifier {
 				}
 			}
 		}
+		
+		double[] fs0 = instances.get(0).getFeaturesNumericWord2vec();
+		if (null != fs0) {
+			featureNum += fs0.length;
+		}
+		
+		System.out.println("number of features:" + featureNum);		
 		problem.n = featureNum; // number of features
 		problem.x = new Feature[instances.size()][]; // feature nodes
 		problem.y = new double[instances.size()]; // target values
@@ -50,9 +57,20 @@ public class LibLinearFacade extends AbstractClassifier {
 
 			int previousIndex = 0;
 			List<Feature> featureNodes = new ArrayList<Feature>();
+			double[] fs = instance.getFeaturesNumericWord2vec();
+			if (null != fs) {
+				for (int m=0; m<fs.length; m++) {
+					featureNodes.add(new FeatureNode(m + 1, fs[m]));
+				}
+			}
+			
 			for (int index : instance.getFeaturesNumeric()) {
 				if (index > previousIndex) {
-					featureNodes.add(new FeatureNode(index, 1));
+					if (null != fs) {
+						featureNodes.add(new FeatureNode(fs.length + index, 1));
+					}else {
+						featureNodes.add(new FeatureNode(index, 1));
+					}
 					// System.out.print("\t" + (index ));
 				}
 				previousIndex = index;
@@ -82,7 +100,7 @@ public class LibLinearFacade extends AbstractClassifier {
 	}
 
 	@Override
-	public int predict(int[] featureSparseVector) {
+	public int predict(int[] featureSparseVector, Instance instance) {
 
 		if (featureSparseVector == null) {
 			throw new IllegalArgumentException(
@@ -98,10 +116,21 @@ public class LibLinearFacade extends AbstractClassifier {
 		}
 
 		List<Feature> featureNodes = new ArrayList<Feature>();
+		double[] fs = instance.getFeaturesNumericWord2vec();
+		if (null != fs) {
+			for (int m=0; m<fs.length; m++) {
+				featureNodes.add(new FeatureNode(m + 1, fs[m]));
+			}
+		}
+
 		int previousIndex = 0;
 		for (int index : featureSparseVector) {
 			if (index > previousIndex) {
-				featureNodes.add(new FeatureNode(index, 1));
+				if (null != fs) {
+					featureNodes.add(new FeatureNode(fs.length + index, 1));
+				}else {
+					featureNodes.add(new FeatureNode(index, 1));
+				}
 			}
 			previousIndex = index;
 		}
@@ -109,9 +138,9 @@ public class LibLinearFacade extends AbstractClassifier {
 			Feature node = new FeatureNode(n, model.getBias());
 			featureNodes.add(node);
 		}
-		Feature[] instance = new FeatureNode[featureNodes.size()];
-		instance = featureNodes.toArray(instance);
-		return (int) Math.round(Linear.predict(this.model, instance));
+		Feature[] instance0 = new FeatureNode[featureNodes.size()];
+		instance0 = featureNodes.toArray(instance0);
+		return (int) Math.round(Linear.predict(this.model, instance0));
 
 	}
 

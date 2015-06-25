@@ -14,8 +14,8 @@ import org.apache.uima.jcas.cas.StringArray;
 
 
 /** 
- * Updated by JCasGen Thu Apr 25 13:17:47 BST 2013
- * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
+ * Updated by JCasGen Fri Jan 30 10:19:46 CST 2015
+ * XML source: /media/songrq/soft/litway/workspace/LitWay/desc/typeSystemDescriptor.xml
  * @generated */
 public class Event extends Annotation {
   /** @generated
@@ -57,24 +57,31 @@ public class Event extends Annotation {
     readObject();
   }   
 
-  /** <!-- begin-user-doc -->
+  /** 
+   * <!-- begin-user-doc -->
     * Write your own initialization here
     * <!-- end-user-doc -->
-  @generated modifiable */
+  *
+   * @generated modifiable 
+   */
   private void readObject() {/*default - does nothing empty block */}
      
   //*--------------*
-  //* Feature: Themes
+  //* Feature: themes
 
-  /** getter for Themes - gets 
-   * @generated */
+  /** getter for themes - gets 
+   * @generated
+   * @return value of the feature 
+   */
   public StringArray getThemes() {
     if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_themes == null)
       jcasType.jcas.throwFeatMissing("themes", "info.chenli.litway.corpora.Event");
     return (StringArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Event_Type)jcasType).casFeatCode_themes)));}
     
-  /** setter for Themes - sets  
-   * @generated */
+  /** setter for themes - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
   public void setThemes(StringArray v) {
     if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_themes == null)
       jcasType.jcas.throwFeatMissing("themes", "info.chenli.litway.corpora.Event");
@@ -101,14 +108,18 @@ public class Event extends Annotation {
   //* Feature: cause
 
   /** getter for cause - gets 
-   * @generated */
+   * @generated
+   * @return value of the feature 
+   */
   public String getCause() {
     if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_cause == null)
       jcasType.jcas.throwFeatMissing("cause", "info.chenli.litway.corpora.Event");
     return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_cause);}
     
   /** setter for cause - sets  
-   * @generated */
+   * @generated
+   * @param v value to set into the feature 
+   */
   public void setCause(String v) {
     if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_cause == null)
       jcasType.jcas.throwFeatMissing("cause", "info.chenli.litway.corpora.Event");
@@ -119,30 +130,38 @@ public class Event extends Annotation {
   //* Feature: product
 
   /** getter for product - gets 
-   * @generated */
+   * @generated
+   * @return value of the feature 
+   */
   public String getProduct() {
     if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_product == null)
       jcasType.jcas.throwFeatMissing("product", "info.chenli.litway.corpora.Event");
     return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_product);}
     
   /** setter for product - sets  
-   * @generated */
+   * @generated
+   * @param v value to set into the feature 
+   */
   public void setProduct(String v) {
     if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_product == null)
       jcasType.jcas.throwFeatMissing("product", "info.chenli.litway.corpora.Event");
     jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_product, v);}    
-                                    //*--------------*
+    //*--------------*
   //* Feature: id
 
   /** getter for id - gets 
-   * @generated */
+   * @generated
+   * @return value of the feature 
+   */
   public String getId() {
     if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_id == null)
       jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Event");
     return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_id);}
     
   /** setter for id - sets  
-   * @generated */
+   * @generated
+   * @param v value to set into the feature 
+   */
   public void setId(String v) {
     if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_id == null)
       jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Event");
@@ -153,14 +172,18 @@ public class Event extends Annotation {
   //* Feature: trigger
 
   /** getter for trigger - gets 
-   * @generated */
+   * @generated
+   * @return value of the feature 
+   */
   public Trigger getTrigger() {
     if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_trigger == null)
       jcasType.jcas.throwFeatMissing("trigger", "info.chenli.litway.corpora.Event");
     return (Trigger)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Event_Type)jcasType).casFeatCode_trigger)));}
     
   /** setter for trigger - sets  
-   * @generated */
+   * @generated
+   * @param v value to set into the feature 
+   */
   public void setTrigger(Trigger v) {
     if (Event_Type.featOkTst && ((Event_Type)jcasType).casFeat_trigger == null)
       jcasType.jcas.throwFeatMissing("trigger", "info.chenli.litway.corpora.Event");

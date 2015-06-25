@@ -1,0 +1,29 @@
+T34	Negative_regulation 67 76	Represses
+T35	Gene_expression 474 483	expresses
+T36	Positive_regulation 785 799	Overexpression
+T37	Positive_regulation 941 955	overexpression
+T38	Negative_regulation 1134 1141	repress
+T39	Binding 1243 1251	interact
+T40	Gene_expression 1266 1275	expressed
+T41	Gene_expression 1333 1342	expressed
+T42	Binding 1405 1416	interaction
+T43	Negative_regulation 1449 1459	repression
+T44	Negative_regulation 1599 1606	abolish
+T45	Binding 1618 1629	interaction
+T46	Negative_regulation 1846 1855	represses
+T47	Regulation 1889 1900	independent
+T48	Negative_regulation 1909 1917	Deletion
+T49	Negative_regulation 2070 2080	repression
+E1	Negative_regulation:T34 Theme:T2 Cause:T1
+E2	Gene_expression:T35 Theme:T7
+E3	Gene_expression:T35 Theme:T8
+E4	Positive_regulation:T36 Theme:T12
+E5	Positive_regulation:T37 Theme:T13
+E6	Negative_regulation:T38 Theme:T15 Cause:T14
+E7	Binding:T39 Theme:T16
+E8	Gene_expression:T41 Theme:T19
+E9	Binding:T42 Theme:T20
+E10	Binding:T45 Theme:T24 Theme2:T25
+E11	Negative_regulation:T44 Theme:E10
+E12	Negative_regulation:T46 Theme:T29 Cause:T28
+E13	Negative_regulation:T48 Theme:T31

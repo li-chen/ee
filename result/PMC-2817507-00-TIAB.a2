@@ -1,0 +1,6 @@
+T13	Gene_expression 525 535	expression
+T14	Phosphorylation 669 684	phosphorylation
+T15	Negative_regulation 1022 1031	decreased
+T16	Positive_regulation 1042 1052	maintained
+T17	Positive_regulation 1169 1178	increased
+E1	Gene_expression:T13 Theme:T5

@@ -1,0 +1,18 @@
+T11	Gene_expression 60 70	production
+T12	Positive_regulation 164 174	activation
+T13	Phosphorylation 327 341	phosphorylated
+T14	Phosphorylation 397 411	phosphorylated
+T15	Positive_regulation 416 425	increased
+T16	Regulation 444 450	effect
+T17	Phosphorylation 549 567	non-phosphorylated
+T18	Positive_regulation 587 595	remained
+T19	Phosphorylation 704 718	phosphorylated
+E1	Gene_expression:T11 Theme:T2
+E2	Positive_regulation:T12 Theme:T3
+E3	Phosphorylation:T13 Theme:T4
+E4	Phosphorylation:T14 Theme:T5
+E5	Phosphorylation:T17 Theme:T6
+E6	Phosphorylation:T17 Theme:T7
+E7	Positive_regulation:T18 Theme:T6
+E8	Positive_regulation:T18 Theme:T7
+E9	Phosphorylation:T19 Theme:T10

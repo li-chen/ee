@@ -1,0 +1,3 @@
+T4	Phosphorylation 78 93	phosphorylation
+T5	Gene_expression 235 244	synthesis
+E1	Gene_expression:T5 Theme:T3

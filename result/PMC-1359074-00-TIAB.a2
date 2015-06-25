@@ -1,0 +1,23 @@
+T20	Negative_regulation 14 22	Silences
+T21	Gene_expression 38 48	Expression
+T22	Negative_regulation 406 415	deficient
+T23	Positive_regulation 477 486	increased
+T24	Negative_regulation 707 717	repression
+T25	Binding 865 872	binding
+T26	Gene_expression 910 920	expression
+T27	Gene_expression 970 980	expression
+T28	Positive_regulation 1124 1132	required
+T29	Negative_regulation 1137 1146	silencing
+T30	Regulation 1210 1214	role
+T31	Regulation 1265 1275	regulation
+E1	Gene_expression:T21 Theme:T2
+E2	Negative_regulation:T20 Theme:E1 Cause:T1
+E3	Negative_regulation:T22 Theme:T6
+E4	Negative_regulation:T24 Theme:T9
+E5	Binding:T25 Theme:T10 Theme2:T11
+E6	Gene_expression:T26 Theme:T12
+E7	Gene_expression:T27 Theme:T12
+E8	Gene_expression:T27 Theme:T13
+E9	Negative_regulation:T29 Theme:T16
+E10	Positive_regulation:T28 Theme:E9 Cause:T15
+E11	Regulation:T31 Theme:T18

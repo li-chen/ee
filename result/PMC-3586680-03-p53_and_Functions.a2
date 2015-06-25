@@ -1,0 +1,13 @@
+T17	Positive_regulation 0 9	Activated
+T18	Negative_regulation 409 419	inhibiting
+T19	Positive_regulation 514 522	response
+T20	Regulation 702 712	regulating
+T21	Gene_expression 717 727	expression
+E1	Positive_regulation:T17 Theme:T1
+E2	Negative_regulation:T18 Theme:T11 Cause:T6
+E3	Gene_expression:T21 Theme:T14
+E4	Gene_expression:T21 Theme:T15
+E5	Gene_expression:T21 Theme:T16
+E6	Regulation:T20 Theme:E5
+E7	Regulation:T20 Theme:E4
+E8	Regulation:T20 Theme:E3

@@ -1,0 +1,32 @@
+T25	Binding 2542 2552	recognized
+T26	Positive_regulation 2862 2869	induced
+T27	Transcription 3185 3198	transcription
+T28	Gene_expression 3222 3232	expression
+T29	Positive_regulation 3273 3281	elevated
+T30	Positive_regulation 3620 3629	increased
+T31	Gene_expression 3630 3640	expression
+T32	Positive_regulation 4377 4387	Activation
+T33	Positive_regulation 4396 4406	stimulates
+T34	Phosphorylation 4420 4435	phosphorylation
+T35	Protein_catabolism 4440 4451	degradation
+T36	Transcription 4517 4530	transcription
+T37	Gene_expression 4858 4868	expression
+T38	Regulation 5039 5048	regulated
+T39	Binding 5188 5197	recognize
+T40	Positive_regulation 5499 5510	upregulated
+T41	Gene_expression 5548 5556	produced
+T42	Gene_expression 5646 5654	produced
+T43	Binding 5750 5757	ligands
+T44	Regulation 6298 6304	target
+E1	Transcription:T27 Theme:T4
+E2	Gene_expression:T28 Theme:T4
+E3	Gene_expression:T28 Theme:T5
+E5	Positive_regulation:T29 Theme:E3
+E7	Gene_expression:T31 Theme:T7
+E8	Positive_regulation:T30 Theme:E7
+E9	Positive_regulation:T32 Theme:T11
+E10	Phosphorylation:T34 Theme:T12
+E11	Protein_catabolism:T35 Theme:T12
+E14	Gene_expression:T37 Theme:T13
+E15	Binding:T39 Theme:T16
+E16	Binding:T43 Theme:T20

@@ -1,0 +1,3 @@
+T12	Gene_expression 1041 1050	expressed
+T13	Gene_expression 1202 1216	co-transfected
+E1	Gene_expression:T13 Theme:T10

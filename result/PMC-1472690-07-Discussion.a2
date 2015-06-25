@@ -1,0 +1,148 @@
+T108	Positive_regulation 540 547	induced
+T109	Binding 548 555	binding
+T110	Binding 669 676	binding
+T111	Binding 869 876	binding
+T112	Positive_regulation 1045 1064	3-D-glucan-mediated
+T113	Gene_expression 1091 1101	production
+T114	Positive_regulation 1183 1194	GP-mediated
+T115	Binding 1207 1214	binding
+T116	Positive_regulation 1377 1386	induction
+T117	Transcription 1395 1408	transcription
+T118	Positive_regulation 1409 1418	depending
+T119	Transcription 1553 1566	transcription
+T120	Transcription 1587 1600	transcription
+T121	Binding 1697 1704	binding
+T122	Regulation 1943 1953	regulating
+T123	Binding 1993 2005	associations
+T124	Positive_regulation 2134 2140	induce
+T125	Positive_regulation 2167 2174	induced
+T126	Binding 2301 2308	binding
+T127	Gene_expression 2538 2548	production
+T128	Positive_regulation 2573 2582	induction
+T129	Localization 2610 2617	binding
+T130	Negative_regulation 2804 2812	decrease
+T131	Binding 2842 2849	binding
+T132	Transcription 2873 2881	promoter
+T133	Positive_regulation 3034 3043	necessary
+T134	Positive_regulation 3048 3057	induction
+T135	Gene_expression 3167 3174	produce
+T136	Gene_expression 3278 3285	produce
+T137	Binding 3414 3418	that
+T138	Binding 3769 3776	binding
+T139	Negative_regulation 3846 3853	release
+T140	Positive_regulation 3981 3990	induction
+T141	Localization 3998 4019	neutrophil-attracting
+T142	Positive_regulation 4258 4265	induced
+T143	Positive_regulation 4500 4507	induced
+T144	Negative_regulation 4578 4593	down-regulation
+T145	Positive_regulation 4657 4670	up-regulation
+T146	Positive_regulation 4758 4765	induced
+T147	Binding 4766 4773	binding
+T148	Positive_regulation 4976 4983	induced
+T149	Binding 4984 4991	binding
+T150	Positive_regulation 5109 5116	induced
+T151	Gene_expression 5124 5134	production
+T152	Positive_regulation 5269 5280	LPS-induced
+T153	Binding 5281 5288	binding
+T154	Positive_regulation 5321 5328	induced
+T155	Binding 5329 5336	binding
+T156	Positive_regulation 5385 5394	increased
+T157	Negative_regulation 5438 5453	down-regulation
+T158	Positive_regulation 5481 5488	induced
+T159	Binding 5498 5505	binding
+T160	Binding 6019 6026	binding
+T161	Positive_regulation 6378 6385	induced
+T162	Binding 6386 6393	binding
+T163	Regulation 6414 6421	altered
+T164	Positive_regulation 6565 6573	increase
+T165	Positive_regulation 6584 6591	induced
+T166	Binding 6592 6599	binding
+T167	Positive_regulation 6737 6750	up-regulation
+T168	Positive_regulation 6765 6772	induced
+T169	Gene_expression 6780 6790	production
+T170	Negative_regulation 6905 6910	ratio
+T171	Positive_regulation 7304 7311	induced
+T172	Regulation 7318 7327	dependent
+T173	Gene_expression 7333 7343	production
+T174	Regulation 7683 7692	sustained
+T175	Regulation 7810 7818	controls
+T176	Gene_expression 7844 7854	production
+T177	Positive_regulation 7920 7930	activation
+E1	Binding:T109 Theme:T2
+E2	Positive_regulation:T108 Theme:E1
+E3	Binding:T110 Theme:T3
+E4	Gene_expression:T113 Theme:T7
+E5	Gene_expression:T113 Theme:T8
+E6	Positive_regulation:T112 Theme:E4
+E7	Positive_regulation:T112 Theme:E5
+E8	Binding:T115 Theme:T10 Theme2:T11
+E9	Binding:T115 Theme:T9 Theme2:T11
+E10	Binding:T115 Theme:T9 Theme2:T10
+E14	Transcription:T117 Theme:T12
+E15	Positive_regulation:T118 Theme:T13
+E16	Positive_regulation:T118 Theme:T14
+E17	Positive_regulation:T118 Theme:T15
+E18	Positive_regulation:T118 Theme:T16
+E20	Transcription:T119 Theme:T17
+E21	Positive_regulation:T116 Theme:E14
+E22	Positive_regulation:T118 Theme:E20
+E24	Positive_regulation:T118 Theme:E21
+E25	Transcription:T120 Theme:T18
+E26	Binding:T121 Theme:T21 Theme2:T22
+E27	Binding:T121 Theme:T19 Theme2:T21
+E28	Positive_regulation:T124 Theme:T28
+E29	Positive_regulation:T125 Theme:T29
+E30	Positive_regulation:T128 Theme:T31
+E32	Localization:T129 Theme:T31
+E33	Localization:T129 Theme:T32
+E34	Localization:T129 Theme:T33
+E36	Positive_regulation:T128 Theme:E33
+E37	Positive_regulation:T128 Theme:E34
+E38	Negative_regulation:T130 Theme:T38
+E39	Negative_regulation:T130 Theme:T39
+E40	Binding:T131 Theme:T39 Theme2:T40
+E41	Binding:T131 Theme:T38 Theme2:T40
+E42	Binding:T131 Theme:T38 Theme2:T39
+E43	Transcription:T132 Theme:T40
+E44	Transcription:T132 Theme:T41
+E45	Positive_regulation:T134 Theme:T42
+E46	Positive_regulation:T133 Theme:E45
+E47	Gene_expression:T135 Theme:T43
+E48	Gene_expression:T136 Theme:T44
+E49	Binding:T137 Theme:T46
+E50	Negative_regulation:T139 Theme:T51
+E53	Localization:T141 Theme:T54
+E54	Localization:T141 Theme:T55
+E55	Positive_regulation:T140 Theme:E53
+E56	Positive_regulation:T140 Theme:E54
+E57	Negative_regulation:T144 Theme:T60
+E58	Negative_regulation:T144 Theme:T61
+E59	Positive_regulation:T145 Theme:T62
+E60	Binding:T147 Theme:T65
+E61	Positive_regulation:T146 Theme:E60 Cause:T63
+E62	Binding:T149 Theme:T72
+E63	Gene_expression:T151 Theme:T75
+E64	Positive_regulation:T148 Theme:E62 Cause:T72
+E65	Positive_regulation:T150 Theme:E63 Cause:T74
+E67	Binding:T153 Theme:T77
+E68	Binding:T155 Theme:T78
+E69	Positive_regulation:T152 Theme:E67
+E70	Positive_regulation:T154 Theme:E68 Cause:T78
+E74	Positive_regulation:T156 Theme:E69 Cause:E68
+E77	Binding:T159 Theme:T79 Theme2:T80
+E78	Positive_regulation:T158 Theme:E77 Cause:T79
+E79	Binding:T162 Theme:T85
+E80	Positive_regulation:T161 Theme:E79 Cause:T85
+E81	Binding:T166 Theme:T86
+E82	Gene_expression:T169 Theme:T88
+E83	Positive_regulation:T164 Theme:E81
+E84	Positive_regulation:T165 Theme:E81 Cause:T86
+E86	Positive_regulation:T168 Theme:E82 Cause:T87
+E87	Positive_regulation:T167 Theme:E86
+E88	Negative_regulation:T170 Theme:T89
+E89	Negative_regulation:T170 Theme:T90
+E90	Gene_expression:T173 Theme:T101
+E91	Positive_regulation:T171 Theme:E90 Cause:T99
+E94	Gene_expression:T176 Theme:T105
+E95	Regulation:T175 Theme:E94
+E96	Positive_regulation:T177 Theme:T106

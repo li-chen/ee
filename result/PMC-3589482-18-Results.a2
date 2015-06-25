@@ -1,0 +1,4 @@
+T13	Positive_regulation 16 27	LPS-induced
+T14	Binding 48 53	Binds
+E1	Positive_regulation:T13 Theme:T1
+E2	Binding:T14 Theme:T2

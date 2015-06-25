@@ -1,0 +1,21 @@
+T15	Gene_expression 11 21	Expression
+T16	Negative_regulation 65 74	Deficient
+T17	Positive_regulation 136 147	upregulated
+T18	Regulation 238 245	targets
+T19	Gene_expression 304 313	knock-out
+T20	Negative_regulation 694 701	decline
+T21	Gene_expression 705 715	expression
+T22	Gene_expression 832 842	expression
+T23	Positive_regulation 987 993	lesser
+T24	Gene_expression 1069 1079	expression
+T25	Gene_expression 1760 1770	expression
+T26	Gene_expression 1889 1899	expression
+E1	Gene_expression:T15 Theme:T1
+E2	Gene_expression:T15 Theme:T2
+E3	Negative_regulation:T16 Theme:T3
+E4	Regulation:T18 Theme:T5
+E5	Gene_expression:T19 Theme:T6
+E6	Gene_expression:T24 Theme:T11
+E7	Gene_expression:T25 Theme:T12
+E8	Gene_expression:T26 Theme:T13
+E9	Gene_expression:T26 Theme:T14

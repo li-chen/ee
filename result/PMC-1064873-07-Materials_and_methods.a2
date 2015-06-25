@@ -1,0 +1,5 @@
+T12	Gene_expression 1244 1254	expression
+T13	Gene_expression 1309 1319	expression
+E1	Gene_expression:T12 Theme:T6
+E2	Gene_expression:T12 Theme:T7
+E3	Gene_expression:T13 Theme:T8

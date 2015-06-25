@@ -1,0 +1,8 @@
+T9	Negative_regulation 39 46	inhibit
+T10	Binding 65 72	binding
+T11	Negative_regulation 224 234	inhibition
+T12	Transcription 925 936	transcripts
+E1	Binding:T10 Theme:T1
+E2	Negative_regulation:T9 Theme:E1
+E3	Transcription:T12 Theme:T6
+E4	Transcription:T12 Theme:T7

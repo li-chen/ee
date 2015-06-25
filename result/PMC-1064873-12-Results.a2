@@ -1,0 +1,57 @@
+T38	Negative_regulation 0 9	Defective
+T39	Positive_regulation 16 24	mediated
+T40	Phosphorylation 31 46	phosphorylation
+T41	Binding 70 81	interaction
+T42	Positive_regulation 140 150	activation
+T43	Negative_regulation 208 227	Macrophage-specific
+T44	Negative_regulation 234 243	deficient
+T45	Positive_regulation 304 312	mediated
+T46	Positive_regulation 439 453	overexpression
+T47	Positive_regulation 464 473	induction
+T48	Phosphorylation 493 508	phosphorylation
+T49	Phosphorylation 630 645	phosphorylation
+T50	Positive_regulation 667 674	induced
+T51	Positive_regulation 687 697	activation
+T52	Phosphorylation 769 783	phosphorylated
+T53	Phosphorylation 850 865	phosphorylation
+T54	Phosphorylation 906 921	phosphorylation
+T55	Positive_regulation 926 935	augmented
+T56	Phosphorylation 1007 1022	phosphorylation
+T57	Negative_regulation 1027 1036	defective
+T58	Positive_regulation 1043 1050	induced
+T59	Phosphorylation 1057 1072	phosphorylation
+T60	Positive_regulation 1142 1149	induced
+T61	Phosphorylation 1156 1171	phosphorylation
+T62	Positive_regulation 1302 1311	activated
+T63	Positive_regulation 1344 1351	induced
+T64	Positive_regulation 1358 1368	activation
+T65	Binding 1404 1415	association
+T66	Phosphorylation 1437 1452	phosphorylation
+E1	Phosphorylation:T40 Theme:T2
+E2	Positive_regulation:T39 Theme:E1 Cause:T1
+E3	Binding:T41 Theme:T4
+E4	Positive_regulation:T42 Theme:T6
+E5	Positive_regulation:T42 Theme:T7
+E6	Negative_regulation:T44 Theme:T8
+E7	Positive_regulation:T46 Theme:T11
+E8	Positive_regulation:T47 Theme:T12 Cause:T14
+E10	Phosphorylation:T48 Theme:T12
+E11	Phosphorylation:T48 Theme:T13
+E12	Positive_regulation:T47 Theme:E11 Cause:T14
+E14	Phosphorylation:T49 Theme:T16
+E15	Positive_regulation:T51 Theme:T17
+E16	Positive_regulation:T50 Theme:E14
+E17	Phosphorylation:T52 Theme:T19
+E18	Phosphorylation:T53 Theme:T21
+E19	Phosphorylation:T54 Theme:T22
+E20	Positive_regulation:T55 Theme:E19
+E21	Phosphorylation:T56 Theme:T24
+E22	Phosphorylation:T59 Theme:T26
+E23	Positive_regulation:T58 Theme:E22 Cause:T25
+E24	Phosphorylation:T61 Theme:T29
+E25	Positive_regulation:T60 Theme:E24 Cause:T28
+E26	Positive_regulation:T62 Theme:T32 Cause:T33
+E27	Positive_regulation:T64 Theme:T36
+E28	Binding:T65 Theme:T37
+E29	Phosphorylation:T66 Theme:T37
+E30	Positive_regulation:T63 Theme:E27 Cause:T35

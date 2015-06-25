@@ -1,0 +1,13 @@
+T9	Gene_expression 5 15	Expression
+T10	Positive_regulation 32 41	Increased
+T11	Positive_regulation 87 96	increased
+T12	Gene_expression 128 138	expression
+T13	Gene_expression 351 361	expression
+T14	Positive_regulation 384 393	increased
+T15	Positive_regulation 499 509	maintained
+E1	Gene_expression:T9 Theme:T1
+E2	Positive_regulation:T10 Theme:E1
+E3	Positive_regulation:T11 Theme:T2
+E4	Gene_expression:T12 Theme:T3
+E5	Gene_expression:T13 Theme:T6
+E6	Positive_regulation:T14 Theme:E5

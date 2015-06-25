@@ -1,0 +1,22 @@
+T36	Positive_regulation 697 702	needs
+T37	Gene_expression 771 780	expressed
+T38	Regulation 865 874	regulates
+T39	Negative_regulation 1184 1194	deficiency
+T40	Positive_regulation 1379 1383	more
+T41	Gene_expression 1413 1423	expression
+T42	Positive_regulation 1436 1447	upregulated
+T43	Positive_regulation 1474 1481	induced
+T44	Binding 1508 1517	recruited
+T45	Binding 1559 1566	binding
+T46	Phosphorylation 1654 1670	deubiquitination
+T47	Gene_expression 1742 1752	expressing
+T48	Positive_regulation 1889 1897	mediated
+T49	Protein_catabolism 1898 1909	inhibi-tion
+E1	Positive_regulation:T36 Theme:T15
+E2	Negative_regulation:T39 Theme:T21
+E3	Binding:T44 Theme:T23 Theme2:T26
+E4	Binding:T45 Theme:T27 Theme2:T28
+E5	Phosphorylation:T46 Theme:T31
+E6	Gene_expression:T47 Theme:T32
+E7	Protein_catabolism:T49 Theme:T34
+E8	Positive_regulation:T48 Theme:E7 Cause:T33

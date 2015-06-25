@@ -1,0 +1,17 @@
+T22	Gene_expression 2748 2756	produced
+T23	Gene_expression 2836 2845	expressed
+T24	Positive_regulation 2891 2902	upregulated
+T25	Positive_regulation 3292 3299	induces
+T26	Gene_expression 3456 3463	produce
+T27	Positive_regulation 3635 3646	SE-mediated
+T28	Gene_expression 3653 3663	expression
+T29	Regulation 3731 3742	independent
+T30	Positive_regulation 3887 3894	induced
+E1	Gene_expression:T22 Theme:T2
+E2	Gene_expression:T23 Theme:T3
+E3	Positive_regulation:T24 Theme:T3
+E4	Positive_regulation:T25 Theme:T12 Cause:T11
+E5	Positive_regulation:T25 Theme:T13 Cause:T11
+E6	Gene_expression:T26 Theme:T14
+E7	Gene_expression:T28 Theme:T18
+E8	Positive_regulation:T27 Theme:E7

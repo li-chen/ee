@@ -1,0 +1,20 @@
+T19	Binding 146 157	DNA-binding
+T20	Negative_regulation 291 299	deletion
+T21	Negative_regulation 436 441	fails
+T22	Gene_expression 475 485	expressing
+T23	Binding 541 546	binds
+T24	Negative_regulation 564 575	antagonizes
+T25	Binding 672 684	interactions
+T26	Gene_expression 799 809	expressing
+T27	Binding 839 844	binds
+T28	Positive_regulation 897 906	induction
+T29	Gene_expression 933 943	expressing
+E1	Negative_regulation:T20 Theme:T4
+E2	Gene_expression:T22 Theme:T8
+E3	Binding:T23 Theme:T9
+E4	Negative_regulation:T24 Theme:T10 Cause:T9
+E5	Binding:T25 Theme:T12
+E6	Gene_expression:T26 Theme:T14
+E7	Binding:T27 Theme:T15 Theme2:T16
+E8	Positive_regulation:T28 Theme:T17
+E9	Gene_expression:T29 Theme:T18

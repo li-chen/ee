@@ -1,0 +1,44 @@
+T57	Positive_regulation 174 182	increase
+T58	Phosphorylation 190 205	phosphorylation
+T59	Gene_expression 385 394	synthesis
+T60	Gene_expression 601 611	Expression
+T61	Positive_regulation 630 636	active
+T62	Gene_expression 709 719	expression
+T63	Positive_regulation 738 748	sufficient
+T64	Gene_expression 826 835	synthesis
+T65	Phosphorylation 898 913	phosphorylation
+T66	Positive_regulation 1441 1449	increase
+T67	Phosphorylation 1464 1479	phosphorylation
+T68	Negative_regulation 2173 2177	loss
+T69	Phosphorylation 2254 2269	phosphorylation
+T70	Phosphorylation 2458 2473	phosphorylation
+T71	Regulation 2560 2570	regulation
+T72	Gene_expression 2656 2665	synthesis
+T73	Positive_regulation 3494 3505	contributes
+T74	Regulation 3958 3968	regulation
+T75	Gene_expression 4600 4610	expression
+T76	Positive_regulation 5374 5381	induced
+T77	Negative_regulation 6008 6017	deficient
+T78	Gene_expression 6119 6128	synthesis
+T79	Gene_expression 6321 6331	production
+T80	Negative_regulation 6925 6929	loss
+T81	Gene_expression 7114 7123	synthesis
+T82	Gene_expression 7500 7510	production
+T83	Positive_regulation 7639 7648	increased
+T84	Gene_expression 7649 7659	production
+T85	Positive_regulation 7703 7712	important
+E1	Gene_expression:T59 Theme:T3
+E2	Gene_expression:T60 Theme:T4
+E3	Positive_regulation:T61 Theme:T4
+E5	Gene_expression:T62 Theme:T5
+E6	Gene_expression:T64 Theme:T6
+E7	Positive_regulation:T63 Theme:E5
+E8	Gene_expression:T72 Theme:T15
+E9	Negative_regulation:T77 Theme:T41
+E10	Gene_expression:T78 Theme:T42
+E11	Gene_expression:T79 Theme:T44
+E12	Gene_expression:T81 Theme:T45
+E13	Gene_expression:T82 Theme:T51
+E14	Gene_expression:T84 Theme:T52
+E15	Positive_regulation:T83 Theme:E14
+E17	Positive_regulation:T85 Theme:E15

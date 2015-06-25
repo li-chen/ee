@@ -1,0 +1,32 @@
+T32	Positive_regulation 0 10	Resistance
+T33	Negative_regulation 20 30	inhibition
+T34	Gene_expression 51 61	production
+T35	Gene_expression 66 76	expression
+T36	Gene_expression 397 404	produce
+T37	Positive_regulation 481 489	presence
+T38	Gene_expression 569 579	expression
+T39	Positive_regulation 613 622	increased
+T40	Phosphorylation 628 643	phosphorylation
+T41	Positive_regulation 781 790	augmented
+T42	Positive_regulation 847 854	induced
+T43	Phosphorylation 906 921	phosphorylation
+T44	Negative_regulation 963 972	abolished
+T45	Negative_regulation 1079 1089	inhibition
+T46	Gene_expression 1110 1120	production
+T47	Positive_regulation 1607 1617	activation
+T48	Positive_regulation 1657 1666	induction
+E1	Negative_regulation:T33 Theme:T1
+E2	Gene_expression:T34 Theme:T2
+E3	Gene_expression:T35 Theme:T3
+E4	Positive_regulation:T32 Theme:E1
+E5	Negative_regulation:T33 Theme:E2
+E6	Positive_regulation:T32 Theme:E5
+E7	Gene_expression:T36 Theme:T8
+E8	Gene_expression:T38 Theme:T12
+E10	Positive_regulation:T37 Theme:E7 Cause:T10
+E11	Positive_regulation:T39 Theme:E8
+E12	Phosphorylation:T43 Theme:T16
+E13	Positive_regulation:T42 Theme:E12
+E14	Gene_expression:T46 Theme:T22
+E15	Negative_regulation:T45 Theme:E14 Cause:T21
+E16	Positive_regulation:T47 Theme:T30

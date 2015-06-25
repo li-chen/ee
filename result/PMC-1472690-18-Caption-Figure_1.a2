@@ -1,0 +1,4 @@
+T22	Binding 17 24	binding
+T23	Negative_regulation 676 685	Decreased
+T24	Binding 994 1001	binding
+E1	Binding:T22 Theme:T2

@@ -1,0 +1,15 @@
+T11	Regulation 4 13	Regulates
+T12	Gene_expression 23 32	Synthesis
+T13	Positive_regulation 59 69	Activation
+T14	Positive_regulation 471 479	critical
+T15	Gene_expression 543 553	production
+T16	Phosphorylation 632 647	phosphorylation
+T17	Regulation 917 922	links
+T18	Gene_expression 1112 1122	production
+T19	Positive_regulation 1131 1143	contributing
+E1	Gene_expression:T12 Theme:T1
+E2	Positive_regulation:T13 Theme:T2
+E3	Regulation:T11 Theme:E1
+E4	Gene_expression:T15 Theme:T5
+E5	Regulation:T17 Theme:T8
+E6	Gene_expression:T18 Theme:T10

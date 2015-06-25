@@ -1,0 +1,44 @@
+T55	Binding 201 208	binding
+T56	Binding 809 815	target
+T57	Negative_regulation 959 968	Depletion
+T58	Negative_regulation 1458 1462	null
+T59	Regulation 1750 1758	disrupts
+T60	Binding 2139 2143	bind
+T61	Gene_expression 2233 2242	expressed
+T62	Gene_expression 3165 3172	express
+T63	Positive_regulation 3568 3577	activated
+T64	Localization 3745 3751	switch
+T65	Negative_regulation 3778 3789	competition
+T66	Gene_expression 3844 3853	silencing
+T67	Negative_regulation 4122 4131	silencing
+T68	Binding 4362 4366	bind
+T69	Regulation 4423 4431	regulate
+T70	Negative_regulation 4440 4449	silencing
+T71	Negative_regulation 4482 4491	silencing
+T72	Positive_regulation 4759 4770	upregulated
+T73	Binding 5358 5363	binds
+T74	Negative_regulation 5412 5421	represses
+T75	Gene_expression 5477 5486	expressed
+T76	Gene_expression 5521 5530	expressed
+T77	Gene_expression 5560 5570	expression
+T78	Negative_regulation 5606 5613	absence
+E1	Negative_regulation:T57 Theme:T5
+E2	Negative_regulation:T58 Theme:T11
+E3	Binding:T60 Theme:T16
+E4	Gene_expression:T61 Theme:T17
+E5	Gene_expression:T61 Theme:T18
+E6	Gene_expression:T62 Theme:T24
+E7	Gene_expression:T62 Theme:T25
+E8	Positive_regulation:T63 Theme:T30
+E9	Localization:T64 Theme:T32
+E10	Localization:T64 Theme:T33
+E11	Gene_expression:T66 Theme:T34
+E12	Negative_regulation:T70 Theme:T41
+E13	Regulation:T69 Theme:E12
+E14	Negative_regulation:T71 Theme:T42
+E15	Positive_regulation:T72 Theme:T43
+E16	Binding:T73 Theme:T48 Theme2:T49
+E17	Gene_expression:T75 Theme:T50
+E18	Gene_expression:T76 Theme:T50
+E19	Gene_expression:T76 Theme:T51
+E20	Gene_expression:T77 Theme:T51

@@ -1,0 +1,31 @@
+T22	Binding 11 16	Binds
+T23	Binding 142 153	recruitment
+T24	Positive_regulation 594 601	present
+T25	Binding 650 661	association
+T26	Positive_regulation 712 721	increased
+T27	Regulation 832 839	changes
+T28	Phosphorylation 854 869	phosphorylation
+T29	Localization 901 908	ability
+T30	Binding 973 984	recruitment
+T31	Phosphorylation 1031 1045	phosphorylated
+T32	Binding 1172 1177	bound
+T33	Binding 1306 1313	binding
+T34	Localization 1533 1544	recruitment
+T35	Positive_regulation 1564 1583	T217-phosphorylated
+T36	Positive_regulation 1622 1631	increased
+T37	Transcription 1632 1645	transcription
+E1	Binding:T22 Theme:T1 Theme2:T2
+E2	Binding:T23 Theme:T3
+E3	Positive_regulation:T24 Theme:T6
+E4	Phosphorylation:T28 Theme:T8
+E5	Localization:T29 Theme:T11
+E6	Binding:T30 Theme:T10 Theme2:T11
+E7	Phosphorylation:T31 Theme:T11
+E8	Regulation:T27 Theme:E4
+E9	Binding:T32 Theme:T14
+E10	Binding:T33 Theme:T16
+E11	Localization:T34 Theme:T18
+E12	Localization:T34 Theme:T19
+E13	Positive_regulation:T35 Theme:T20
+E14	Transcription:T37 Theme:T21
+E15	Positive_regulation:T36 Theme:E14

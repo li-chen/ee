@@ -1,0 +1,18 @@
+T14	Negative_regulation 1383 1392	deficient
+T15	Gene_expression 1414 1424	expressing
+T16	Positive_regulation 1444 1453	increased
+T17	Positive_regulation 1509 1517	enhanced
+T18	Positive_regulation 1523 1533	activation
+T19	Protein_catabolism 1551 1562	degradation
+T20	Negative_regulation 1597 1604	inhibit
+T21	Negative_regulation 1630 1642	downregulate
+T22	Phosphorylation 1673 1688	phosphorylating
+T23	Phosphorylation 1758 1772	phosphorylates
+E1	Negative_regulation:T14 Theme:T5
+E2	Gene_expression:T15 Theme:T6
+E3	Positive_regulation:T18 Theme:T7
+E4	Protein_catabolism:T19 Theme:T7
+E5	Protein_catabolism:T19 Theme:T8
+E6	Positive_regulation:T17 Theme:E5
+E9	Phosphorylation:T22 Theme:T10
+E10	Phosphorylation:T23 Theme:T12 Cause:T11

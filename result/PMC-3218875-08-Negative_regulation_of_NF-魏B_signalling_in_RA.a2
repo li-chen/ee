@@ -1,0 +1,15 @@
+T18	Negative_regulation 217 226	inhibitor
+T19	Binding 280 291	interaction
+T20	Gene_expression 536 546	expression
+T21	Gene_expression 562 571	expressed
+T22	Positive_regulation 690 704	overexpression
+T23	Negative_regulation 718 725	inhibit
+T24	Negative_regulation 870 875	since
+T25	Negative_regulation 883 892	deficient
+T26	Gene_expression 1055 1065	expression
+T27	Gene_expression 1100 1110	expression
+T28	Gene_expression 1238 1248	expression
+E1	Negative_regulation:T18 Theme:T5
+E2	Positive_regulation:T22 Theme:T12
+E3	Negative_regulation:T25 Theme:T14
+E4	Gene_expression:T26 Theme:T15

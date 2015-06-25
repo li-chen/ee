@@ -1,0 +1,12 @@
+T11	Gene_expression 4 14	Expression
+T12	Negative_regulation 102 111	deficient
+T13	Gene_expression 129 136	express
+T14	Gene_expression 317 327	expression
+T15	Gene_expression 733 743	expression
+T16	Gene_expression 914 923	expressed
+E1	Gene_expression:T11 Theme:T1
+E2	Negative_regulation:T12 Theme:T2
+E3	Gene_expression:T13 Theme:T3
+E4	Gene_expression:T14 Theme:T5
+E5	Gene_expression:T15 Theme:T8
+E6	Gene_expression:T16 Theme:T9

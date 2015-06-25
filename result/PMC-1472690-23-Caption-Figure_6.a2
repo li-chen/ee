@@ -1,0 +1,8 @@
+T19	Negative_regulation 0 9	Decreased
+T20	Positive_regulation 32 41	following
+T21	Negative_regulation 121 126	ratio
+T22	Positive_regulation 286 290	more
+T23	Gene_expression 651 661	production
+E1	Negative_regulation:T21 Theme:T5
+E2	Negative_regulation:T21 Theme:T6
+E3	Gene_expression:T23 Theme:T17

@@ -1,0 +1,22 @@
+T25	Positive_regulation 200 214	siRNA-mediated
+T26	Binding 996 1003	binding
+T27	Binding 1057 1064	binding
+T28	Negative_regulation 1471 1478	reduces
+T29	Negative_regulation 1608 1613	siRNA
+T30	Gene_expression 1931 1941	expression
+T31	Negative_regulation 1972 1977	siRNA
+T32	Positive_regulation 1991 2002	transfected
+T33	Negative_regulation 2387 2397	inhibition
+T34	Negative_regulation 2624 2633	inhibited
+T35	Negative_regulation 2693 2697	down
+T36	Gene_expression 2707 2717	expression
+E1	Binding:T26 Theme:T7
+E2	Binding:T27 Theme:T8
+E3	Negative_regulation:T29 Theme:T15
+E4	Gene_expression:T30 Theme:T16
+E5	Negative_regulation:T31 Theme:T17
+E6	Positive_regulation:T32 Theme:T18
+E7	Positive_regulation:T32 Theme:E4
+E8	Negative_regulation:T33 Theme:T22
+E9	Gene_expression:T36 Theme:T24
+E10	Negative_regulation:T35 Theme:E9

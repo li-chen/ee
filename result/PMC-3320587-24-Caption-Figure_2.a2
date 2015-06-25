@@ -1,0 +1,32 @@
+T17	Positive_regulation 4 11	induces
+T18	Gene_expression 23 33	expression
+T19	Negative_regulation 38 47	knockdown
+T20	Positive_regulation 130 139	increases
+T21	Transcription 560 569	expressed
+T22	Regulation 597 605	affected
+T23	Positive_regulation 670 679	increased
+T24	Negative_regulation 796 806	suppresses
+T25	Gene_expression 813 823	expression
+T26	Positive_regulation 1163 1172	increased
+T27	Gene_expression 1179 1189	expression
+T28	Gene_expression 1310 1319	expressed
+T29	Positive_regulation 1336 1347	MTb-induced
+T30	Transcription 1366 1370	mRNA
+T31	Gene_expression 1521 1531	expression
+T32	Negative_regulation 1535 1544	abrogated
+T33	Negative_regulation 1868 1875	reduced
+E1	Gene_expression:T18 Theme:T1
+E2	Negative_regulation:T19 Theme:T2
+E3	Positive_regulation:T17 Theme:E1
+E4	Transcription:T21 Theme:T5
+E5	Regulation:T22 Theme:E4
+E6	Positive_regulation:T23 Theme:E4
+E7	Gene_expression:T25 Theme:T7
+E8	Negative_regulation:T24 Theme:E7
+E9	Gene_expression:T27 Theme:T10
+E10	Positive_regulation:T26 Theme:E9
+E11	Gene_expression:T28 Theme:T12
+E12	Transcription:T30 Theme:T12
+E13	Positive_regulation:T29 Theme:E12
+E14	Gene_expression:T31 Theme:T13
+E15	Negative_regulation:T32 Theme:E14

@@ -1,0 +1,237 @@
+<?xml version="1.0"?>
+<network>
+  <entities>
+    <entity>Protein</entity>
+  </entities>
+  <events>
+    <event>
+      <type>Gene_expression</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="false" />
+      </arguments>
+    </event>
+    <event>
+      <type>Transcription</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="false" />
+      </arguments>
+    </event>
+    <event>
+      <type>Protein_catabolism</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="false" />
+      </arguments>
+    </event>
+    <event>
+      <type>Localization</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="false" />
+      </arguments>
+    </event>
+    <event>
+      <type>Binding</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="true" />
+      </arguments>
+    </event>
+    <event>
+      <type>Protein_modification</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="false"/>
+	<argument name="Cause" type="Protein" multi="false"/>
+	<argument name="Cause" type="Gene_expression" multi="false"/>
+	<argument name="Cause" type="Transcription" multi="false"/>
+	<argument name="Cause" type="Protein_catabolism" multi="false"/>
+	<argument name="Cause" type="Localization" multi="false"/>
+	<argument name="Cause" type="Binding" multi="false"/>
+	<argument name="Cause" type="Protein_modification" multi="false"/>
+	<argument name="Cause" type="Phosphorylation" multi="false"/>
+	<argument name="Cause" type="Ubiquitination" multi="false"/>
+	<argument name="Cause" type="Acetylation" multi="false"/>
+	<argument name="Cause" type="Deacetylation" multi="false"/>
+	<argument name="Cause" type="Regulation" multi="false"/>
+	<argument name="Cause" type="Positive_regulation" multi="false"/>
+	<argument name="Cause" type="Negative_regulation" multi="false"/>
+      </arguments>
+    </event>
+    <event>
+      <type>Phosphorylation</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="false"/>
+	<argument name="Cause" type="Protein" multi="false"/>
+	<argument name="Cause" type="Gene_expression" multi="false"/>
+	<argument name="Cause" type="Transcription" multi="false"/>
+	<argument name="Cause" type="Protein_catabolism" multi="false"/>
+	<argument name="Cause" type="Localization" multi="false"/>
+	<argument name="Cause" type="Binding" multi="false"/>
+	<argument name="Cause" type="Protein_modification" multi="false"/>
+	<argument name="Cause" type="Phosphorylation" multi="false"/>
+	<argument name="Cause" type="Ubiquitination" multi="false"/>
+	<argument name="Cause" type="Acetylation" multi="false"/>
+	<argument name="Cause" type="Deacetylation" multi="false"/>
+	<argument name="Cause" type="Regulation" multi="false"/>
+	<argument name="Cause" type="Positive_regulation" multi="false"/>
+	<argument name="Cause" type="Negative_regulation" multi="false"/>
+      </arguments>
+    </event>
+    <event>
+      <type>Ubiquitination</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="false"/>
+	<argument name="Cause" type="Protein" multi="false"/>
+	<argument name="Cause" type="Gene_expression" multi="false"/>
+	<argument name="Cause" type="Transcription" multi="false"/>
+	<argument name="Cause" type="Protein_catabolism" multi="false"/>
+	<argument name="Cause" type="Localization" multi="false"/>
+	<argument name="Cause" type="Binding" multi="false"/>
+	<argument name="Cause" type="Protein_modification" multi="false"/>
+	<argument name="Cause" type="Phosphorylation" multi="false"/>
+	<argument name="Cause" type="Ubiquitination" multi="false"/>
+	<argument name="Cause" type="Acetylation" multi="false"/>
+	<argument name="Cause" type="Deacetylation" multi="false"/>
+	<argument name="Cause" type="Regulation" multi="false"/>
+	<argument name="Cause" type="Positive_regulation" multi="false"/>
+	<argument name="Cause" type="Negative_regulation" multi="false"/>
+      </arguments>
+    </event>
+    <event>
+      <type>Acetylation</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="false"/>
+	<argument name="Cause" type="Protein" multi="false"/>
+	<argument name="Cause" type="Gene_expression" multi="false"/>
+	<argument name="Cause" type="Transcription" multi="false"/>
+	<argument name="Cause" type="Protein_catabolism" multi="false"/>
+	<argument name="Cause" type="Localization" multi="false"/>
+	<argument name="Cause" type="Binding" multi="false"/>
+	<argument name="Cause" type="Protein_modification" multi="false"/>
+	<argument name="Cause" type="Phosphorylation" multi="false"/>
+	<argument name="Cause" type="Ubiquitination" multi="false"/>
+	<argument name="Cause" type="Acetylation" multi="false"/>
+	<argument name="Cause" type="Deacetylation" multi="false"/>
+	<argument name="Cause" type="Regulation" multi="false"/>
+	<argument name="Cause" type="Positive_regulation" multi="false"/>
+	<argument name="Cause" type="Negative_regulation" multi="false"/>
+      </arguments>
+    </event>
+    <event>
+      <type>Deacetylation</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="false"/>
+	<argument name="Cause" type="Protein" multi="false"/>
+	<argument name="Cause" type="Gene_expression" multi="false"/>
+	<argument name="Cause" type="Transcription" multi="false"/>
+	<argument name="Cause" type="Protein_catabolism" multi="false"/>
+	<argument name="Cause" type="Localization" multi="false"/>
+	<argument name="Cause" type="Binding" multi="false"/>
+	<argument name="Cause" type="Protein_modification" multi="false"/>
+	<argument name="Cause" type="Phosphorylation" multi="false"/>
+	<argument name="Cause" type="Ubiquitination" multi="false"/>
+	<argument name="Cause" type="Acetylation" multi="false"/>
+	<argument name="Cause" type="Deacetylation" multi="false"/>
+	<argument name="Cause" type="Regulation" multi="false"/>
+	<argument name="Cause" type="Positive_regulation" multi="false"/>
+	<argument name="Cause" type="Negative_regulation" multi="false"/>
+      </arguments>
+    </event>
+    <event>
+      <type>Regulation</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="false"/>
+	<argument name="Theme" type="Gene_expression" multi="false"/>
+	<argument name="Theme" type="Transcription" multi="false"/>
+	<argument name="Theme" type="Protein_catabolism" multi="false"/>
+	<argument name="Theme" type="Localization" multi="false"/>
+	<argument name="Theme" type="Binding" multi="false"/>
+	<argument name="Theme" type="Protein_modification" multi="false"/>
+	<argument name="Theme" type="Phosphorylation" multi="false"/>
+	<argument name="Theme" type="Ubiquitination" multi="false"/>
+	<argument name="Theme" type="Acetylation" multi="false"/>
+	<argument name="Theme" type="Deacetylation" multi="false"/>
+	<argument name="Theme" type="Regulation" multi="false"/>
+	<argument name="Theme" type="Positive_regulation" multi="false"/>
+	<argument name="Theme" type="Negative_regulation" multi="false"/>
+	<argument name="Cause" type="Protein" multi="false"/>
+	<argument name="Cause" type="Gene_expression" multi="false"/>
+	<argument name="Cause" type="Transcription" multi="false"/>
+	<argument name="Cause" type="Protein_catabolism" multi="false"/>
+	<argument name="Cause" type="Localization" multi="false"/>
+	<argument name="Cause" type="Binding" multi="false"/>
+	<argument name="Cause" type="Protein_modification" multi="false"/>
+	<argument name="Cause" type="Phosphorylation" multi="false"/>
+	<argument name="Cause" type="Ubiquitination" multi="false"/>
+	<argument name="Cause" type="Acetylation" multi="false"/>
+	<argument name="Cause" type="Deacetylation" multi="false"/>
+	<argument name="Cause" type="Regulation" multi="false"/>
+	<argument name="Cause" type="Positive_regulation" multi="false"/>
+	<argument name="Cause" type="Negative_regulation" multi="false"/>
+      </arguments>
+    </event>
+    <event>
+      <type>Positive_regulation</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="false"/>
+	<argument name="Theme" type="Gene_expression" multi="false"/>
+	<argument name="Theme" type="Transcription" multi="false"/>
+	<argument name="Theme" type="Protein_catabolism" multi="false"/>
+	<argument name="Theme" type="Localization" multi="false"/>
+	<argument name="Theme" type="Binding" multi="false"/>
+	<argument name="Theme" type="Protein_modification" multi="false"/>
+	<argument name="Theme" type="Phosphorylation" multi="false"/>
+	<argument name="Theme" type="Ubiquitination" multi="false"/>
+	<argument name="Theme" type="Acetylation" multi="false"/>
+	<argument name="Theme" type="Deacetylation" multi="false"/>
+	<argument name="Theme" type="Regulation" multi="false"/>
+	<argument name="Theme" type="Positive_regulation" multi="false"/>
+	<argument name="Theme" type="Negative_regulation" multi="false"/>
+	<argument name="Cause" type="Protein" multi="false"/>
+	<argument name="Cause" type="Gene_expression" multi="false"/>
+	<argument name="Cause" type="Transcription" multi="false"/>
+	<argument name="Cause" type="Protein_catabolism" multi="false"/>
+	<argument name="Cause" type="Localization" multi="false"/>
+	<argument name="Cause" type="Binding" multi="false"/>
+	<argument name="Cause" type="Protein_modification" multi="false"/>
+	<argument name="Cause" type="Phosphorylation" multi="false"/>
+	<argument name="Cause" type="Ubiquitination" multi="false"/>
+	<argument name="Cause" type="Acetylation" multi="false"/>
+	<argument name="Cause" type="Deacetylation" multi="false"/>
+	<argument name="Cause" type="Regulation" multi="false"/>
+	<argument name="Cause" type="Positive_regulation" multi="false"/>
+	<argument name="Cause" type="Negative_regulation" multi="false"/>
+      </arguments>
+    </event>
+    <event>
+      <type>Negative_regulation</type>
+      <arguments>
+	<argument name="Theme" type="Protein" multi="false"/>
+	<argument name="Theme" type="Gene_expression" multi="false"/>
+	<argument name="Theme" type="Transcription" multi="false"/>
+	<argument name="Theme" type="Protein_catabolism" multi="false"/>
+	<argument name="Theme" type="Localization" multi="false"/>
+	<argument name="Theme" type="Binding" multi="false"/>
+	<argument name="Theme" type="Protein_modification" multi="false"/>
+	<argument name="Theme" type="Phosphorylation" multi="false"/>
+	<argument name="Theme" type="Ubiquitination" multi="false"/>
+	<argument name="Theme" type="Acetylation" multi="false"/>
+	<argument name="Theme" type="Deacetylation" multi="false"/>
+	<argument name="Theme" type="Regulation" multi="false"/>
+	<argument name="Theme" type="Positive_regulation" multi="false"/>
+	<argument name="Theme" type="Negative_regulation" multi="false"/>
+	<argument name="Cause" type="Protein" multi="false"/>
+	<argument name="Cause" type="Gene_expression" multi="false"/>
+	<argument name="Cause" type="Transcription" multi="false"/>
+	<argument name="Cause" type="Protein_catabolism" multi="false"/>
+	<argument name="Cause" type="Localization" multi="false"/>
+	<argument name="Cause" type="Binding" multi="false"/>
+	<argument name="Cause" type="Protein_modification" multi="false"/>
+	<argument name="Cause" type="Phosphorylation" multi="false"/>
+	<argument name="Cause" type="Ubiquitination" multi="false"/>
+	<argument name="Cause" type="Acetylation" multi="false"/>
+	<argument name="Cause" type="Deacetylation" multi="false"/>
+	<argument name="Cause" type="Regulation" multi="false"/>
+	<argument name="Cause" type="Positive_regulation" multi="false"/>
+	<argument name="Cause" type="Negative_regulation" multi="false"/>
+      </arguments>
+    </event>
+  </events>
+</network>

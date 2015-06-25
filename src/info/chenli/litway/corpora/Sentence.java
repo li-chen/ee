@@ -12,8 +12,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Apr 25 13:17:47 BST 2013
- * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
+ * Updated by JCasGen Fri Jan 30 10:19:46 CST 2015
+ * XML source: /media/songrq/soft/litway/workspace/LitWay/desc/typeSystemDescriptor.xml
  * @generated */
 public class Sentence extends Annotation {
   /** @generated
@@ -55,10 +55,13 @@ public class Sentence extends Annotation {
     readObject();
   }   
 
-  /** <!-- begin-user-doc -->
+  /** 
+   * <!-- begin-user-doc -->
     * Write your own initialization here
     * <!-- end-user-doc -->
-  @generated modifiable */
+  *
+   * @generated modifiable 
+   */
   private void readObject() {/*default - does nothing empty block */}
      
  
@@ -67,14 +70,18 @@ public class Sentence extends Annotation {
   //* Feature: id
 
   /** getter for id - gets 
-   * @generated */
+   * @generated
+   * @return value of the feature 
+   */
   public int getId() {
     if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_id == null)
       jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Sentence");
     return jcasType.ll_cas.ll_getIntValue(addr, ((Sentence_Type)jcasType).casFeatCode_id);}
     
   /** setter for id - sets  
-   * @generated */
+   * @generated
+   * @param v value to set into the feature 
+   */
   public void setId(int v) {
     if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_id == null)
       jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.corpora.Sentence");
@@ -85,14 +92,18 @@ public class Sentence extends Annotation {
   //* Feature: dependencies
 
   /** getter for dependencies - gets 
-   * @generated */
+   * @generated
+   * @return value of the feature 
+   */
   public Dependency getDependencies() {
     if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_dependencies == null)
       jcasType.jcas.throwFeatMissing("dependencies", "info.chenli.litway.corpora.Sentence");
     return (Dependency)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Sentence_Type)jcasType).casFeatCode_dependencies)));}
     
   /** setter for dependencies - sets  
-   * @generated */
+   * @generated
+   * @param v value to set into the feature 
+   */
   public void setDependencies(Dependency v) {
     if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_dependencies == null)
       jcasType.jcas.throwFeatMissing("dependencies", "info.chenli.litway.corpora.Sentence");

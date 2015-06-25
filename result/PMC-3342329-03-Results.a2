@@ -1,0 +1,12 @@
+T9	Gene_expression 183 193	expression
+T10	Binding 440 447	binding
+T11	Localization 529 542	translocation
+T12	Negative_regulation 589 599	inhibition
+T13	Phosphorylation 603 618	phosphorylation
+T14	Negative_regulation 639 648	prevented
+T15	Negative_regulation 793 802	decreased
+E1	Gene_expression:T9 Theme:T2
+E2	Localization:T11 Theme:T4
+E3	Localization:T11 Theme:T5
+E4	Negative_regulation:T14 Theme:E3
+E5	Negative_regulation:T14 Theme:E2

@@ -1,0 +1,28 @@
+T25	Phosphorylation 643 657	phosphorylated
+T26	Binding 671 676	binds
+T27	Binding 779 784	binds
+T28	Binding 896 903	binding
+T29	Binding 983 988	binds
+T30	Binding 1073 1080	binding
+T31	Negative_regulation 1089 1099	inhibiting
+T32	Localization 1112 1118	import
+T33	Localization 1208 1216	released
+T34	Localization 1222 1234	translocates
+T35	Binding 1287 1296	recruited
+T36	Binding 1321 1332	association
+T37	Binding 1444 1449	binds
+E1	Phosphorylation:T25 Theme:T3
+E2	Binding:T26 Theme:T3 Theme2:T4
+E3	Binding:T27 Theme:T5 Theme2:T8
+E4	Binding:T27 Theme:T5 Theme2:T7
+E5	Binding:T27 Theme:T5 Theme2:T6
+E6	Binding:T28 Theme:T5
+E7	Binding:T29 Theme:T9 Theme2:T10
+E8	Binding:T30 Theme:T11
+E9	Localization:T33 Theme:T12
+E10	Localization:T34 Theme:T12
+E11	Binding:T35 Theme:T13
+E12	Binding:T36 Theme:T14
+E13	Binding:T37 Theme:T19 Theme2:T20
+E14	Binding:T37 Theme:T18 Theme2:T20
+E15	Binding:T37 Theme:T18 Theme2:T19

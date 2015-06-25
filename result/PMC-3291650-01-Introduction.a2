@@ -1,0 +1,18 @@
+T59	Positive_regulation 326 333	induces
+T60	Regulation 2262 2270	response
+T61	Negative_regulation 2409 2418	deficient
+T62	Negative_regulation 2479 2488	deficient
+T63	Binding 2868 2875	binding
+T64	Binding 2903 2912	associate
+T65	Localization 3016 3028	translocates
+T66	Regulation 3257 3265	regulate
+T67	Positive_regulation 3272 3280	mediated
+T68	Positive_regulation 3430 3440	activation
+T69	Positive_regulation 3991 3999	mediated
+T70	Protein_catabolism 4000 4011	degradation
+T71	Regulation 5619 5627	regulate
+E1	Negative_regulation:T61 Theme:T22
+E2	Binding:T64 Theme:T27 Theme2:T28
+E3	Regulation:T66 Theme:T33
+E4	Positive_regulation:T68 Theme:T36
+E5	Regulation:T71 Theme:T56

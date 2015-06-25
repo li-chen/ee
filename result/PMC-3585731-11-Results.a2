@@ -1,0 +1,42 @@
+T27	Positive_regulation 399 407	increase
+T28	Phosphorylation 415 430	phosphorylation
+T29	Gene_expression 671 681	Expression
+T30	Gene_expression 808 818	expression
+T31	Positive_regulation 975 983	response
+T32	Gene_expression 1820 1829	synthesis
+T33	Negative_regulation 2087 2096	inhibited
+T34	Gene_expression 2106 2116	production
+T35	Phosphorylation 2179 2194	phosphorylation
+T36	Negative_regulation 2330 2337	inhibit
+T37	Negative_regulation 2696 2706	inhibition
+T38	Negative_regulation 2710 2719	knockdown
+T39	Phosphorylation 2738 2753	phosphorylation
+T40	Negative_regulation 2777 2787	inhibiting
+T41	Phosphorylation 2792 2807	phosphorylation
+T42	Negative_regulation 2897 2906	reduction
+T43	Gene_expression 2919 2929	production
+T44	Regulation 3148 3152	role
+T45	Gene_expression 3201 3210	synthesis
+T46	Negative_regulation 3281 3290	knockdown
+T47	Gene_expression 3425 3435	production
+T48	Positive_regulation 3437 3446	dependent
+T49	Positive_regulation 3516 3526	activation
+T50	Positive_regulation 3592 3600	increase
+T51	Phosphorylation 3949 3964	phosphorylation
+E1	Gene_expression:T29 Theme:T4
+E2	Gene_expression:T30 Theme:T5
+E3	Gene_expression:T32 Theme:T8
+E4	Gene_expression:T34 Theme:T9
+E5	Negative_regulation:T33 Theme:E4
+E6	Negative_regulation:T38 Theme:T14
+E7	Negative_regulation:T38 Theme:T15
+E8	Phosphorylation:T41 Theme:T16
+E9	Negative_regulation:T40 Theme:E8
+E11	Gene_expression:T43 Theme:T17
+E12	Negative_regulation:T42 Theme:E11
+E13	Gene_expression:T45 Theme:T19
+E14	Negative_regulation:T46 Theme:T20
+E15	Regulation:T44 Theme:E13 Cause:T18
+E16	Gene_expression:T47 Theme:T21
+E17	Positive_regulation:T48 Theme:E16 Cause:T22
+E18	Phosphorylation:T51 Theme:T26

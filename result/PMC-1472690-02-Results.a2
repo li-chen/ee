@@ -1,0 +1,27 @@
+T30	Binding 0 7	Binding
+T31	Positive_regulation 199 206	induced
+T32	Positive_regulation 518 525	induced
+T33	Positive_regulation 700 710	GP-induced
+T34	Binding 723 730	binding
+T35	Binding 872 879	binding
+T36	Gene_expression 942 950	negative
+T37	Positive_regulation 1022 1033	LPS-induced
+T38	Binding 1043 1050	binding
+T39	Negative_regulation 1131 1140	decreased
+T40	Positive_regulation 1152 1159	induced
+T41	Binding 1169 1176	binding
+T42	Binding 1417 1424	binding
+T43	Positive_regulation 1557 1567	GP-induced
+T44	Binding 1568 1575	binding
+E1	Binding:T30 Theme:T2 Theme2:T5
+E2	Binding:T30 Theme:T1 Theme2:T5
+E3	Binding:T30 Theme:T1 Theme2:T2
+E4	Binding:T34 Theme:T14 Theme2:T15
+E5	Positive_regulation:T33 Theme:E4
+E6	Binding:T35 Theme:T16
+E7	Gene_expression:T36 Theme:T18
+E8	Binding:T41 Theme:T20
+E10	Positive_regulation:T40 Theme:E8 Cause:T20
+E12	Binding:T42 Theme:T25
+E13	Binding:T44 Theme:T28 Theme2:T29
+E14	Positive_regulation:T43 Theme:E13

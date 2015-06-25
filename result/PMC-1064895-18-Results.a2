@@ -1,0 +1,15 @@
+T21	Positive_regulation 155 164	activated
+T22	Positive_regulation 244 252	inducing
+T23	Gene_expression 259 269	expression
+T24	Positive_regulation 502 511	increased
+T25	Binding 512 519	binding
+T26	Negative_regulation 1147 1157	inhibition
+T27	Protein_catabolism 1161 1172	degradation
+T28	Gene_expression 1431 1441	production
+E1	Gene_expression:T23 Theme:T7
+E2	Positive_regulation:T22 Theme:E1
+E3	Binding:T25 Theme:T10
+E4	Positive_regulation:T24 Theme:E3
+E5	Protein_catabolism:T27 Theme:T17
+E6	Negative_regulation:T26 Theme:E5
+E7	Gene_expression:T28 Theme:T20

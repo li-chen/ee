@@ -1,0 +1,6 @@
+T5	Negative_regulation 290 299	knockdown
+T6	Gene_expression 300 310	expression
+T7	Positive_regulation 1173 1182	knockdown
+E1	Gene_expression:T6 Theme:T3
+E2	Negative_regulation:T5 Theme:E1
+E3	Positive_regulation:T7 Theme:T4

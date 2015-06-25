@@ -1,0 +1,23 @@
+T21	Gene_expression 6 16	expression
+T22	Binding 67 78	recruitment
+T23	Positive_regulation 359 367	mediated
+T24	Gene_expression 374 384	expression
+T25	Gene_expression 484 494	expression
+T26	Gene_expression 741 749	positive
+T27	Positive_regulation 833 838	lower
+T28	Negative_regulation 884 893	reduction
+T29	Gene_expression 973 981	positive
+T30	Gene_expression 1127 1135	positive
+T31	Negative_regulation 1303 1312	reduction
+T32	Regulation 1435 1443	regulate
+T33	Positive_regulation 1557 1565	mediated
+T34	Gene_expression 1572 1582	expression
+E1	Gene_expression:T21 Theme:T1
+E2	Gene_expression:T24 Theme:T9
+E3	Positive_regulation:T23 Theme:E2 Cause:T8
+E4	Gene_expression:T25 Theme:T10
+E5	Gene_expression:T26 Theme:T12
+E6	Gene_expression:T29 Theme:T14
+E7	Gene_expression:T30 Theme:T16
+E8	Gene_expression:T34 Theme:T20
+E9	Positive_regulation:T33 Theme:E8 Cause:T19

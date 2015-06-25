@@ -1,0 +1,13 @@
+T11	Regulation 374 382	targeted
+T12	Binding 451 458	binding
+T13	Regulation 730 738	mutation
+T14	Positive_regulation 948 959	LPS-induced
+T15	Positive_regulation 960 970	activation
+T16	Regulation 1131 1142	involvement
+T17	Positive_regulation 1316 1324	response
+T18	Transcription 1699 1712	transcription
+E1	Binding:T12 Theme:T2
+E2	Positive_regulation:T15 Theme:T4
+E3	Positive_regulation:T14 Theme:E2
+E4	Positive_regulation:T17 Theme:T7
+E5	Transcription:T18 Theme:T10

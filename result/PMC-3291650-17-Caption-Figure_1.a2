@@ -1,0 +1,18 @@
+T19	Positive_regulation 32 42	activation
+T20	Gene_expression 100 111	transfected
+T21	Regulation 157 166	dependent
+T22	Gene_expression 228 238	expressing
+T23	Phosphorylation 601 616	phosphorylation
+T24	Protein_catabolism 621 632	degradation
+T25	Phosphorylation 643 658	phosphorylation
+T26	Localization 853 866	translocation
+T27	Gene_expression 1047 1056	expressed
+E1	Positive_regulation:T19 Theme:T1
+E2	Gene_expression:T20 Theme:T3
+E3	Gene_expression:T20 Theme:T4
+E4	Gene_expression:T22 Theme:T6
+E5	Phosphorylation:T23 Theme:T7
+E6	Protein_catabolism:T24 Theme:T7
+E7	Phosphorylation:T25 Theme:T8
+E8	Localization:T26 Theme:T9
+E9	Localization:T26 Theme:T10

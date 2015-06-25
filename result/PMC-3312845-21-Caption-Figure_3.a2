@@ -1,0 +1,8 @@
+T11	Negative_regulation 312 319	reduces
+T12	Phosphorylation 354 369	phosphorylation
+T13	Regulation 389 395	affect
+E1	Phosphorylation:T12 Theme:T7
+E2	Phosphorylation:T12 Theme:T8
+E3	Regulation:T13 Theme:T9
+E4	Negative_regulation:T11 Theme:E1
+E5	Negative_regulation:T11 Theme:E2

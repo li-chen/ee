@@ -1,0 +1,7 @@
+T5	Negative_regulation 14 24	Deficiency
+T6	Positive_regulation 413 420	induces
+T7	Negative_regulation 806 809	A20
+T8	Positive_regulation 941 951	activation
+T9	Positive_regulation 970 979	increased
+E1	Negative_regulation:T5 Theme:T1
+E2	Positive_regulation:T8 Theme:T4

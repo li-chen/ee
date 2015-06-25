@@ -1,0 +1,15 @@
+T9	Positive_regulation 24 34	pronounced
+T10	Gene_expression 35 45	production
+T11	Positive_regulation 71 79	response
+T12	Positive_regulation 169 181	upregulation
+T13	Regulation 245 251	result
+T14	Regulation 386 396	regulation
+T15	Gene_expression 406 416	production
+T16	Gene_expression 557 569	introduction
+E1	Gene_expression:T10 Theme:T1
+E2	Positive_regulation:T9 Theme:E1
+E3	Positive_regulation:T12 Theme:T5
+E4	Regulation:T13 Theme:E3
+E5	Gene_expression:T15 Theme:T7
+E6	Regulation:T14 Theme:E5
+E7	Gene_expression:T16 Theme:T8

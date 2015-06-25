@@ -1,0 +1,26 @@
+T31	Positive_regulation 1377 1387	inhibition
+T32	Positive_regulation 1490 1498	enhances
+T33	Positive_regulation 2163 2173	activation
+T34	Positive_regulation 2265 2270	leads
+T35	Gene_expression 2369 2379	expression
+T36	Positive_regulation 2403 2414	contributes
+T37	Negative_regulation 2827 2833	blocks
+T38	Gene_expression 2847 2857	expression
+T39	Negative_regulation 2907 2920	overexpressed
+T40	Negative_regulation 2933 2940	reduces
+T41	Localization 3929 3945	pseudosubstrates
+T42	Positive_regulation 4424 4437	levetiracetam
+T43	Positive_regulation 4482 4490	increase
+T44	Negative_regulation 4711 4720	inhibitor
+T45	Negative_regulation 4730 4739	knockdown
+T46	Positive_regulation 4740 4751	potentiates
+T47	Gene_expression 5300 5309	expressed
+E1	Gene_expression:T35 Theme:T9
+E2	Positive_regulation:T36 Theme:E1
+E3	Gene_expression:T38 Theme:T16
+E4	Negative_regulation:T37 Theme:E3
+E5	Negative_regulation:T39 Theme:T17
+E6	Localization:T41 Theme:T23
+E7	Positive_regulation:T42 Theme:T24
+E8	Negative_regulation:T44 Theme:T27
+E9	Negative_regulation:T45 Theme:T28

@@ -1,0 +1,22 @@
+T33	Binding 20 27	binding
+T34	Transcription 65 77	MTb-mediated
+T35	Positive_regulation 78 87	induction
+T36	Binding 194 201	binding
+T37	Regulation 205 215	regulation
+T38	Binding 1706 1713	binding
+T39	Negative_regulation 2314 2321	absence
+T40	Positive_regulation 2697 2706	increased
+T41	Positive_regulation 2769 2774	lower
+T42	Negative_regulation 2866 2875	inhibited
+T43	Positive_regulation 2986 2991	lower
+T44	Negative_regulation 3346 3356	diminished
+T45	Positive_regulation 3423 3430	overall
+T46	Positive_regulation 3458 3463	lower
+T47	Positive_regulation 3826 3835	activated
+T48	Gene_expression 3929 3939	expression
+T49	Positive_regulation 3948 3955	induced
+E1	Binding:T33 Theme:T1
+E2	Binding:T36 Theme:T2
+E3	Positive_regulation:T40 Theme:T24
+E4	Gene_expression:T48 Theme:T32
+E5	Positive_regulation:T49 Theme:E4

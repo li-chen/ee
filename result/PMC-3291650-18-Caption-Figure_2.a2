@@ -1,0 +1,5 @@
+T9	Transcription 268 272	mRNA
+T10	Transcription 556 560	mRNA
+E1	Transcription:T9 Theme:T1
+E2	Transcription:T10 Theme:T5
+E3	Transcription:T10 Theme:T6

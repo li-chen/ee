@@ -1,0 +1,5 @@
+T7	Phosphorylation 30 44	phosphorylated
+T8	Phosphorylation 795 809	phosphorylated
+E1	Phosphorylation:T7 Theme:T2
+E2	Phosphorylation:T8 Theme:T5
+E3	Phosphorylation:T8 Theme:T6

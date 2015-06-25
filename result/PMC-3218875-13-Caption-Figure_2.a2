@@ -1,0 +1,35 @@
+T35	Regulation 105 114	dependent
+T36	Gene_expression 150 160	expression
+T37	Binding 213 220	complex
+T38	Regulation 240 247	ligases
+T39	Protein_catabolism 342 353	degradation
+T40	Binding 572 579	directs
+T41	Protein_catabolism 663 671	degraded
+T42	Localization 683 693	stabilised
+T43	Positive_regulation 708 717	increased
+T44	Phosphorylation 751 765	phosphorylates
+T45	Positive_regulation 770 779	activates
+T46	Phosphorylation 816 831	phosphorylation
+T47	Protein_catabolism 907 918	degradation
+T48	Negative_regulation 1102 1111	competing
+E1	Gene_expression:T36 Theme:T3
+E2	Gene_expression:T36 Theme:T4
+E3	Binding:T37 Theme:T8
+E4	Binding:T37 Theme:T7
+E5	Binding:T37 Theme:T6
+E6	Regulation:T38 Theme:T6
+E7	Regulation:T38 Theme:T7
+E8	Regulation:T38 Theme:T8
+E9	Regulation:T38 Theme:T9
+E10	Protein_catabolism:T39 Theme:T10
+E11	Binding:T40 Theme:T17 Theme2:T19
+E12	Binding:T40 Theme:T17 Theme2:T18
+E13	Binding:T40 Theme:T16 Theme2:T19
+E14	Binding:T40 Theme:T16 Theme2:T18
+E15	Binding:T40 Theme:T16 Theme2:T17
+E16	Protein_catabolism:T41 Theme:T20
+E17	Localization:T42 Theme:T21
+E18	Positive_regulation:T45 Theme:T24 Cause:T23
+E19	Phosphorylation:T46 Theme:T25
+E20	Protein_catabolism:T47 Theme:T26
+E21	Protein_catabolism:T47 Theme:T27

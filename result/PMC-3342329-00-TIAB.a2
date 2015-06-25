@@ -1,0 +1,30 @@
+T23	Negative_regulation 0 10	Deficiency
+T24	Positive_regulation 96 108	Upregulation
+T25	Regulation 153 162	relevance
+T26	Gene_expression 203 213	expression
+T27	Negative_regulation 273 281	knockout
+T28	Positive_regulation 387 396	increased
+T29	Binding 642 649	binding
+T30	Localization 677 690	translocation
+T31	Negative_regulation 735 745	inhibition
+T32	Phosphorylation 749 764	phosphorylation
+T33	Positive_regulation 973 981	elevated
+T34	Gene_expression 1012 1022	expression
+T35	Negative_regulation 1058 1067	decreased
+T36	Positive_regulation 1214 1222	elevated
+T37	Positive_regulation 1402 1411	increased
+T38	Negative_regulation 1540 1550	deficiency
+T39	Positive_regulation 1627 1639	upregulation
+E1	Negative_regulation:T23 Theme:T1
+E2	Positive_regulation:T24 Theme:T2
+E3	Gene_expression:T26 Theme:T3
+E4	Gene_expression:T26 Theme:T4
+E5	Negative_regulation:T27 Theme:T5
+E6	Negative_regulation:T27 Theme:T6
+E7	Regulation:T25 Theme:E4
+E8	Regulation:T25 Theme:E3
+E9	Localization:T30 Theme:T10
+E10	Localization:T30 Theme:T11
+E11	Negative_regulation:T35 Theme:T14
+E12	Negative_regulation:T38 Theme:T21
+E13	Positive_regulation:T39 Theme:T22 Cause:E12

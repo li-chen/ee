@@ -1,0 +1,61 @@
+T128	Positive_regulation 1569 1577	required
+T129	Binding 1724 1735	recruitment
+T130	Binding 1969 1973	bind
+T131	Binding 2095 2100	bound
+T132	Ubiquitination 2211 2225	ubiquitination
+T133	Binding 2345 2352	recruit
+T134	Positive_regulation 2510 2518	modifies
+T135	Positive_regulation 2935 2942	induces
+T136	Binding 2947 2958	recruitment
+T137	Binding 3114 3121	recruit
+T138	Negative_regulation 3350 3365	oligomerisation
+T139	Binding 3414 3422	recruits
+T140	Binding 3461 3472	interaction
+T141	Positive_regulation 3493 3501	activate
+T142	Regulation 3520 3544	ubiquitination-dependent
+T143	Positive_regulation 4014 4023	dependent
+T144	Regulation 4130 4139	regulated
+T145	Positive_regulation 4328 4349	K48-polyubiquitinates
+T146	Protein_catabolism 4381 4392	degradation
+T147	Negative_regulation 4457 4463	remove
+T148	Positive_regulation 4534 4541	attract
+T149	Positive_regulation 4571 4580	essential
+T150	Protein_catabolism 4602 4613	degradation
+T151	Positive_regulation 4624 4635	contributes
+T152	Localization 4639 4648	releasing
+T153	Protein_catabolism 4675 4686	degradation
+T154	Phosphorylation 4727 4742	phosphorylation
+T155	Binding 4965 4973	interact
+T156	Negative_regulation 5072 5083	proteolysis
+T157	Positive_regulation 5337 5345	required
+T158	Gene_expression 5388 5398	production
+T159	Positive_regulation 5415 5423	required
+E1	Binding:T129 Theme:T29 Theme2:T30
+E2	Binding:T129 Theme:T28 Theme2:T30
+E3	Binding:T130 Theme:T35
+E4	Binding:T131 Theme:T37
+E5	Ubiquitination:T132 Theme:T42
+E6	Binding:T133 Theme:T44
+E7	Positive_regulation:T134 Theme:T48
+E8	Binding:T136 Theme:T70
+E9	Binding:T137 Theme:T72 Theme2:T73
+E10	Positive_regulation:T135 Theme:E8
+E11	Negative_regulation:T138 Theme:T78
+E12	Binding:T139 Theme:T79 Theme2:T81
+E13	Binding:T139 Theme:T79 Theme2:T80
+E14	Binding:T140 Theme:T79
+E15	Positive_regulation:T141 Theme:T82
+E16	Regulation:T142 Theme:E15
+E17	Regulation:T144 Theme:T94
+E18	Positive_regulation:T145 Theme:T100
+E19	Negative_regulation:T147 Theme:T101
+E20	Positive_regulation:T148 Theme:T102
+E21	Protein_catabolism:T150 Theme:T105
+E24	Localization:T152 Theme:T106
+E25	Phosphorylation:T154 Theme:T108
+E26	Positive_regulation:T151 Theme:E24
+E27	Binding:T155 Theme:T113
+E28	Negative_regulation:T156 Theme:T119
+E29	Negative_regulation:T156 Theme:T120
+E30	Gene_expression:T158 Theme:T124
+E31	Positive_regulation:T157 Theme:E30 Cause:T122

@@ -1,0 +1,6 @@
+T7	Positive_regulation 65 72	induced
+T8	Binding 96 103	binding
+T9	Positive_regulation 236 244	response
+T10	Positive_regulation 258 266	mediated
+T11	Binding 389 396	binding
+E1	Binding:T11 Theme:T4

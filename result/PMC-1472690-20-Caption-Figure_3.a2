@@ -1,0 +1,15 @@
+T23	Negative_regulation 16 30	down-regulated
+T24	Gene_expression 123 133	production
+T25	Negative_regulation 288 297	reduction
+T26	Gene_expression 310 320	production
+T27	Negative_regulation 588 599	exaggerated
+T28	Gene_expression 690 700	production
+T29	Positive_regulation 891 894	led
+T30	Gene_expression 941 951	production
+E1	Negative_regulation:T23 Theme:T1
+E2	Gene_expression:T24 Theme:T4
+E4	Gene_expression:T26 Theme:T7
+E5	Negative_regulation:T25 Theme:E4
+E6	Negative_regulation:T27 Theme:T12
+E7	Gene_expression:T28 Theme:T15
+E8	Gene_expression:T30 Theme:T19

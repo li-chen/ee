@@ -1,0 +1,107 @@
+T133	Regulation 259 267	involves
+T134	Positive_regulation 276 285	induction
+T135	Positive_regulation 616 627	LPS-induced
+T136	Negative_regulation 757 761	loss
+T137	Positive_regulation 776 785	abrogates
+T138	Transcription 813 826	transcription
+T139	Positive_regulation 1187 1194	mediate
+T140	Transcription 1210 1223	transcription
+T141	Transcription 1419 1432	transcription
+T142	Positive_regulation 1504 1513	increases
+T143	Binding 2005 2017	interactions
+T144	Binding 2131 2139	interact
+T145	Transcription 2275 2288	transcription
+T146	Positive_regulation 2368 2379	requirement
+T147	Positive_regulation 2406 2417	LPS-induced
+T148	Transcription 2432 2445	transcription
+T149	Negative_regulation 2562 2571	deficient
+T150	Positive_regulation 2756 2769	LPS-inducible
+T151	Transcription 2779 2783	mRNA
+T152	Negative_regulation 2812 2821	abrogated
+T153	Transcription 2935 2948	transcription
+T154	Binding 3090 3094	bind
+T155	Regulation 3157 3161	role
+T156	Positive_regulation 3180 3191	LPS-induced
+T157	Gene_expression 3206 3216	expression
+T158	Negative_regulation 3393 3397	null
+T159	Regulation 3569 3579	regulation
+T160	Gene_expression 3597 3607	expression
+T161	Phosphorylation 3678 3693	Phosphorylation
+T162	Binding 3799 3805	target
+T163	Phosphorylation 3831 3845	phosphorylated
+T164	Positive_regulation 3909 3916	induced
+T165	Positive_regulation 3994 4004	attributed
+T166	Gene_expression 4032 4042	expression
+T167	Positive_regulation 4130 4138	increase
+T168	Binding 4222 4233	recruitment
+T169	Negative_regulation 4293 4301	decrease
+T170	Positive_regulation 4302 4311	following
+T171	Regulation 4428 4438	regulation
+T172	Gene_expression 4456 4466	expression
+T173	Gene_expression 4479 4489	expression
+T174	Regulation 4563 4569	affect
+T175	Gene_expression 4646 4656	expression
+T176	Regulation 4698 4709	LPS-induced
+T177	Phosphorylation 4754 4769	phosphorylation
+T178	Phosphorylation 4891 4905	phosphorylated
+T179	Positive_regulation 5024 5035	LPS-induced
+T180	Transcription 5036 5049	transcription
+T181	Gene_expression 5611 5621	expression
+T182	Positive_regulation 6147 6158	LPS-induced
+T183	Transcription 6159 6172	transcription
+T184	Positive_regulation 6462 6473	LPS-induced
+T185	Gene_expression 6488 6498	expression
+T186	Regulation 6595 6605	regulating
+T187	Regulation 6689 6699	regulation
+T188	Gene_expression 6741 6751	expression
+E1	Positive_regulation:T134 Theme:T1
+E2	Regulation:T133 Theme:E1
+E3	Positive_regulation:T135 Theme:T7
+E4	Negative_regulation:T136 Theme:T9
+E5	Transcription:T138 Theme:T10
+E6	Positive_regulation:T137 Theme:E5 Cause:E4
+E7	Transcription:T140 Theme:T13
+E8	Positive_regulation:T139 Theme:E7
+E9	Transcription:T141 Theme:T15
+E10	Binding:T143 Theme:T17
+E11	Binding:T144 Theme:T18
+E12	Transcription:T145 Theme:T19
+E13	Transcription:T148 Theme:T21
+E15	Positive_regulation:T147 Theme:E13
+E16	Positive_regulation:T146 Theme:E15 Cause:T20
+E17	Negative_regulation:T149 Theme:T24
+E18	Transcription:T151 Theme:T26
+E19	Transcription:T153 Theme:T27
+E20	Transcription:T153 Theme:T28
+E21	Positive_regulation:T150 Theme:E18
+E22	Negative_regulation:T152 Theme:E21
+E23	Binding:T154 Theme:T30
+E24	Gene_expression:T157 Theme:T32
+E26	Positive_regulation:T156 Theme:E24
+E27	Regulation:T155 Theme:E26 Cause:T31
+E28	Negative_regulation:T158 Theme:T35
+E29	Gene_expression:T160 Theme:T37
+E30	Regulation:T159 Theme:E29 Cause:T38
+E31	Phosphorylation:T161 Theme:T100
+E32	Phosphorylation:T163 Theme:T101
+E33	Positive_regulation:T165 Theme:T102
+E34	Gene_expression:T166 Theme:T103
+E35	Gene_expression:T166 Theme:T104
+E36	Positive_regulation:T167 Theme:E35
+E37	Positive_regulation:T167 Theme:E34
+E38	Gene_expression:T172 Theme:T109
+E39	Regulation:T171 Theme:E38
+E40	Gene_expression:T173 Theme:T110
+E41	Gene_expression:T173 Theme:T111
+E42	Gene_expression:T175 Theme:T113
+E43	Phosphorylation:T177 Theme:T115
+E44	Phosphorylation:T178 Theme:T117
+E45	Transcription:T180 Theme:T118
+E46	Positive_regulation:T179 Theme:E45
+E47	Gene_expression:T181 Theme:T124
+E48	Transcription:T183 Theme:T128
+E49	Positive_regulation:T182 Theme:E48
+E50	Gene_expression:T185 Theme:T130
+E51	Positive_regulation:T184 Theme:E50
+E52	Gene_expression:T188 Theme:T132
+E53	Regulation:T187 Theme:E52

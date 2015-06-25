@@ -1,0 +1,14 @@
+T12	Positive_regulation 9 16	Induces
+T13	Negative_regulation 17 24	Delayed
+T14	Regulation 68 79	Independent
+T15	Negative_regulation 143 154	necroptosis
+T16	Positive_regulation 241 248	induced
+T17	Regulation 249 256	changes
+T18	Positive_regulation 424 434	activation
+T19	Regulation 685 692	changes
+T20	Positive_regulation 740 748	increase
+T21	Phosphorylation 756 771	phosphorylation
+T22	Regulation 947 958	independent
+E1	Negative_regulation:T15 Theme:T2
+E2	Phosphorylation:T21 Theme:T8
+E3	Positive_regulation:T20 Theme:E2

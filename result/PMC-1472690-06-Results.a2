@@ -1,0 +1,14 @@
+T13	Negative_regulation 0 10	Inhibition
+T14	Negative_regulation 43 50	reduced
+T15	Positive_regulation 201 210	induction
+T16	Positive_regulation 340 349	overruled
+T17	Negative_regulation 458 467	reduction
+T18	Gene_expression 794 800	amount
+T19	Negative_regulation 916 924	decrease
+T20	Negative_regulation 1252 1261	decreased
+T21	Negative_regulation 1269 1276	release
+E1	Positive_regulation:T15 Theme:T3
+E2	Gene_expression:T18 Theme:T9
+E3	Negative_regulation:T19 Theme:T10
+E4	Negative_regulation:T21 Theme:T12
+E5	Negative_regulation:T20 Theme:E4

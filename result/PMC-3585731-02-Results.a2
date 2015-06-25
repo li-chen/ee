@@ -1,0 +1,18 @@
+T30	Positive_regulation 31 39	Promotes
+T31	Positive_regulation 156 165	following
+T32	Negative_regulation 278 287	knockdown
+T33	Negative_regulation 555 565	inhibitors
+T34	Positive_regulation 755 764	induction
+T35	Positive_regulation 845 852	induced
+T36	Positive_regulation 2467 2474	induced
+T37	Regulation 2966 2977	responsible
+T38	Positive_regulation 3082 3093	contributes
+T39	Negative_regulation 3209 3219	inhibitors
+T40	Negative_regulation 3396 3403	neither
+T41	Negative_regulation 3418 3427	inhibitor
+T42	Negative_regulation 3440 3449	attenuate
+T43	Positive_regulation 3459 3466	induced
+T44	Regulation 3527 3538	dispensable
+T45	Negative_regulation 3644 3652	promoted
+E1	Negative_regulation:T39 Theme:T25
+E2	Negative_regulation:T41 Theme:T27

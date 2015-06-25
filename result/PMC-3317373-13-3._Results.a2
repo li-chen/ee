@@ -1,0 +1,5 @@
+T13	Regulation 157 166	regulated
+T14	Positive_regulation 795 804	increased
+E1	Regulation:T13 Theme:T1
+E2	Regulation:T13 Theme:T2
+E3	Positive_regulation:T14 Theme:T6

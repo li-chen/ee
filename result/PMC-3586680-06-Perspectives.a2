@@ -1,0 +1,53 @@
+T45	Regulation 13 20	affects
+T46	Binding 171 176	binds
+T47	Positive_regulation 962 971	activated
+T48	Negative_regulation 996 1003	Failure
+T49	Binding 1168 1177	interacts
+T50	Binding 1350 1357	binding
+T51	Positive_regulation 1684 1695	upregulated
+T52	Negative_regulation 1985 1996	counteracts
+T53	Negative_regulation 2303 2312	resistant
+T54	Binding 2400 2411	interacting
+T55	Negative_regulation 2639 2643	lack
+T56	Gene_expression 2652 2662	expression
+T57	Positive_regulation 2678 2685	enhance
+T58	Negative_regulation 2715 2719	loss
+T59	Gene_expression 2846 2856	expression
+T60	Positive_regulation 2867 2883	TGF-beta-induced
+T61	Gene_expression 3454 3462	negative
+T62	Negative_regulation 3469 3473	lose
+T63	Gene_expression 3503 3511	positive
+T64	Positive_regulation 3528 3537	increases
+T65	Gene_expression 3559 3567	negative
+T66	Gene_expression 3601 3609	positive
+T67	Negative_regulation 3635 3643	negative
+T68	Gene_expression 3702 3712	expressing
+T69	Gene_expression 3737 3747	expression
+T70	Negative_regulation 3957 3965	knockout
+T71	Gene_expression 4328 4338	expression
+T72	Positive_regulation 4339 4346	induces
+T73	Gene_expression 4351 4361	production
+T74	Negative_regulation 4925 4935	deficiency
+E1	Binding:T46 Theme:T4
+E2	Positive_regulation:T47 Theme:T5
+E3	Negative_regulation:T48 Theme:T6
+E4	Binding:T49 Theme:T8 Theme2:T9
+E5	Binding:T50 Theme:T10
+E6	Gene_expression:T56 Theme:T22
+E7	Negative_regulation:T55 Theme:E6
+E8	Positive_regulation:T57 Theme:E7
+E9	Negative_regulation:T58 Theme:T23
+E10	Gene_expression:T59 Theme:T24
+E11	Gene_expression:T59 Theme:T25
+E12	Gene_expression:T59 Theme:T26
+E13	Gene_expression:T61 Theme:T29
+E14	Gene_expression:T63 Theme:T30
+E15	Gene_expression:T65 Theme:T31
+E16	Gene_expression:T66 Theme:T32
+E17	Negative_regulation:T67 Theme:T33
+E18	Gene_expression:T68 Theme:T34
+E19	Gene_expression:T68 Theme:T35
+E20	Gene_expression:T69 Theme:T35
+E21	Negative_regulation:T70 Theme:T37
+E22	Gene_expression:T71 Theme:T39
+E23	Negative_regulation:T74 Theme:T44

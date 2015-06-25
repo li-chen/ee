@@ -1,0 +1,13 @@
+T5	Negative_regulation 442 451	reduction
+T6	Positive_regulation 481 490	increased
+T7	Phosphorylation 502 517	phosphorylation
+T8	Positive_regulation 597 607	correlated
+T9	Phosphorylation 622 637	phosphorylation
+T10	Regulation 756 766	alleviated
+T11	Phosphorylation 778 793	phosphorylation
+E1	Phosphorylation:T7 Theme:T1
+E2	Positive_regulation:T6 Theme:E1
+E3	Phosphorylation:T9 Theme:T2
+E4	Positive_regulation:T8 Theme:E3
+E5	Phosphorylation:T11 Theme:T4
+E6	Regulation:T10 Theme:E5

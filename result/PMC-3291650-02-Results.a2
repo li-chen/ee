@@ -1,0 +1,81 @@
+T54	Positive_regulation 46 56	activation
+T55	Gene_expression 307 316	expressed
+T56	Regulation 495 504	dependent
+T57	Positive_regulation 530 540	activation
+T58	Gene_expression 552 564	transfection
+T59	Positive_regulation 787 797	activation
+T60	Gene_expression 834 843	expressed
+T61	Positive_regulation 903 914	upregulated
+T62	Positive_regulation 939 949	activation
+T63	Positive_regulation 1001 1011	activation
+T64	Gene_expression 1026 1037	transfected
+T65	Gene_expression 1063 1073	expression
+T66	Gene_expression 1209 1219	expression
+T67	Gene_expression 1243 1256	co-expression
+T68	Gene_expression 1375 1385	expression
+T69	Positive_regulation 1479 1489	activation
+T70	Positive_regulation 1516 1523	induced
+T71	Positive_regulation 1529 1539	activation
+T72	Positive_regulation 1659 1669	activation
+T73	Gene_expression 1707 1716	expressed
+T74	Negative_regulation 1826 1829	A20
+T75	Binding 2489 2493	bind
+T76	Positive_regulation 2498 2506	activate
+T77	Positive_regulation 2591 2597	induce
+T78	Positive_regulation 2644 2654	activation
+T79	Negative_regulation 3025 3028	A20
+T80	Negative_regulation 3029 3038	deficient
+T81	Positive_regulation 3098 3107	increased
+T82	Phosphorylation 3108 3123	phosphorylation
+T83	Protein_catabolism 3138 3149	degradation
+T84	Localization 3200 3213	translocation
+T85	Positive_regulation 3247 3255	enhanced
+T86	Phosphorylation 3664 3678	phosphorylated
+T87	Phosphorylation 3700 3715	phosphorylation
+T88	Localization 3840 3853	translocation
+T89	Negative_regulation 3902 3905	A20
+T90	Gene_expression 3985 3995	expression
+T91	Regulation 4036 4043	control
+T92	Gene_expression 4048 4058	expression
+T93	Positive_regulation 4097 4107	activation
+T94	Localization 4166 4174	secreted
+T95	Positive_regulation 4175 4184	increased
+T96	Positive_regulation 4440 4450	activation
+E1	Positive_regulation:T54 Theme:T2 Cause:T1
+E2	Positive_regulation:T57 Theme:T9
+E3	Gene_expression:T58 Theme:T9
+E4	Gene_expression:T58 Theme:T10
+E5	Gene_expression:T58 Theme:T11
+E6	Regulation:T56 Theme:E2 Cause:T8
+E7	Gene_expression:T60 Theme:T15
+E8	Positive_regulation:T61 Theme:T16
+E9	Positive_regulation:T62 Theme:T17
+E10	Gene_expression:T64 Theme:T19
+E11	Gene_expression:T65 Theme:T19
+E12	Gene_expression:T67 Theme:T22
+E13	Positive_regulation:T69 Theme:T24
+E14	Positive_regulation:T72 Theme:T28 Cause:T27
+E15	Positive_regulation:T72 Theme:T29 Cause:T27
+E16	Positive_regulation:T76 Theme:T32
+E17	Positive_regulation:T76 Theme:T33
+E18	Positive_regulation:T78 Theme:T35
+E19	Positive_regulation:T77 Theme:E18
+E20	Phosphorylation:T82 Theme:T36
+E21	Protein_catabolism:T83 Theme:T36
+E24	Localization:T84 Theme:T37
+E25	Positive_regulation:T85 Theme:E24
+E26	Phosphorylation:T87 Theme:T41
+E27	Localization:T88 Theme:T42
+E28	Localization:T88 Theme:T43
+E29	Gene_expression:T90 Theme:T44
+E30	Gene_expression:T90 Theme:T45
+E31	Gene_expression:T92 Theme:T47
+E32	Regulation:T91 Theme:E31 Cause:T46
+E33	Positive_regulation:T93 Theme:T48
+E34	Localization:T94 Theme:T49
+E35	Localization:T94 Theme:T50
+E36	Localization:T94 Theme:T51
+E37	Positive_regulation:T95 Theme:E34
+E38	Positive_regulation:T95 Theme:E36
+E39	Positive_regulation:T95 Theme:E35
+E40	Positive_regulation:T96 Theme:T53 Cause:T52

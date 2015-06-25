@@ -1,0 +1,6 @@
+T8	Positive_regulation 1038 1048	activation
+T9	Positive_regulation 1057 1064	induces
+T10	Binding 1593 1603	recognized
+T11	Positive_regulation 1605 1616	contributes
+T12	Positive_regulation 1728 1735	induced
+E1	Positive_regulation:T8 Theme:T1

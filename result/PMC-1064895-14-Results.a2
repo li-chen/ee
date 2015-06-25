@@ -1,0 +1,15 @@
+T17	Regulation 0 10	Regulation
+T18	Gene_expression 20 30	production
+T19	Regulation 237 245	affected
+T20	Gene_expression 250 260	production
+T21	Regulation 376 383	effects
+T22	Gene_expression 429 439	production
+T23	Gene_expression 621 627	levels
+T24	Positive_regulation 730 743	upregulations
+E1	Gene_expression:T18 Theme:T1
+E2	Regulation:T17 Theme:E1
+E3	Gene_expression:T20 Theme:T2
+E4	Regulation:T19 Theme:E3
+E5	Gene_expression:T22 Theme:T3
+E6	Regulation:T21 Theme:E5
+E7	Positive_regulation:T24 Theme:T13

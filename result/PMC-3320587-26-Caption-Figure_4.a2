@@ -1,0 +1,3 @@
+T9	Positive_regulation 38 45	depends
+T10	Binding 49 56	binding
+E1	Binding:T10 Theme:T1

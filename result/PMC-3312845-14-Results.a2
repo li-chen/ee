@@ -1,0 +1,16 @@
+T15	Phosphorylation 419 434	phosphorylation
+T16	Negative_regulation 504 511	reduced
+T17	Phosphorylation 538 553	phosphorylation
+T18	Regulation 599 605	affect
+T19	Phosphorylation 691 706	phosphorylation
+T20	Positive_regulation 711 720	increased
+T21	Phosphorylation 903 918	phosphorylation
+E1	Phosphorylation:T15 Theme:T3
+E2	Phosphorylation:T15 Theme:T6
+E4	Phosphorylation:T17 Theme:T8
+E5	Phosphorylation:T17 Theme:T9
+E6	Negative_regulation:T16 Theme:E4
+E7	Negative_regulation:T16 Theme:E5
+E8	Phosphorylation:T19 Theme:T12
+E9	Positive_regulation:T20 Theme:E8
+E10	Phosphorylation:T21 Theme:T14

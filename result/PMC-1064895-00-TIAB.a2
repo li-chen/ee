@@ -1,0 +1,40 @@
+T36	Positive_regulation 0 9	Increased
+T37	Gene_expression 25 35	production
+T38	Positive_regulation 361 370	induction
+T39	Gene_expression 451 461	expression
+T40	Regulation 629 637	regulate
+T41	Gene_expression 644 654	production
+T42	Regulation 698 706	regulate
+T43	Gene_expression 713 723	production
+T44	Regulation 846 856	regulation
+T45	Gene_expression 866 876	production
+T46	Gene_expression 1248 1258	production
+T47	Positive_regulation 1286 1295	increased
+T48	Positive_regulation 1472 1483	upregulated
+T49	Gene_expression 1490 1500	production
+T50	Gene_expression 1689 1699	expression
+T51	Binding 1898 1909	DNA-binding
+T52	Gene_expression 1926 1936	production
+T53	Negative_regulation 1982 1989	blocked
+T54	Negative_regulation 2136 2146	inhibition
+T55	Regulation 2224 2230	affect
+T56	Gene_expression 2237 2247	production
+T57	Gene_expression 2361 2375	overproduction
+E1	Gene_expression:T37 Theme:T1
+E2	Positive_regulation:T36 Theme:E1
+E3	Gene_expression:T39 Theme:T4
+E4	Gene_expression:T41 Theme:T7
+E5	Gene_expression:T43 Theme:T8
+E6	Regulation:T40 Theme:E4
+E7	Regulation:T42 Theme:E5
+E8	Gene_expression:T45 Theme:T10
+E9	Regulation:T44 Theme:E8
+E10	Gene_expression:T46 Theme:T15
+E11	Positive_regulation:T47 Theme:E10
+E12	Gene_expression:T49 Theme:T21
+E16	Gene_expression:T52 Theme:T28
+E17	Negative_regulation:T53 Theme:E16
+E18	Negative_regulation:T54 Theme:T32
+E19	Gene_expression:T56 Theme:T33
+E20	Regulation:T55 Theme:E19 Cause:E18
+E21	Gene_expression:T57 Theme:T35

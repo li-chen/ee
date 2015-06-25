@@ -1,0 +1,20 @@
+T39	Binding 447 454	binding
+T40	Regulation 649 657	mutation
+T41	Negative_regulation 684 693	abolishes
+T42	Binding 700 707	binding
+T43	Regulation 738 744	affect
+T44	Binding 763 770	binding
+T45	Binding 1192 1199	binding
+T46	Negative_regulation 1263 1273	disruption
+T47	Binding 1363 1370	binding
+T48	Negative_regulation 1802 1812	disruption
+T49	Binding 1895 1902	binding
+T50	Binding 2261 2268	binding
+E1	Binding:T42 Theme:T9
+E2	Binding:T44 Theme:T10 Theme2:T11
+E3	Negative_regulation:T41 Theme:E1
+E4	Regulation:T43 Theme:E2
+E5	Binding:T45 Theme:T19
+E6	Binding:T47 Theme:T20 Theme2:T21
+E7	Binding:T49 Theme:T30
+E8	Binding:T50 Theme:T38

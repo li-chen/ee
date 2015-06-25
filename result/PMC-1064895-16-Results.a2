@@ -1,0 +1,10 @@
+T4	Transcription 6 10	mRNA
+T5	Positive_regulation 48 56	enhanced
+T6	Gene_expression 63 73	production
+T7	Regulation 83 92	regulated
+T8	Positive_regulation 231 239	increase
+T9	Negative_regulation 308 317	inhibited
+E1	Transcription:T4 Theme:T1
+E2	Gene_expression:T6 Theme:T2
+E3	Positive_regulation:T5 Theme:E2
+E5	Regulation:T7 Theme:E3

@@ -1,0 +1,30 @@
+T20	Regulation 4 12	Controls
+T21	Gene_expression 22 32	Production
+T22	Negative_regulation 286 295	deficient
+T23	Positive_regulation 416 423	induced
+T24	Phosphorylation 548 563	phosphorylation
+T25	Positive_regulation 683 692	increased
+T26	Negative_regulation 756 765	inhibited
+T27	Negative_regulation 787 797	inhibitors
+T28	Gene_expression 956 965	synthesis
+T29	Negative_regulation 1283 1291	deletion
+T30	Positive_regulation 1352 1359	induced
+T31	Positive_regulation 1466 1474	restored
+T32	Gene_expression 1659 1669	expressing
+T33	Phosphorylation 1699 1713	phosphorylated
+T34	Positive_regulation 1727 1735	response
+T35	Positive_regulation 1802 1811	dependent
+T36	Positive_regulation 1826 1838	upregulation
+T37	Negative_regulation 1839 1847	occurred
+T38	Gene_expression 1979 1988	synthesis
+E1	Gene_expression:T21 Theme:T1
+E2	Regulation:T20 Theme:E1
+E3	Positive_regulation:T25 Theme:T7
+E4	Negative_regulation:T27 Theme:T8
+E5	Gene_expression:T28 Theme:T9
+E6	Gene_expression:T32 Theme:T14
+E7	Gene_expression:T32 Theme:T15
+E8	Positive_regulation:T36 Theme:T18
+E9	Positive_regulation:T35 Theme:E8 Cause:T17
+E11	Negative_regulation:T37 Theme:E9
+E12	Gene_expression:T38 Theme:T19

@@ -1,0 +1,21 @@
+T14	Positive_regulation 14 23	essential
+T15	Positive_regulation 45 56	LPS-induced
+T16	Transcription 66 70	mRNA
+T17	Transcription 107 111	mRNA
+T18	Negative_regulation 126 135	abrogated
+T19	Transcription 248 252	mRNA
+T20	Gene_expression 396 406	expression
+T21	Negative_regulation 410 419	abrogated
+T22	Negative_regulation 434 443	deficient
+T23	Negative_regulation 828 837	knockdown
+T24	Transcription 974 978	mRNA
+E1	Transcription:T16 Theme:T2
+E2	Positive_regulation:T15 Theme:E1
+E3	Positive_regulation:T14 Theme:E2 Cause:T1
+E4	Transcription:T17 Theme:T3
+E5	Transcription:T19 Theme:T6
+E6	Gene_expression:T20 Theme:T9
+E7	Negative_regulation:T22 Theme:T10
+E8	Negative_regulation:T21 Theme:E6 Cause:E7
+E9	Negative_regulation:T23 Theme:T12
+E10	Transcription:T24 Theme:T13

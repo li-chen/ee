@@ -1,0 +1,36 @@
+T60	Regulation 94 103	responses
+T61	Positive_regulation 734 746	up-regulated
+T62	Phosphorylation 1513 1528	phosphorylation
+T63	Phosphorylation 1590 1605	phosphorylation
+T64	Gene_expression 1822 1832	expression
+T65	Phosphorylation 2665 2680	phosphorylation
+T66	Positive_regulation 2751 2759	mediated
+T67	Phosphorylation 2771 2786	phosphorylation
+T68	Negative_regulation 3124 3138	down-regulated
+T69	Positive_regulation 3691 3699	enhanced
+T70	Positive_regulation 3771 3779	mediated
+T71	Negative_regulation 3784 3794	disruption
+T72	Negative_regulation 3833 3840	prevent
+T73	Phosphorylation 3937 3951	phosphorylated
+T74	Positive_regulation 4011 4019	mediated
+T75	Phosphorylation 4038 4053	phosphorylation
+T76	Regulation 4583 4591	required
+T77	Positive_regulation 4772 4789	receptor-mediated
+T78	Gene_expression 4796 4806	expression
+T79	Regulation 5102 5113	independent
+T80	Positive_regulation 5220 5227	induced
+T81	Positive_regulation 5461 5469	mediated
+E1	Positive_regulation:T61 Theme:T5
+E2	Phosphorylation:T62 Theme:T12
+E3	Phosphorylation:T63 Theme:T13
+E4	Phosphorylation:T65 Theme:T16
+E5	Phosphorylation:T67 Theme:T19
+E6	Positive_regulation:T66 Theme:E5 Cause:T18
+E7	Phosphorylation:T73 Theme:T42 Cause:T45
+E8	Phosphorylation:T73 Theme:T43 Cause:T45
+E9	Phosphorylation:T75 Theme:T47
+E10	Positive_regulation:T74 Theme:E9 Cause:T46
+E11	Phosphorylation:T73 Theme:T42 Cause:T44
+E12	Phosphorylation:T73 Theme:T43 Cause:T44
+E13	Gene_expression:T78 Theme:T52
+E14	Positive_regulation:T77 Theme:E13 Cause:T51

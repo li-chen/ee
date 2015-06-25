@@ -1,0 +1,9 @@
+T9	Binding 6 17	interaction
+T10	Gene_expression 1514 1524	expression
+T11	Negative_regulation 1780 1790	Disruption
+T12	Binding 1800 1807	binding
+T13	Positive_regulation 2362 2371	increases
+E1	Binding:T9 Theme:T1
+E2	Gene_expression:T10 Theme:T3
+E3	Negative_regulation:T11 Theme:T4
+E4	Binding:T12 Theme:T4

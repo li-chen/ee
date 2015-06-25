@@ -11,8 +11,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Apr 25 13:17:47 BST 2013
- * XML source: /Users/chenli/projects/bionlp2013/eventExtractor/desc/typeSystemDescriptor.xml
+ * Updated by JCasGen Fri Jan 30 10:19:46 CST 2015
+ * XML source: /media/songrq/soft/litway/workspace/LitWay/desc/typeSystemDescriptor.xml
  * @generated */
 public class CellularComponent extends Annotation {
   /** @generated
@@ -54,10 +54,13 @@ public class CellularComponent extends Annotation {
     readObject();
   }   
 
-  /** <!-- begin-user-doc -->
+  /** 
+   * <!-- begin-user-doc -->
     * Write your own initialization here
     * <!-- end-user-doc -->
-  @generated modifiable */
+  *
+   * @generated modifiable 
+   */
   private void readObject() {/*default - does nothing empty block */}
      
  
@@ -66,14 +69,18 @@ public class CellularComponent extends Annotation {
   //* Feature: id
 
   /** getter for id - gets 
-   * @generated */
+   * @generated
+   * @return value of the feature 
+   */
   public String getId() {
     if (CellularComponent_Type.featOkTst && ((CellularComponent_Type)jcasType).casFeat_id == null)
       jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.bionlp13.CellularComponent");
     return jcasType.ll_cas.ll_getStringValue(addr, ((CellularComponent_Type)jcasType).casFeatCode_id);}
     
   /** setter for id - sets  
-   * @generated */
+   * @generated
+   * @param v value to set into the feature 
+   */
   public void setId(String v) {
     if (CellularComponent_Type.featOkTst && ((CellularComponent_Type)jcasType).casFeat_id == null)
       jcasType.jcas.throwFeatMissing("id", "info.chenli.litway.bionlp13.CellularComponent");

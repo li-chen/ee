@@ -1,0 +1,24 @@
+T20	Positive_regulation 1337 1346	activated
+T21	Regulation 1794 1800	linked
+T22	Gene_expression 1823 1832	synthesis
+T23	Positive_regulation 1869 1878	induction
+T24	Positive_regulation 1968 1978	activation
+T25	Gene_expression 1999 2009	production
+T26	Regulation 2044 2055	independent
+T27	Positive_regulation 2287 2297	activation
+T28	Positive_regulation 2322 2329	promote
+T29	Regulation 2756 2765	dependent
+T30	Phosphorylation 3221 3236	phosphorylation
+T31	Regulation 3373 3383	activation
+T32	Gene_expression 3412 3422	production
+T33	Negative_regulation 3606 3615	deficient
+T34	Gene_expression 3731 3741	production
+T35	Positive_regulation 3750 3761	dispensible
+E1	Gene_expression:T22 Theme:T7
+E2	Gene_expression:T25 Theme:T9
+E3	Positive_regulation:T24 Theme:E2
+E4	Regulation:T26 Theme:E3
+E5	Phosphorylation:T30 Theme:T14
+E6	Gene_expression:T32 Theme:T16
+E7	Regulation:T31 Theme:E6
+E8	Gene_expression:T34 Theme:T19

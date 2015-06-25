@@ -1,0 +1,25 @@
+T31	Positive_regulation 475 482	induced
+T32	Gene_expression 874 883	expressed
+T33	Gene_expression 1044 1057	overexpressed
+T34	Gene_expression 1076 1085	producing
+T35	Positive_regulation 1265 1279	overexpression
+T36	Negative_regulation 1316 1323	prevent
+T37	Positive_regulation 1336 1354	cytokine-inducible
+T38	Positive_regulation 1479 1486	promote
+T39	Gene_expression 1491 1501	production
+T40	Negative_regulation 2152 2161	regulator
+T41	Negative_regulation 2232 2241	decreased
+T42	Positive_regulation 2292 2300	elevated
+T43	Positive_regulation 2332 2341	increased
+T44	Localization 2342 2351	secretion
+T45	Regulation 2505 2512	altered
+E1	Gene_expression:T32 Theme:T13
+E2	Gene_expression:T33 Theme:T14
+E3	Gene_expression:T34 Theme:T15
+E4	Gene_expression:T34 Theme:T16
+E5	Gene_expression:T39 Theme:T20
+E6	Positive_regulation:T38 Theme:E5 Cause:T19
+E7	Negative_regulation:T40 Theme:T23
+E8	Negative_regulation:T40 Theme:T24
+E9	Localization:T44 Theme:T27
+E10	Positive_regulation:T43 Theme:E9

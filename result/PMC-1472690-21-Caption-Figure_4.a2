@@ -1,0 +1,7 @@
+T6	Regulation 3 12	modulated
+T7	Positive_regulation 29 36	induced
+T8	Binding 37 44	binding
+T9	Binding 93 100	Binding
+T10	Positive_regulation 105 113	enhanced
+E1	Binding:T8 Theme:T1
+E3	Positive_regulation:T7 Theme:E1 Cause:T1

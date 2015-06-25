@@ -1,0 +1,51 @@
+T61	Positive_regulation 141 147	active
+T62	Positive_regulation 351 357	active
+T63	Localization 487 499	localization
+T64	Negative_regulation 534 542	deletion
+T65	Gene_expression 678 688	expressing
+T66	Positive_regulation 1154 1162	increase
+T67	Phosphorylation 1177 1192	phosphorylation
+T68	Phosphorylation 1298 1313	phosphorylation
+T69	Positive_regulation 1328 1340	upregulation
+T70	Phosphorylation 1876 1891	phosphorylation
+T71	Positive_regulation 1922 1931	increased
+T72	Phosphorylation 1989 2004	Phosphorylation
+T73	Gene_expression 2072 2082	expression
+T74	Phosphorylation 2375 2389	phosphorylated
+T75	Phosphorylation 2442 2457	phosphorylation
+T76	Positive_regulation 2494 2503	increased
+T77	Phosphorylation 2568 2583	phosphorylation
+T78	Gene_expression 2729 2739	production
+T79	Gene_expression 2768 2777	expressed
+T80	Negative_regulation 3347 3356	reduction
+T81	Phosphorylation 3866 3880	phosphorylated
+T82	Phosphorylation 4069 4083	phosphorylated
+T83	Negative_regulation 4114 4123	inability
+T84	Phosphorylation 4158 4172	phosphorylated
+T85	Phosphorylation 4342 4357	phosphorylation
+T86	Negative_regulation 4477 4484	perfect
+T87	Phosphorylation 4494 4509	phosphorylation
+T88	Phosphorylation 4695 4710	phosphorylation
+T89	Phosphorylation 4743 4757	phosphorylated
+T90	Gene_expression 5096 5105	synthesis
+E1	Positive_regulation:T61 Theme:T1
+E2	Positive_regulation:T62 Theme:T5
+E3	Gene_expression:T65 Theme:T7
+E4	Phosphorylation:T68 Theme:T11
+E5	Positive_regulation:T69 Theme:T12
+E6	Phosphorylation:T70 Theme:T15
+E7	Phosphorylation:T70 Theme:T16
+E8	Gene_expression:T73 Theme:T18
+E9	Gene_expression:T73 Theme:T19
+E10	Phosphorylation:T74 Theme:T23
+E11	Phosphorylation:T75 Theme:T24
+E12	Phosphorylation:T75 Theme:T25
+E13	Phosphorylation:T77 Theme:T26
+E14	Positive_regulation:T76 Theme:E12
+E15	Positive_regulation:T76 Theme:E11
+E16	Gene_expression:T78 Theme:T44
+E17	Gene_expression:T79 Theme:T45
+E18	Phosphorylation:T81 Theme:T47
+E19	Phosphorylation:T85 Theme:T51
+E20	Negative_regulation:T86 Theme:T53
+E21	Gene_expression:T90 Theme:T60

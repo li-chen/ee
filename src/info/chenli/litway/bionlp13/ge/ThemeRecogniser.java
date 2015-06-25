@@ -37,24 +37,19 @@ public class ThemeRecogniser extends LibLinearFacade {
 			dict.creatNumericDictionary(instances);
 			dict.saveDictionary(new File("./model/themes.".concat(
 					classifierName).concat(".dict")));
-
+			/*
 			trainingInstances.saveInstances(new File(
 					"./model/instances.theme.txt"));
 			trainingInstances.saveSvmLightInstances(new File(
 					"./model/instances.theme.svm.txt"));
-
+			*/
 			train(dict.instancesToNumeric(instances));
-
+			saveModel(new File("./model/themes.".concat(classifierName)
+				.concat(".model")));
 			// System.out.println(accuracy(instances));
 
-			ThemeInstances testInstances = new ThemeInstances();
-			testInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
-			instances = testInstances.getInstances(new File(
-					"./data/development/"));
-			instances = dict.instancesToNumeric(instances);
-			testInstances.saveSvmLightInstances(new File(
-					"./model/instances.theme.svm.dev.txt"));
-
+			
+			
 			// System.out.println(accuracy(instances));
 		}
 
@@ -63,7 +58,12 @@ public class ThemeRecogniser extends LibLinearFacade {
 	public static void main(String[] args) {
 
 		ThemeRecogniser tr = new ThemeRecogniser();
-		tr.loadModel(new File("./model/themes.".concat(tr.classifierName)
+		tr.train(new File(args[0]), false);
+		//tr.test(new File(args[1]));
+		
+		
+		/*
+		tr.loadModel(new File("./model/themes.liblinear.model".concat(tr.classifierName)
 				.concat(".model")));
 
 		InstanceDictionary dict = new InstanceDictionary();
@@ -97,5 +97,47 @@ public class ThemeRecogniser extends LibLinearFacade {
 			total++;
 		}
 		System.out.println(new Accurary(correct, total));
+		*/
+	}
+
+	private void test(File file) {
+		// TODO Auto-generated method stub
+		ThemeInstances testInstances = new ThemeInstances();
+		testInstances.setTaeDescriptor("/desc/GeTrainingSetAnnotator.xml");
+		List<Instance> instances = testInstances.getInstances(file);
+		InstanceDictionary dict = new InstanceDictionary();
+		dict.loadDictionary(new File("./model/themes."
+				.concat(classifierName).concat(".dict")));
+		instances = dict.instancesToNumeric(instances);
+		testInstances.saveSvmLightInstances(new File(
+				"./model/instances.theme.svm.dev.txt"));
+		 int total = 0, correct = 0, tp, tn = 0, n = 0, fn, fp;
+		float p, r, f;
+		
+		for (Instance instance : instances) {
+			int prediction = predict(instance);
+			if (prediction == instance.getLabel()) {
+				if (instance.getLabelString().equalsIgnoreCase("Non_Theme")){
+					tn++;
+				}
+				correct++;
+			}
+			
+			if (instance.getLabelString().equalsIgnoreCase("Non_Theme")){
+				n++;
+			}
+			total++;
+		}
+		
+		fp = n - tn;
+		tp = correct - tn;
+		fn = total - n - tp;
+		p = (float) tp / (tp + fp);
+		r = (float) tp / (tp + fn);
+		f = (float) 2 * p * r / (p + r);
+		
+		System.out.println(new Accurary(correct, total));
+		System.out.println("tp: " + tp + "   fp: " + fp + "   fn: " + fn);
+		System.out.println("p: " + p + "   r: " + r + "   f: " + f);
 	}
 }

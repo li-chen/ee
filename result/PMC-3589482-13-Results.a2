@@ -1,0 +1,14 @@
+T6	Positive_regulation 141 150	following
+T7	Positive_regulation 241 254	LPS-inducible
+T8	Transcription 264 268	mRNA
+T9	Positive_regulation 398 409	LPS-induced
+T10	Gene_expression 419 429	expression
+T11	Positive_regulation 447 455	increase
+T12	Gene_expression 547 557	expression
+T13	Positive_regulation 567 574	induced
+E1	Transcription:T8 Theme:T3
+E2	Positive_regulation:T7 Theme:E1
+E3	Gene_expression:T10 Theme:T4
+E4	Positive_regulation:T9 Theme:E3
+E5	Gene_expression:T12 Theme:T5
+E6	Positive_regulation:T13 Theme:E5

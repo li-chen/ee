@@ -1,0 +1,21 @@
+T13	Negative_regulation 225 230	block
+T14	Negative_regulation 336 345	Knockdown
+T15	Phosphorylation 472 487	phosphorylation
+T16	Positive_regulation 655 663	increase
+T17	Positive_regulation 681 688	induced
+T18	Phosphorylation 703 718	phosphorylation
+T19	Negative_regulation 731 740	Knockdown
+T20	Negative_regulation 801 811	attenuated
+T21	Positive_regulation 839 847	increase
+T22	Phosphorylation 865 880	phosphorylation
+T23	Positive_regulation 1025 1033	increase
+E1	Negative_regulation:T14 Theme:T3
+E2	Negative_regulation:T14 Theme:T4
+E3	Phosphorylation:T15 Theme:T5
+E4	Positive_regulation:T16 Theme:T7
+E5	Phosphorylation:T18 Theme:T8
+E6	Positive_regulation:T17 Theme:E5
+E7	Positive_regulation:T16 Theme:E6
+E8	Phosphorylation:T22 Theme:T10
+E9	Positive_regulation:T21 Theme:E8
+E10	Negative_regulation:T20 Theme:E9

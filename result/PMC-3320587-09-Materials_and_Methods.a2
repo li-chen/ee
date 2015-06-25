@@ -1,0 +1,6 @@
+T8	Gene_expression 19 29	expressing
+T9	Gene_expression 66 76	expressing
+T10	Negative_regulation 637 647	underlined
+E1	Gene_expression:T8 Theme:T1
+E2	Gene_expression:T9 Theme:T2
+E3	Gene_expression:T9 Theme:T3

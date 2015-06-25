@@ -1,0 +1,35 @@
+T10	Negative_regulation 0 10	Inhibition
+T11	Gene_expression 20 30	production
+T12	Positive_regulation 110 119	increased
+T13	Gene_expression 126 136	production
+T14	Negative_regulation 265 273	decrease
+T15	Positive_regulation 277 293	anti-CD3-induced
+T16	Gene_expression 300 310	production
+T17	Negative_regulation 562 571	inhibited
+T18	Positive_regulation 576 592	anti-CD3-induced
+T19	Gene_expression 599 609	production
+T20	Negative_regulation 729 739	inhibitors
+T21	Negative_regulation 769 782	downregulated
+T22	Localization 793 802	secretion
+T23	Negative_regulation 862 871	inhibitor
+T24	Regulation 972 983	possibility
+T25	Negative_regulation 1106 1116	inhibition
+T26	Gene_expression 1126 1136	production
+T27	Negative_regulation 1172 1183	inhibitions
+T28	Gene_expression 1193 1203	production
+E1	Gene_expression:T11 Theme:T1
+E2	Negative_regulation:T10 Theme:E1
+E3	Gene_expression:T13 Theme:T2
+E4	Positive_regulation:T12 Theme:E3
+E6	Gene_expression:T16 Theme:T3
+E8	Positive_regulation:T15 Theme:E6
+E10	Gene_expression:T19 Theme:T4
+E12	Positive_regulation:T18 Theme:E10
+E13	Negative_regulation:T17 Theme:E12
+E14	Negative_regulation:T20 Theme:T5
+E15	Localization:T22 Theme:T6
+E16	Negative_regulation:T21 Theme:E15 Cause:E14
+E17	Gene_expression:T26 Theme:T8
+E18	Negative_regulation:T25 Theme:E17
+E19	Gene_expression:T28 Theme:T9
+E20	Negative_regulation:T27 Theme:E19

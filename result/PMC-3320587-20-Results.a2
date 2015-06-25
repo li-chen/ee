@@ -1,0 +1,4 @@
+T4	Negative_regulation 1704 1714	disruption
+T5	Binding 1724 1731	binding
+E1	Binding:T5 Theme:T3
+E2	Negative_regulation:T4 Theme:E1

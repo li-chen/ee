@@ -1,0 +1,47 @@
+T31	Positive_regulation 58 67	induction
+T32	Gene_expression 77 87	expression
+T33	Binding 112 122	Engagement
+T34	Positive_regulation 145 153	enhances
+T35	Transcription 397 401	mRNA
+T36	Positive_regulation 431 440	increased
+T37	Positive_regulation 562 571	induction
+T38	Gene_expression 586 596	expression
+T39	Gene_expression 649 656	express
+T40	Negative_regulation 959 968	inhibited
+T41	Transcription 1173 1183	expression
+T42	Regulation 1203 1212	dependent
+T43	Positive_regulation 1321 1329	required
+T44	Positive_regulation 1338 1347	induction
+T45	Gene_expression 1362 1372	expression
+T46	Gene_expression 1425 1432	express
+T47	Gene_expression 1555 1565	expressing
+T48	Gene_expression 1729 1739	expression
+T49	Gene_expression 1794 1804	expressing
+T50	Gene_expression 1872 1882	expressing
+T51	Transcription 1930 1934	both
+T52	Positive_regulation 1974 1981	induced
+E1	Gene_expression:T32 Theme:T2
+E2	Positive_regulation:T31 Theme:E1
+E3	Binding:T33 Theme:T3
+E4	Transcription:T35 Theme:T7
+E5	Gene_expression:T38 Theme:T9
+E6	Positive_regulation:T37 Theme:E5
+E7	Gene_expression:T39 Theme:T10
+E8	Gene_expression:T39 Theme:T11
+E9	Transcription:T41 Theme:T14
+E10	Transcription:T41 Theme:T15
+E11	Regulation:T42 Theme:E9 Cause:T16
+E12	Regulation:T42 Theme:E10 Cause:T16
+E13	Gene_expression:T45 Theme:T19
+E14	Positive_regulation:T44 Theme:E13
+E15	Positive_regulation:T43 Theme:E14 Cause:T17
+E16	Positive_regulation:T43 Theme:E14 Cause:T18
+E17	Gene_expression:T46 Theme:T20
+E18	Gene_expression:T46 Theme:T21
+E19	Gene_expression:T47 Theme:T22
+E20	Gene_expression:T48 Theme:T23
+E21	Gene_expression:T49 Theme:T24
+E22	Gene_expression:T49 Theme:T25
+E23	Gene_expression:T50 Theme:T26
+E24	Transcription:T51 Theme:T27
+E25	Transcription:T51 Theme:T28

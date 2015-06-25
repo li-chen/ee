@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Apr 25 13:17:47 BST 2013
+ * Updated by JCasGen Fri Jan 30 10:19:46 CST 2015
  * @generated */
 public class Protein_Type extends Annotation_Type {
   /** @generated */

@@ -1,0 +1,23 @@
+T18	Negative_regulation 84 94	inhibition
+T19	Gene_expression 108 118	production
+T20	Phosphorylation 146 161	phosphorylation
+T21	Positive_regulation 181 189	mediated
+T22	Positive_regulation 196 206	activation
+T23	Localization 272 284	predominance
+T24	Positive_regulation 348 355	induced
+T25	Regulation 705 712	effects
+T26	Regulation 788 797	dependent
+T27	Positive_regulation 804 814	activation
+T28	Positive_regulation 854 864	activation
+T29	Positive_regulation 899 908	induction
+E1	Negative_regulation:T18 Theme:T2
+E2	Gene_expression:T19 Theme:T3
+E3	Phosphorylation:T20 Theme:T4
+E4	Positive_regulation:T22 Theme:T6
+E5	Negative_regulation:T18 Theme:E2
+E6	Positive_regulation:T21 Theme:E4 Cause:T5
+E7	Localization:T23 Theme:T8
+E8	Positive_regulation:T27 Theme:T15
+E9	Regulation:T26 Theme:E8 Cause:T14
+E10	Positive_regulation:T28 Theme:T16
+E11	Positive_regulation:T29 Theme:T17

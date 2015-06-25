@@ -1,0 +1,4 @@
+T6	Positive_regulation 55 73	LPS-responsiveness
+T7	Positive_regulation 728 737	following
+E1	Positive_regulation:T6 Theme:T1
+E2	Positive_regulation:T7 Theme:T5

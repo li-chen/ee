@@ -1,0 +1,11 @@
+T8	Positive_regulation 4 13	increases
+T9	Positive_regulation 235 242	enhance
+T10	Transcription 249 253	mRNA
+T11	Gene_expression 420 430	expression
+T12	Positive_regulation 777 786	increased
+T13	Positive_regulation 916 924	increase
+T14	Positive_regulation 979 987	enhances
+T15	Transcription 994 998	mRNA
+E1	Transcription:T10 Theme:T2
+E2	Gene_expression:T11 Theme:T3
+E3	Transcription:T15 Theme:T7

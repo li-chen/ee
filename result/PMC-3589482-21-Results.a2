@@ -1,0 +1,8 @@
+T17	Binding 94 99	binds
+T18	Transcription 280 293	transcription
+T19	Transcription 397 410	transcription
+T20	Positive_regulation 646 655	increased
+T21	Positive_regulation 769 780	LPS-induced
+E1	Binding:T17 Theme:T3 Theme2:T4
+E2	Transcription:T18 Theme:T6
+E3	Transcription:T19 Theme:T8

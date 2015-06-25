@@ -1,0 +1,29 @@
+T35	Regulation 1786 1794	affected
+T36	Gene_expression 1932 1942	production
+T37	Negative_regulation 2910 2913	A20
+T38	Positive_regulation 2965 2975	activation
+T39	Negative_regulation 3283 3291	inhibits
+T40	Regulation 3353 3363	manuscript
+T41	Positive_regulation 3447 3457	activation
+T42	Regulation 3488 3499	controlling
+T43	Regulation 3728 3738	modulating
+T44	Negative_regulation 3984 3993	affecting
+T45	Regulation 4135 4145	regulation
+T46	Positive_regulation 4173 4183	activation
+T47	Ubiquitination 4242 4256	ubiquitination
+T48	Negative_regulation 4350 4360	deficiency
+T49	Positive_regulation 4494 4504	activation
+T50	Gene_expression 5050 5060	expression
+T51	Negative_regulation 5204 5214	deficiency
+E1	Regulation:T35 Theme:T6
+E2	Gene_expression:T36 Theme:T7
+E3	Positive_regulation:T38 Theme:T12
+E4	Regulation:T40 Theme:T17 Cause:T16
+E5	Positive_regulation:T41 Theme:T21
+E6	Regulation:T40 Theme:T17 Cause:T19
+E7	Regulation:T40 Theme:T17 Cause:T20
+E8	Positive_regulation:T46 Theme:T27
+E9	Regulation:T45 Theme:E8
+E10	Ubiquitination:T47 Theme:T28
+E11	Ubiquitination:T47 Theme:T29
+E12	Positive_regulation:T49 Theme:T30

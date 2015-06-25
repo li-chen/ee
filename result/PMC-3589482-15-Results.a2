@@ -1,0 +1,8 @@
+T11	Transcription 139 152	transcription
+T12	Regulation 412 422	regulation
+T13	Gene_expression 440 450	expression
+T14	Binding 1599 1606	binding
+E1	Transcription:T11 Theme:T2
+E2	Gene_expression:T13 Theme:T4
+E3	Regulation:T12 Theme:E2
+E4	Binding:T14 Theme:T10

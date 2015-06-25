@@ -85,6 +85,8 @@ public class ConnlxReader {
 				Token token = new Token();
 				token.setId(Integer.valueOf(st.nextToken()).intValue());
 				token.setText(st.nextToken());
+				//int i = token.getId();
+				//String s = token.getText();
 				st.nextToken();
 				token.setPos(st.nextToken());
 				st.nextToken();

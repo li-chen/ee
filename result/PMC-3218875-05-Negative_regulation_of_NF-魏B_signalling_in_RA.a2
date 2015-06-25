@@ -1,0 +1,44 @@
+T63	Gene_expression 122 132	expression
+T64	Positive_regulation 136 144	response
+T65	Positive_regulation 158 175	immune-activating
+T66	Negative_regulation 488 496	disrupts
+T67	Binding 522 534	interactions
+T68	Negative_regulation 569 579	disruption
+T69	Negative_regulation 769 781	downregulate
+T70	Binding 813 824	association
+T71	Negative_regulation 1068 1077	inhibitor
+T72	Negative_regulation 1213 1222	deficient
+T73	Negative_regulation 1398 1407	deficient
+T74	Negative_regulation 1558 1565	lacking
+T75	Negative_regulation 1873 1880	lacking
+T76	Gene_expression 2020 2030	expression
+T77	Gene_expression 2197 2207	expression
+T78	Regulation 2218 2227	regulated
+T79	Gene_expression 2370 2380	expressing
+T80	Gene_expression 2598 2608	expression
+T81	Negative_regulation 2685 2694	decreased
+T82	Positive_regulation 3282 3296	overexpression
+T83	Negative_regulation 3308 3316	decrease
+T84	Negative_regulation 3553 3561	knockout
+T85	Negative_regulation 3572 3576	lack
+T86	Positive_regulation 3759 3768	increased
+T87	Binding 3865 3876	association
+T88	Binding 3907 3918	association
+T89	Localization 4049 4056	located
+T90	Regulation 4077 4084	thought
+T91	Transcription 4675 4688	transcription
+E1	Binding:T70 Theme:T19
+E2	Negative_regulation:T72 Theme:T24
+E3	Negative_regulation:T73 Theme:T25
+E4	Negative_regulation:T74 Theme:T27
+E5	Negative_regulation:T75 Theme:T30
+E6	Gene_expression:T76 Theme:T31
+E7	Gene_expression:T77 Theme:T32
+E8	Regulation:T78 Theme:E7
+E9	Gene_expression:T79 Theme:T34
+E10	Gene_expression:T80 Theme:T35
+E11	Negative_regulation:T81 Theme:T36
+E12	Negative_regulation:T81 Theme:T37
+E13	Positive_regulation:T82 Theme:T47
+E14	Negative_regulation:T85 Theme:T49
+E15	Transcription:T91 Theme:T61

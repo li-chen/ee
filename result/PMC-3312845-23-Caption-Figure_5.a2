@@ -1,0 +1,14 @@
+T15	Phosphorylation 42 57	phosphorylation
+T16	Negative_regulation 99 109	Inhibition
+T17	Phosphorylation 124 139	phosphorylation
+T18	Phosphorylation 274 289	phosphorylation
+T19	Phosphorylation 338 353	phosphorylation
+T20	Gene_expression 449 459	expression
+T21	Negative_regulation 463 470	reduced
+T22	Negative_regulation 519 522	F-G
+T23	Gene_expression 676 686	expression
+E1	Phosphorylation:T15 Theme:T2
+E2	Phosphorylation:T17 Theme:T3
+E3	Negative_regulation:T16 Theme:E2
+E4	Phosphorylation:T18 Theme:T6
+E5	Phosphorylation:T19 Theme:T7

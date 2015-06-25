@@ -1,0 +1,12 @@
+T17	Positive_regulation 0 12	Upregulation
+T18	Positive_regulation 329 338	increased
+T19	Positive_regulation 684 692	elevated
+T20	Gene_expression 698 708	expression
+T21	Gene_expression 808 818	expression
+T22	Positive_regulation 833 844	upregulated
+E1	Positive_regulation:T17 Theme:T1
+E2	Positive_regulation:T18 Theme:T7
+E3	Gene_expression:T20 Theme:T14
+E4	Positive_regulation:T19 Theme:E3
+E5	Gene_expression:T21 Theme:T15
+E7	Positive_regulation:T22 Theme:E5

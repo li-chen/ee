@@ -1,0 +1,13 @@
+T16	Positive_regulation 0 9	Increased
+T17	Gene_expression 10 20	expression
+T18	Gene_expression 231 241	expression
+T19	Negative_regulation 344 354	inhibition
+T20	Positive_regulation 378 381	due
+T21	Gene_expression 615 625	expression
+T22	Positive_regulation 660 669	increased
+E1	Gene_expression:T17 Theme:T1
+E2	Positive_regulation:T16 Theme:E1
+E3	Gene_expression:T18 Theme:T6
+E4	Negative_regulation:T19 Theme:T8
+E5	Gene_expression:T21 Theme:T12
+E6	Positive_regulation:T22 Theme:E5

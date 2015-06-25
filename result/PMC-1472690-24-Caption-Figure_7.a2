@@ -1,0 +1,9 @@
+T11	Negative_regulation 0 10	Inhibition
+T12	Binding 55 62	binding
+T13	Negative_regulation 558 567	decreased
+T14	Positive_regulation 580 589	following
+T15	Negative_regulation 747 754	reduced
+T16	Gene_expression 759 769	production
+E1	Binding:T12 Theme:T3
+E2	Gene_expression:T16 Theme:T10
+E3	Negative_regulation:T15 Theme:E2

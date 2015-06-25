@@ -1,0 +1,25 @@
+T26	Negative_regulation 212 216	Loss
+T27	Positive_regulation 301 310	increases
+T28	Regulation 422 429	Altered
+T29	Gene_expression 435 445	expression
+T30	Negative_regulation 473 487	downregulation
+T31	Positive_regulation 616 629	overexpressed
+T32	Negative_regulation 683 692	harboring
+T33	Gene_expression 819 829	expressing
+T34	Positive_regulation 1183 1192	Activated
+T35	Binding 1198 1203	binds
+T36	Binding 1363 1370	binding
+T37	Binding 1642 1646	bind
+T38	Gene_expression 1749 1759	expressing
+E1	Negative_regulation:T26 Theme:T2
+E2	Gene_expression:T29 Theme:T5
+E3	Negative_regulation:T30 Theme:T6
+E4	Regulation:T28 Theme:E2
+E5	Positive_regulation:T31 Theme:T7
+E6	Negative_regulation:T32 Theme:T8
+E7	Gene_expression:T33 Theme:T10
+E8	Positive_regulation:T34 Theme:T15
+E9	Binding:T35 Theme:T15 Theme2:T16
+E10	Binding:T36 Theme:T18
+E11	Binding:T37 Theme:T21 Theme2:T22
+E12	Gene_expression:T38 Theme:T25

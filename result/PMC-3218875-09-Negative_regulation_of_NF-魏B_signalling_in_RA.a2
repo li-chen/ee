@@ -1,0 +1,19 @@
+T22	Gene_expression 364 374	Expression
+T23	Positive_regulation 387 396	inducible
+T24	Negative_regulation 481 490	deficient
+T25	Positive_regulation 503 519	hyper-responsive
+T26	Negative_regulation 697 706	deficient
+T27	Negative_regulation 738 748	attenuated
+T28	Binding 1004 1011	binding
+T29	Binding 1085 1092	recruit
+T30	Binding 1126 1134	interact
+T31	Binding 1155 1166	association
+T32	Binding 1536 1547	association
+E1	Gene_expression:T22 Theme:T5
+E2	Positive_regulation:T23 Theme:E1 Cause:T6
+E3	Negative_regulation:T24 Theme:T9
+E4	Positive_regulation:T25 Theme:E3
+E5	Negative_regulation:T26 Theme:T13
+E6	Binding:T29 Theme:T17 Theme2:T18
+E7	Binding:T30 Theme:T18
+E8	Binding:T32 Theme:T21

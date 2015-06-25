@@ -1,0 +1,15 @@
+T15	Positive_regulation 386 394	enhanced
+T16	Gene_expression 395 405	expression
+T17	Localization 1036 1045	secretion
+T18	Negative_regulation 1361 1370	regulates
+T19	Positive_regulation 1513 1520	induced
+T20	Positive_regulation 1540 1550	activation
+E1	Gene_expression:T16 Theme:T1
+E2	Gene_expression:T16 Theme:T2
+E3	Positive_regulation:T15 Theme:E1
+E4	Positive_regulation:T15 Theme:E2
+E5	Localization:T17 Theme:T5
+E6	Localization:T17 Theme:T6
+E7	Localization:T17 Theme:T9
+E8	Localization:T17 Theme:T11
+E9	Positive_regulation:T20 Theme:T14

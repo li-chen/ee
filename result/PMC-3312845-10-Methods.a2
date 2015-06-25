@@ -1,0 +1,4 @@
+T3	Phosphorylation 73 88	phosphorylation
+T4	Phosphorylation 108 123	phosphorylation
+E1	Phosphorylation:T3 Theme:T1
+E2	Phosphorylation:T4 Theme:T2

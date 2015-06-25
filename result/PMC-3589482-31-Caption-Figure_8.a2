@@ -1,0 +1,9 @@
+T27	Positive_regulation 117 126	activated
+T28	Gene_expression 263 273	expressing
+T29	Phosphorylation 649 664	Phosphorylation
+T30	Gene_expression 1170 1180	expression
+T31	Gene_expression 1274 1281	express
+E1	Gene_expression:T28 Theme:T9
+E2	Phosphorylation:T29 Theme:T15
+E3	Gene_expression:T30 Theme:T24
+E4	Gene_expression:T31 Theme:T26

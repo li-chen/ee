@@ -1,0 +1,52 @@
+T38	Positive_regulation 430 437	induced
+T39	Negative_regulation 1349 1358	knockdown
+T40	Positive_regulation 1435 1442	induced
+T41	Gene_expression 1487 1497	expression
+T42	Regulation 1807 1814	changes
+T43	Phosphorylation 1830 1845	phosphorylation
+T44	Positive_regulation 2001 2010	Following
+T45	Positive_regulation 2077 2085	increase
+T46	Phosphorylation 2093 2108	phosphorylation
+T47	Positive_regulation 2303 2311	increase
+T48	Phosphorylation 2319 2334	phosphorylation
+T49	Negative_regulation 2547 2556	prevented
+T50	Positive_regulation 2561 2569	increase
+T51	Phosphorylation 2584 2599	phosphorylation
+T52	Positive_regulation 2674 2683	induction
+T53	Regulation 2811 2818	changes
+T54	Positive_regulation 2940 2948	increase
+T55	Negative_regulation 2969 2979	attenuated
+T56	Regulation 3490 3500	regulation
+T57	Phosphorylation 3551 3566	phosphorylation
+T58	Regulation 3567 3574	changes
+T59	Negative_regulation 3718 3726	increase
+T60	Phosphorylation 3753 3768	phosphorylation
+T61	Positive_regulation 3963 3969	caused
+T62	Positive_regulation 3996 4004	increase
+T63	Phosphorylation 4012 4027	phosphorylation
+T64	Positive_regulation 4083 4091	increase
+T65	Phosphorylation 4099 4114	phosphorylation
+T66	Positive_regulation 4189 4197	increase
+T67	Phosphorylation 4224 4239	phosphorylation
+T68	Negative_regulation 4350 4357	blocked
+T69	Positive_regulation 4372 4380	increase
+T70	Phosphorylation 4816 4831	phosphorylation
+T71	Positive_regulation 4945 4953	increase
+T72	Phosphorylation 4968 4983	phosphorylation
+T73	Positive_regulation 5064 5073	increases
+E1	Negative_regulation:T39 Theme:T7
+E2	Negative_regulation:T39 Theme:T8
+E3	Gene_expression:T41 Theme:T10
+E4	Phosphorylation:T48 Theme:T14
+E5	Phosphorylation:T48 Theme:T15
+E6	Phosphorylation:T48 Theme:T16
+E7	Positive_regulation:T47 Theme:E5
+E8	Positive_regulation:T47 Theme:E6
+E9	Positive_regulation:T47 Theme:E4
+E10	Phosphorylation:T51 Theme:T21
+E11	Positive_regulation:T50 Theme:E10
+E12	Negative_regulation:T49 Theme:E11
+E13	Positive_regulation:T54 Theme:T24
+E14	Positive_regulation:T66 Theme:T31
+E15	Positive_regulation:T69 Theme:T34
+E16	Negative_regulation:T68 Theme:E15

@@ -1,0 +1,4 @@
+T6	Gene_expression 996 1006	expression
+T7	Positive_regulation 1038 1046	elevated
+E1	Gene_expression:T6 Theme:T5
+E2	Positive_regulation:T7 Theme:E1

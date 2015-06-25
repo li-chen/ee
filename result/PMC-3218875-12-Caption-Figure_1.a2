@@ -1,0 +1,32 @@
+T57	Binding 63 73	engagement
+T58	Positive_regulation 141 148	trigger
+T59	Binding 476 486	recognised
+T60	Binding 530 541	recruitment
+T61	Phosphorylation 598 612	phosphorylates
+T62	Positive_regulation 617 626	activates
+T63	Phosphorylation 647 661	phosphorylates
+T64	Positive_regulation 676 686	triggering
+T65	Protein_catabolism 733 744	degradation
+T66	Localization 816 827	translocate
+T67	Negative_regulation 941 949	regulate
+T68	Binding 1096 1105	targeting
+T69	Binding 1179 1188	recruited
+T70	Negative_regulation 1323 1333	inhibiting
+T71	Gene_expression 1334 1344	expression
+T72	Negative_regulation 1401 1410	inhibited
+T73	Negative_regulation 1475 1482	compete
+T74	Binding 1497 1504	binding
+E1	Binding:T57 Theme:T4
+E2	Binding:T57 Theme:T3
+E3	Binding:T57 Theme:T2
+E4	Binding:T60 Theme:T22
+E5	Positive_regulation:T62 Theme:T24 Cause:T23
+E6	Phosphorylation:T63 Theme:T25
+E7	Binding:T68 Theme:T32
+E8	Binding:T69 Theme:T31
+E9	Gene_expression:T71 Theme:T35
+E10	Gene_expression:T71 Theme:T36
+E11	Negative_regulation:T70 Theme:E10
+E12	Negative_regulation:T70 Theme:E9
+E13	Binding:T74 Theme:T38 Theme2:T40
+E14	Binding:T74 Theme:T38 Theme2:T39

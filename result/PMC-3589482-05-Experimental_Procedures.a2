@@ -1,0 +1,4 @@
+T5	Gene_expression 539 547	produced
+T6	Gene_expression 740 747	tubulin
+E1	Gene_expression:T5 Theme:T1
+E2	Gene_expression:T6 Theme:T3

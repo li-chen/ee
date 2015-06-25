@@ -1,0 +1,5 @@
+T13	Binding 13 24	recruitment
+T14	Binding 750 761	Recruitment
+T15	Transcription 813 826	transcription
+T16	Positive_regulation 827 836	following
+E1	Binding:T13 Theme:T1

@@ -1,0 +1,12 @@
+T8	Phosphorylation 55 70	Phosphorylation
+T9	Phosphorylation 368 382	phosphorylated
+T10	Positive_regulation 568 577	increased
+T11	Positive_regulation 635 644	dependent
+T12	Negative_regulation 663 673	Inhibition
+T13	Negative_regulation 771 781	inhibition
+T14	Negative_regulation 857 866	knockdown
+T15	Negative_regulation 906 915	inhibited
+T16	Phosphorylation 927 942	phosphorylation
+T17	Positive_regulation 999 1007	required
+E1	Phosphorylation:T9 Theme:T3 Cause:T2
+E2	Negative_regulation:T14 Theme:T6

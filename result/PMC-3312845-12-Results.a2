@@ -1,0 +1,9 @@
+T11	Gene_expression 28 38	expression
+T12	Gene_expression 814 832	immunoreactivities
+T13	Negative_regulation 852 859	reduced
+T14	Negative_regulation 927 931	loss
+E1	Gene_expression:T11 Theme:T1
+E2	Gene_expression:T12 Theme:T9
+E3	Gene_expression:T12 Theme:T10
+E4	Negative_regulation:T13 Theme:E2
+E5	Negative_regulation:T13 Theme:E3

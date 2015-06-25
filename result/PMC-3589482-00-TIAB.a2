@@ -1,0 +1,29 @@
+T20	Transcription 76 89	Transcription
+T21	Positive_regulation 178 185	induced
+T22	Binding 244 250	linked
+T23	Positive_regulation 412 418	induce
+T24	Gene_expression 428 438	expression
+T25	Regulation 547 560	LPS-regulated
+T26	Negative_regulation 702 710	deletion
+T27	Positive_regulation 1488 1499	LPS-induced
+T28	Gene_expression 1509 1519	expression
+T29	Negative_regulation 1533 1542	abrogated
+T30	Negative_regulation 1557 1561	null
+T31	Negative_regulation 1601 1608	primary
+T32	Negative_regulation 1620 1629	deficient
+T33	Regulation 1721 1731	regulation
+T34	Gene_expression 1768 1778	expression
+E1	Transcription:T20 Theme:T2
+E2	Positive_regulation:T21 Theme:T3
+E3	Positive_regulation:T21 Theme:T4
+E4	Positive_regulation:T21 Theme:T5
+E5	Binding:T22 Theme:T3
+E6	Gene_expression:T24 Theme:T6
+E7	Positive_regulation:T23 Theme:E6
+E8	Gene_expression:T28 Theme:T15
+E9	Negative_regulation:T30 Theme:T16
+E10	Negative_regulation:T32 Theme:T17
+E11	Positive_regulation:T27 Theme:E8
+E13	Negative_regulation:T29 Theme:E11 Cause:E9
+E14	Gene_expression:T34 Theme:T19
+E15	Regulation:T33 Theme:E14 Cause:T18

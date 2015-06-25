@@ -1,0 +1,28 @@
+T34	Negative_regulation 293 303	inhibitors
+T35	Positive_regulation 1383 1389	induce
+T36	Gene_expression 1568 1576	produced
+T37	Positive_regulation 1691 1700	induction
+T38	Gene_expression 1844 1854	production
+T39	Gene_expression 2182 2190	produced
+T40	Localization 2239 2247	secreted
+T41	Positive_regulation 2313 2320	trigger
+T42	Gene_expression 2330 2340	production
+T43	Positive_regulation 2519 2526	trigger
+T44	Gene_expression 2536 2546	production
+T45	Gene_expression 2755 2765	production
+T46	Gene_expression 2851 2861	production
+T47	Gene_expression 3066 3080	overproduction
+E1	Negative_regulation:T34 Theme:T2
+E2	Positive_regulation:T35 Theme:T11
+E3	Positive_regulation:T37 Theme:T17
+E4	Positive_regulation:T37 Theme:T18
+E5	Gene_expression:T38 Theme:T19
+E6	Gene_expression:T38 Theme:T20
+E7	Localization:T40 Theme:T23
+E8	Gene_expression:T42 Theme:T24
+E9	Positive_regulation:T41 Theme:E8 Cause:T23
+E10	Gene_expression:T44 Theme:T26
+E11	Positive_regulation:T43 Theme:E10 Cause:T25
+E12	Gene_expression:T45 Theme:T30
+E13	Gene_expression:T46 Theme:T31
+E14	Gene_expression:T47 Theme:T33

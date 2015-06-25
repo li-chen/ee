@@ -1,0 +1,16 @@
+T33	Binding 747 754	binding
+T34	Positive_regulation 778 786	resulted
+T35	Gene_expression 790 800	production
+T36	Positive_regulation 956 964	activate
+T37	Positive_regulation 1071 1079	activate
+T38	Gene_expression 1303 1313	production
+T39	Positive_regulation 1421 1428	induced
+T40	Positive_regulation 1575 1583	response
+T41	Regulation 2830 2836	effect
+T42	Binding 3362 3369	binding
+E1	Binding:T33 Theme:T2
+E2	Gene_expression:T35 Theme:T3
+E3	Positive_regulation:T36 Theme:T6
+E4	Gene_expression:T38 Theme:T10
+E5	Gene_expression:T38 Theme:T11
+E6	Binding:T42 Theme:T30

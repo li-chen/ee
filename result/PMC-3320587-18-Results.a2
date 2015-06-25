@@ -1,0 +1,45 @@
+T32	Binding 20 27	binding
+T33	Negative_regulation 65 74	disrupted
+T34	Negative_regulation 115 124	silencing
+T35	Binding 199 210	recruitment
+T36	Negative_regulation 302 309	disrupt
+T37	Binding 316 323	binding
+T38	Binding 484 491	binding
+T39	Regulation 516 526	regulation
+T40	Negative_regulation 775 784	disrupted
+T41	Binding 1135 1142	binding
+T42	Regulation 1547 1553	impact
+T43	Negative_regulation 1566 1576	disruption
+T44	Regulation 1622 1632	regulation
+T45	Binding 1719 1726	binding
+T46	Binding 1982 1986	bind
+T47	Binding 2044 2051	binding
+T48	Negative_regulation 2060 2068	impaired
+T49	Negative_regulation 2203 2212	inhibited
+T50	Binding 2221 2228	binding
+T51	Regulation 2321 2329	mutation
+T52	Negative_regulation 2384 2394	abrogation
+T53	Binding 2406 2413	binding
+T54	Binding 2453 2460	binding
+T55	Binding 2612 2619	binding
+T56	Positive_regulation 2697 2706	disrupted
+E1	Binding:T32 Theme:T1
+E2	Negative_regulation:T33 Theme:T1
+E4	Negative_regulation:T34 Theme:T2
+E5	Binding:T35 Theme:T3
+E6	Binding:T37 Theme:T5
+E7	Negative_regulation:T36 Theme:E6
+E8	Binding:T38 Theme:T6
+E9	Binding:T41 Theme:T9
+E10	Binding:T45 Theme:T16
+E11	Binding:T45 Theme:T15
+E12	Binding:T46 Theme:T21
+E13	Binding:T47 Theme:T22 Theme2:T23
+E14	Negative_regulation:T48 Theme:E13
+E15	Binding:T50 Theme:T24 Theme2:T25
+E16	Negative_regulation:T49 Theme:E15
+E17	Binding:T53 Theme:T26 Theme2:T27
+E18	Negative_regulation:T52 Theme:E17
+E19	Binding:T54 Theme:T28
+E20	Binding:T55 Theme:T30 Theme2:T31
+E21	Positive_regulation:T56 Theme:E20

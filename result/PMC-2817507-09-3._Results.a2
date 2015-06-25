@@ -1,0 +1,4 @@
+T6	Positive_regulation 15 24	Increased
+T7	Positive_regulation 213 222	increased
+T8	Negative_regulation 421 430	decreased
+E1	Positive_regulation:T6 Theme:T1

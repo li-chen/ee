@@ -1,0 +1,50 @@
+T55	Positive_regulation 5 13	mediated
+T56	Phosphorylation 20 35	phosphorylation
+T57	Positive_regulation 99 108	activated
+T58	Positive_regulation 447 457	activation
+T59	Regulation 708 719	responsible
+T60	Positive_regulation 746 756	activation
+T61	Negative_regulation 781 791	inhibition
+T62	Phosphorylation 827 842	phosphorylation
+T63	Positive_regulation 847 856	activated
+T64	Phosphorylation 1225 1240	phosphorylation
+T65	Positive_regulation 1280 1290	activation
+T66	Positive_regulation 1302 1311	abolished
+T67	Positive_regulation 1490 1500	activation
+T68	Positive_regulation 1569 1577	required
+T69	Positive_regulation 1588 1598	activation
+T70	Positive_regulation 1622 1632	activation
+T71	Negative_regulation 1768 1775	inhibit
+T72	Gene_expression 1786 1796	production
+T73	Gene_expression 2020 2030	production
+T74	Negative_regulation 2088 2095	reduced
+T75	Negative_regulation 2111 2121	inhibition
+T76	Gene_expression 2135 2145	production
+T77	Positive_regulation 2354 2363	induction
+T78	Positive_regulation 2373 2383	activation
+E1	Phosphorylation:T56 Theme:T2
+E2	Positive_regulation:T55 Theme:E1 Cause:T1
+E3	Positive_regulation:T57 Theme:T5
+E4	Positive_regulation:T58 Theme:T14
+E5	Positive_regulation:T60 Theme:T18
+E6	Negative_regulation:T61 Theme:T19
+E7	Regulation:T59 Theme:E5
+E8	Phosphorylation:T62 Theme:T20
+E9	Phosphorylation:T62 Theme:T21
+E10	Positive_regulation:T63 Theme:T20 Cause:T22
+E12	Positive_regulation:T63 Theme:E9 Cause:T22
+E13	Phosphorylation:T64 Theme:T26
+E14	Phosphorylation:T64 Theme:T27
+E15	Positive_regulation:T65 Theme:T28
+E16	Positive_regulation:T66 Theme:E15
+E17	Positive_regulation:T67 Theme:T32
+E18	Positive_regulation:T69 Theme:T34
+E19	Positive_regulation:T70 Theme:T35
+E20	Positive_regulation:T68 Theme:E18
+E21	Gene_expression:T72 Theme:T39
+E24	Gene_expression:T73 Theme:T45
+E25	Gene_expression:T76 Theme:T48
+E26	Negative_regulation:T75 Theme:E25 Cause:T47
+E27	Negative_regulation:T74 Theme:E26
+E28	Positive_regulation:T78 Theme:T52
+E29	Positive_regulation:T77 Theme:E28
